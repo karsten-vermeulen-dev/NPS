@@ -1,0 +1,9 @@
+
+Debug/
+Release/
+NPS/Debug/
+NPS/Release/
+
+.vs/
+
+NPS/imgui.ini
