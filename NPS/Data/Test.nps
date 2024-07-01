@@ -1,0 +1,39 @@
+[Plate]
+Oversize Oblong
+
+[Font]
+Type: Car
+Font: 3D Gel/Resin
+
+[Plate]
+Width: 533
+Height: 152
+
+[Registration]
+Text raised by: -1
+Text nudged by: 0
+Space raised by: -3
+Text: DSSD
+
+[Border]
+Visible: Yes
+Side badge: No
+Border size: 5
+Margin size: 2
+
+[Dealer]
+Visible: Yes
+Text above postcode: No
+Text raised by: 5
+Text nudged by: -7
+Postcode raised by: 4
+Postcode nudged by: -5
+Text: Plate factory
+Postcode: B6 7SJ
+
+[BSAU]
+Visible: Yes
+On border: Yes
+Text raised by: 4
+Text nudged by: -4
+Text: NPM BS AU 145e
