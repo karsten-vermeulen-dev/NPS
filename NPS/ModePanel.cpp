@@ -18,13 +18,15 @@ void ModePanel::Show()
 	ImGui::SetWindowPos("ModePanel", ImVec2(position.x, position.y));
 	ImGui::SetWindowSize("ModePanel", ImVec2(dimension.x, dimension.y));
 
+	auto spacing = static_cast<int>(dimension.y / 60.0f);
+
 	ImGui::GetStyle().Colors[ImGuiCol_Text] = yellow;
 
-	Partition("MyriadPro_Bold_16", "ModePanel", yellow);
+	Partition("MyriadPro_Bold_14", "ModePanel", yellow);
 
-	ImGui::PushFont(fonts["MyriadPro_Bold_16"]);
+	ImGui::PushFont(fonts["MyriadPro_Bold_14"]);
 
-	Spacing(2);
+	Spacing(spacing - 1);
 	ImGui::Indent(7);
 
 	if (ImGui::RadioButton("Design", mode.isDesign))
@@ -34,7 +36,7 @@ void ModePanel::Show()
 		mode.is3DView = false;
 	}
 
-	Spacing(3);
+	Spacing(spacing);
 
 	if (ImGui::RadioButton("Print", mode.isPrint))
 	{
@@ -43,7 +45,7 @@ void ModePanel::Show()
 		mode.is3DView = false;
 	}
 
-	Spacing(3);
+	Spacing(spacing);
 
 	if (ImGui::RadioButton("3D view", mode.is3DView))
 	{
