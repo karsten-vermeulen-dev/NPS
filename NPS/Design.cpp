@@ -128,7 +128,29 @@ bool Design::OnEnter()
 
 	if (!isLoaded)
 	{
+		//Regular MyriadPro fonts
 		if (!UserInterface::LoadFont("Assets/Fonts/MyriadPro_regular.otf", 14.0f, "MyriadPro_Regular_14"))
+		{
+			return false;
+		}
+
+		if (!UserInterface::LoadFont("Assets/Fonts/MyriadPro_regular.otf", 16.0f, "MyriadPro_Regular_16"))
+		{
+			return false;
+		}
+
+		if (!UserInterface::LoadFont("Assets/Fonts/MyriadPro_regular.otf", 24.0f, "MyriadPro_Regular_24"))
+		{
+			return false;
+		}
+
+		if (!UserInterface::LoadFont("Assets/Fonts/MyriadPro_regular.otf", 32.0f, "MyriadPro_Regular_32"))
+		{
+			return false;
+		}
+
+		//Bold MyriadPro fonts
+		if (!UserInterface::LoadFont("Assets/Fonts/MyriadPro_bold.otf", 14.0f, "MyriadPro_Bold_14"))
 		{
 			return false;
 		}
