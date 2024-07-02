@@ -18,7 +18,7 @@ void ModePanel::Show()
 	ImGui::SetWindowPos("ModePanel", ImVec2(position.x, position.y));
 	ImGui::SetWindowSize("ModePanel", ImVec2(dimension.x, dimension.y));
 
-	auto spacing = static_cast<int>(dimension.y / 60.0f);
+	auto spacing = std::round(dimension.y / 60.0f);
 
 	ImGui::GetStyle().Colors[ImGuiCol_Text] = yellow;
 
