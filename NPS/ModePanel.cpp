@@ -18,6 +18,8 @@ void ModePanel::Show()
 	ImGui::SetWindowPos("ModePanel", ImVec2(position.x, position.y));
 	ImGui::SetWindowSize("ModePanel", ImVec2(dimension.x, dimension.y));
 
+	//Spacing between radio buttons depends on height 
+	//of box divided by 60 (random number for now)
 	auto spacing = std::round(dimension.y / 60.0f);
 
 	ImGui::GetStyle().Colors[ImGuiCol_Text] = yellow;
