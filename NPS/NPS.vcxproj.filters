@@ -180,6 +180,9 @@
     <ClCompile Include="LicenseDialog.cpp">
       <Filter>Source Files\Objects\UI\Dialogs</Filter>
     </ClCompile>
+    <ClCompile Include="FontDialog.cpp">
+      <Filter>Source Files\Objects\UI\Dialogs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GLAD\gl.h">
@@ -294,6 +297,9 @@
       <Filter>Header Files\Objects\UI</Filter>
     </ClInclude>
     <ClInclude Include="LicenseDialog.h">
+      <Filter>Header Files\Objects\UI\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="FontDialog.h">
       <Filter>Header Files\Objects\UI\Dialogs</Filter>
     </ClInclude>
   </ItemGroup>
