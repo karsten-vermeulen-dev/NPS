@@ -184,6 +184,21 @@ bool Design::OnEnter()
 			return false;
 		}
 
+		if (!UserInterface::LoadFont("Assets/Fonts/Calibri_bold.ttf", 24.0f, "Calibri"))
+		{
+			return false;
+		}
+
+		if (!UserInterface::LoadFont("Assets/Fonts/Comic_bold.ttf", 24.0f, "Comic"))
+		{
+			return false;
+		}
+
+		if (!UserInterface::LoadFont("Assets/Fonts/Gothic_bold.ttf", 24.0f, "Gothic"))
+		{
+			return false;
+		}
+
 		isLoaded = true;
 	}
 

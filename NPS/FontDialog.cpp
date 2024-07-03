@@ -5,6 +5,9 @@ FontDialog::FontDialog()
 {
 	fontNames["Arial"] = "Assets/Fonts/Arial_bold.ttf";
 	fontNames["MyriadPro"] = "Assets/Fonts/MyriadPro_bold.otf";
+	fontNames["Calibri"] = "Assets/Fonts/Calibri_bold.ttf";
+	fontNames["Comic"] = "Assets/Fonts/Comic_bold.ttf";
+	fontNames["Gothic"] = "Assets/Fonts/Gothic_bold.ttf";
 }
 //======================================================================================================
 const std::string& FontDialog::GetChosenFont() const
@@ -29,7 +32,7 @@ void FontDialog::Show()
 	buttonState = { false };
 
 	static int fontID = 0;
-	const auto totalFonts = 2;
+	const auto totalFonts = 5;
 	const char* fontsTemp[totalFonts];
 
 	auto count = 0;
