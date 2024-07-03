@@ -23,31 +23,31 @@ void PropertiesPanel::Show()
 
 	//===================================================================================
 
-	auto DisplayFontDialog = []()
-	{
-		//HFONT hfont, hfontPrev;
-		//DWORD previousTextColor;
-		//HDC deviceContext;             // display device context of owner window
+	//auto DisplayFontDialog = []()
+	//{
+	//	//HFONT hfont, hfontPrev;
+	//	//DWORD previousTextColor;
+	//	//HDC deviceContext;             // display device context of owner window
 
-		CHOOSEFONT fontDialog;           // common dialog box structure
-		static LOGFONT logFont;          // logical font structure
-		static DWORD currentTextColor;   // current text color
+	//	CHOOSEFONT fontDialog;           // common dialog box structure
+	//	static LOGFONT logFont;          // logical font structure
+	//	static DWORD currentTextColor;   // current text color
 
-		ZeroMemory(&fontDialog, sizeof(fontDialog));
-		fontDialog.lStructSize = sizeof(fontDialog);
-		fontDialog.hwndOwner = Screen::Instance()->GetWindowHandle();
-		fontDialog.lpLogFont = &logFont;
-		fontDialog.rgbColors = currentTextColor;
-		fontDialog.Flags = CF_SCREENFONTS | CF_EFFECTS;
+	//	ZeroMemory(&fontDialog, sizeof(fontDialog));
+	//	fontDialog.lStructSize = sizeof(fontDialog);
+	//	fontDialog.hwndOwner = Screen::Instance()->GetWindowHandle();
+	//	fontDialog.lpLogFont = &logFont;
+	//	fontDialog.rgbColors = currentTextColor;
+	//	fontDialog.Flags = CF_SCREENFONTS | CF_EFFECTS;
 
-		if (ChooseFont(&fontDialog) == TRUE)
-		{
-			/*hfont = CreateFontIndirect(cf.lpLogFont);
-			hfontPrev = SelectObject(hdc, hfont);
-			rgbCurrent = cf.rgbColors;
-			rgbPrev = SetTextColor(hdc, rgbCurrent);*/
-		}
-	};
+	//	if (ChooseFont(&fontDialog) == TRUE)
+	//	{
+	//		/*hfont = CreateFontIndirect(cf.lpLogFont);
+	//		hfontPrev = SelectObject(hdc, hfont);
+	//		rgbCurrent = cf.rgbColors;
+	//		rgbPrev = SetTextColor(hdc, rgbCurrent);*/
+	//	}
+	//};
 
 	//===================================================================================
 
@@ -108,7 +108,8 @@ void PropertiesPanel::Show()
 
 	if (ImGui::Button("Custom font", ImVec2(buttonDimension.x, buttonDimension.y)))
 	{
-		DisplayFontDialog();
+		properties.isCustomFont = true;
+		//DisplayFontDialog();
 	}
 
 	ImGui::PopFont();
@@ -170,14 +171,14 @@ void PropertiesPanel::Show()
 
 	if (ImGui::Button("Dealer font", ImVec2(buttonDimension.x, buttonDimension.y)))
 	{
-		DisplayFontDialog();
+		//DisplayFontDialog();
 	}
 
 	ImGui::SameLine();
 
 	if (ImGui::Button("Postcode font", ImVec2(buttonDimension.x, buttonDimension.y)))
 	{
-		DisplayFontDialog();
+		//DisplayFontDialog();
 	}
 
 	ImGui::EndDisabled();
@@ -200,7 +201,7 @@ void PropertiesPanel::Show()
 
 	if (ImGui::Button("BSAU font", ImVec2(buttonDimension.x, buttonDimension.y)))
 	{
-		DisplayFontDialog();
+		//DisplayFontDialog();
 	}
 
 	ImGui::EndDisabled();

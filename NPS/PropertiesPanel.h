@@ -13,6 +13,7 @@ public:
 		bool is2DRegular{ true };
 		bool is3DGelResin{ false };
 		bool is4DLaserCut{ false };
+		bool isCustomFont{ false };
 
 		int plateWidth{ 0 };
 		int plateHeight{ 0 };

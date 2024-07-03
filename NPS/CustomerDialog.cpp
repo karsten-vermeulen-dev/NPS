@@ -61,12 +61,13 @@ void CustomerDialog::Show()
 	//===================================================================================
 
 	static int customerID = 0;
-	const auto buttonIndent = 138;
 	const auto totalCustomers = 6;
+	const char* customersTemp[totalCustomers];
+	
+	const auto buttonIndent = 138;
 	const auto spacingToButton = 5;
 	const auto spacingFromTitle = 5;
 	const auto spacingBetweenSections = 2;
-	const char* customersTemp[totalCustomers];
 
 	auto count = 0;
 

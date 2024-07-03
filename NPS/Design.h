@@ -10,6 +10,7 @@
 
 #include "AboutDialog.h"
 #include "ActivateDialog.h"
+#include "FontDialog.h"
 #include "PrintPanel.h"
 #include "CustomDialog.h"
 #include "CustomerDialog.h"
@@ -46,7 +47,7 @@ private:
 	State* newState{ nullptr };
 	bool isStateComplete{ false };
 
-	bool isHost{ false };
+	bool isHost{ true };
 	bool isActivated{ true };
 
 	std::unique_ptr<Plate> plate;
@@ -60,6 +61,7 @@ private:
 
 	std::unique_ptr<MainMenu> mainMenu;
 
+	std::unique_ptr<FontDialog> fontDialog;
 	std::unique_ptr<AboutDialog> aboutDialog;
 	std::unique_ptr<MessageDialog> messageDialog;
 	std::unique_ptr<CustomDialog> customPlateDialog;

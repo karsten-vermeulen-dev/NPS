@@ -170,6 +170,13 @@ bool Design::OnEnter()
 			return false;
 		}
 
+		//Bold Arial
+		if (!UserInterface::LoadFont("Assets/Fonts/Arial_bold.ttf", 24.0f, "Arial_Bold_24"))
+		{
+			//assert if failed to load
+			return false;
+		}
+
 		isLoaded = true;
 	}
 
@@ -181,6 +188,11 @@ bool Design::OnEnter()
 
 	mainMenu = std::make_unique<MainMenu>();
 	mainMenu->IsVisible(true);
+
+	fontDialog = std::make_unique<FontDialog>();
+	fontDialog->IsVisible(false);
+	fontDialog->SetDimension(glm::uvec2(325, 550));
+	fontDialog->SetButtonDimension(buttonDimension);
 
 	aboutDialog = std::make_unique<AboutDialog>();
 	aboutDialog->IsVisible(false);
@@ -779,6 +791,12 @@ bool Design::Render()
 	//========================================================================================
 
 	propertiesPanel->Show();
+	auto& plateProperties = propertiesPanel->GetProperties();
+
+	if (plateProperties.isCustomFont)
+	{
+		fontDialog->IsVisible(true);
+	}
 
 	feedbackPanel->SetLegality(plate->IsLegal());
 	feedbackPanel->SetPlateData(plate->GetPlateData());
@@ -791,6 +809,11 @@ bool Design::Render()
 	if (printPanel->GetButtonState().print)
 	{
 		PrintPlate();
+	}
+
+	if (fontDialog->IsVisible())
+	{
+		fontDialog->Show();
 	}
 
 	if (aboutDialog->IsVisible())
