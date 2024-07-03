@@ -47,6 +47,8 @@ private:
 	State* newState{ nullptr };
 	bool isStateComplete{ false };
 
+	bool isCustomFontRequired{ false };
+
 	bool isHost{ true };
 	bool isActivated{ true };
 

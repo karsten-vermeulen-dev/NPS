@@ -107,14 +107,17 @@ bool Text::Load(const std::string& filename, GLfloat fontHeight, const std::stri
 void Text::Unload(const std::string& tag)
 {
 	auto it = fonts.find(tag);
-	assert(it != fonts.end());
-
-	for (const auto& glyph : it->second)
+	//assert(it != fonts.end());
+	
+	if (it != fonts.end())
 	{
-		glDeleteTextures(1, &glyph.second.ID);
-	}
+		for (const auto& glyph : it->second)
+		{
+			glDeleteTextures(1, &glyph.second.ID);
+		}
 
-	fonts.erase(it);
+		fonts.erase(it);
+	}
 }
 //================================================================================================
 Text::Text(Plate* parent, const std::string& tag) : buffer(6, true), parent(parent)

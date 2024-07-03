@@ -31,6 +31,8 @@ public:
 
 	Transform& GetTransform();
 
+	const std::string& GetString() const;
+
 	void SetFont(const std::string& tag);
 	void SetString(const std::string& string);
 

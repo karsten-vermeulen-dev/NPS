@@ -524,11 +524,11 @@ Plate::Plate(PropertiesPanel::Properties& properties) : properties(properties)
 
 	static auto totalPlateObjects = 0;
 
+	//Possibly redundant
 	//Custom font registration - Not fully working/tested yet
-	/*const GLuint FONT_SIZE = 200;
-	m_customFontRegistration = std::make_unique<Text>(this, FONT_SIZE, "Custom_font", "Assets/Fonts/Arial_bold.ttf");
-	m_customFontRegistration->SetString("TEST");
-	m_customFontRegistration->SetColor(0.0f, 0.0f, 0.0f);*/
+	//customFontRegistration = std::make_unique<Text>(this, "Arial_bold_8mm");
+	//customFontRegistration->SetString("TEST");
+	//customFontRegistration->SetColor(0.0f, 0.0f, 0.0f);
 
 	const auto middleBufferSize = 30;
 	const auto cornerBufferSize = 4 * (maxCornerPoints + 1);
@@ -859,21 +859,23 @@ void Plate::Render(Shader& shader)
 		|| m_plateState.is3DGelResinOn
 		|| m_plateState.is4DLaserCutOn);*/
 
-	registration->Render(shader);
+	if (customFontRegistration)
+	{
+		auto position = glm::vec3(0.0f);
 
-	//if (!isFontSelected)
-	//{
-	//	//The text is a child of 'Plate' so it would begin at a local zero position
-	//	//auto position = glm::vec3(0.0f);
+		//We need to scale the font size up by 8 to 'pull it down' (WIP)
+		position.x -= customFontRegistration->GetMaxWidth() * 0.5f;
+		position.y -= customFontRegistration->GetHeight() * 0.35f;
 
-	//	////We need to scale the font size up by 8 to 'pull it down' (WIP)
-	//	//position.x -= m_customFontRegistration->GetTotalWidth() * 0.5f;
-	//	//position.y -= m_customFontRegistration->GetFontHeight() * 8.0f;
+		customFontRegistration->GetTransform().SetPosition(position);
+		customFontRegistration->SetString(registration->GetString());
+		customFontRegistration->Render(shader);
+	}
 
-	//	//m_customFontRegistration->GetTransform().SetPosition(position);
-	//	//m_customFontRegistration->SetString(m_registration->GetString());
-	//	//m_customFontRegistration->Render(shader);
-	//}
+	else
+	{
+		registration->Render(shader);
+	}
 
 	if (properties.isBSAUVisible)
 	{
@@ -889,25 +891,15 @@ void Plate::Render(Shader& shader)
 //================================================================================================
 bool Plate::LoadCustomFont(const std::string& filename, GLuint fontSize)
 {
-	/*m_customFontRegistration.reset();
-	m_customFontRegistration = std::make_unique<Text>(this, fontSize, "Custom_font", filename);
-	m_customFontRegistration->SetString("TEST");
-	m_customFontRegistration->SetColor(0.0f, 0.0f, 0.0f);
-	m_customFontRegistration->SetFont("CustomFont_" + filename);*/
+	//There could be an old version loaded already
+	Text::Unload("CustomFont");	
 
-	//OLD MFC code for loading fonts
-	//LOGFONT font;
-	//CFontDialog fontDialog;
+	//Load the new font and use the same tag since we only ever need one at a time
+	Text::Load(filename, fontSize, "CustomFont");
 
-	//if (fontDialog.DoModal() == IDOK)
-	//{
-	//	fontDialog.GetCurrentFont(&font);
-	//}
-
-	//Not sure how to load Windows fonts using the face name
-	//The face name and the actual .ttf file name are different
-	//const GLuint FONT_SIZE = 200;
-	//m_plate->LoadCustomFont("C:/Windows/Fonts/" + std::string(CW2A(fontDialog.GetFaceName())) + ".ttf", FONT_SIZE);
+	customFontRegistration.reset();
+	customFontRegistration = std::make_unique<Text>(this, "CustomFont");
+	customFontRegistration->SetString("SAMPLE");
 
 	return true;
 }

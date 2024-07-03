@@ -93,6 +93,11 @@ Transform& Registration::GetTransform()
 	return transform;
 }
 //================================================================================================
+const std::string& Registration::GetString() const
+{
+	return string;
+}
+//================================================================================================
 void Registration::SetFont(const std::string& tag)
 {
 	auto it = fonts.find(tag);

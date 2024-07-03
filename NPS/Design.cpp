@@ -170,10 +170,17 @@ bool Design::OnEnter()
 			return false;
 		}
 
-		//Bold Arial
-		if (!UserInterface::LoadFont("Assets/Fonts/Arial_bold.ttf", 24.0f, "Arial_Bold_24"))
+		//--------------------------------------------------------
+		//Load supported fonts to be used in Font dialog box
+		
+		if (!UserInterface::LoadFont("Assets/Fonts/Arial_bold.ttf", 24.0f, "Arial"))
 		{
 			//assert if failed to load
+			return false;
+		}
+
+		if (!UserInterface::LoadFont("Assets/Fonts/MyriadPro_bold.otf", 24.0f, "MyriadPro"))
+		{
 			return false;
 		}
 
@@ -191,7 +198,7 @@ bool Design::OnEnter()
 
 	fontDialog = std::make_unique<FontDialog>();
 	fontDialog->IsVisible(false);
-	fontDialog->SetDimension(glm::uvec2(325, 550));
+	fontDialog->SetDimension(glm::uvec2(325, 350));
 	fontDialog->SetButtonDimension(buttonDimension);
 
 	aboutDialog = std::make_unique<AboutDialog>();
@@ -355,6 +362,17 @@ bool Design::Render()
 			messageDialog->SetMessage("Licence expired. Please renew now.");
 			messageDialog->IsVisible(true);
 		}*/
+
+		if (isCustomFontRequired)
+		{
+			auto customFont = fontDialog->GetChosenFont();
+
+			if (!customFont.empty())
+			{
+				plate->LoadCustomFont(customFont, 100);
+				isCustomFontRequired = false;
+			}
+		}
 	}
 
 	else if (modePanel->GetMode().isPrint)
@@ -793,9 +811,15 @@ bool Design::Render()
 	propertiesPanel->Show();
 	auto& plateProperties = propertiesPanel->GetProperties();
 
+	//This block of code executes everytime user clicks on one of the 'Custom Font' buttons
+	//The Font dialog box is flagged as being visible and all code here executes once for every click
+	//Make sure to flag 'plateProperties.isCustomFont' as 'false' so that this block isn't 
+	//executed repeatedly which would keep the font dialog box permanently displayed 
 	if (plateProperties.isCustomFont)
 	{
+		isCustomFontRequired = true;
 		fontDialog->IsVisible(true);
+		plateProperties.isCustomFont = false;
 	}
 
 	feedbackPanel->SetLegality(plate->IsLegal());

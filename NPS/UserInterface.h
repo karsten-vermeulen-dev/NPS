@@ -24,6 +24,7 @@ public:
 	//Currently to help create new colors. Can eventually remove this
 	static ImVec4 CustomColor(int r, int g, int b, int a = 255);
 
+	//Is there an UnloadFont?
 	static bool LoadFont(const std::string& fontFilename, float fontSize, const std::string& tag);
 
 	virtual ~UserInterface() = 0 {}

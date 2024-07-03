@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include <set>
 #include <vector>
 #include "UserInterface.h"
@@ -16,12 +17,17 @@ public:
 	};
 
 	FontDialog();
+
+	const std::string& GetChosenFont() const;
+
 	virtual void Show() override;
 
 private:
 
 	ButtonState buttonState;
 	
-	std::vector<std::pair<std::string, std::string>> fontNames;
+	std::string chosenFont;
+
+	std::map<std::string, std::string> fontNames;
 
 };

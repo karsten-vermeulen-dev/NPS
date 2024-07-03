@@ -3,8 +3,13 @@
 //======================================================================================================
 FontDialog::FontDialog()
 {
-	fontNames.push_back(std::make_pair("Arial", "Arial_Bold_24"));
-	fontNames.push_back(std::make_pair("MyriadPro", "MyriadPro_Bold_24"));
+	fontNames["Arial"] = "Assets/Fonts/Arial_bold.ttf";
+	fontNames["MyriadPro"] = "Assets/Fonts/MyriadPro_bold.otf";
+}
+//======================================================================================================
+const std::string& FontDialog::GetChosenFont() const
+{
+	return chosenFont;
 }
 //======================================================================================================
 void FontDialog::Show()
@@ -63,7 +68,7 @@ void FontDialog::Show()
 
 	Partition("", "", yellow);
 	
-	ImGui::PushFont(fonts[fontNames[fontID].second]);
+	ImGui::PushFont(fonts[fontsTemp[fontID]]);
 
 	ImGui::Indent(sampleTextIndent);
 	ImGui::Text("Sample text");
@@ -84,9 +89,11 @@ void FontDialog::Show()
 	
 	ImGui::Indent(buttonIndent);
 
+	//This is the desired font
 	if (ImGui::Button("Okay", ImVec2(buttonDimension.x, buttonDimension.y)))
 	{
 		isVisible = false;
+		chosenFont = fontNames[fontsTemp[fontID]];
 	}
 
 	if (ImGui::Button("Cancel", ImVec2(buttonDimension.x, buttonDimension.y)))
