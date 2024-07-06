@@ -35,7 +35,7 @@ bool Design::OnEnter()
 	mainShader->BindUniform("isTextured");
 	mainShader->BindUniform("textureImage");
 
-	mainShader->Use();
+	mainShader->Use()
 
 	//===============================================================================
 
