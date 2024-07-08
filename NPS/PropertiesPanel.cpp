@@ -109,7 +109,8 @@ void PropertiesPanel::Show()
 
 	if (ImGui::Button("Custom font", ImVec2(buttonDimension.x, buttonDimension.y)))
 	{
-		properties.isCustomFont = true;
+		//font settings
+		//properties.isCustomFont = true;
 	}
 
 	ImGui::PopFont();
