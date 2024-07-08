@@ -23,6 +23,7 @@ void PropertiesPanel::Show()
 
 	//===================================================================================
 
+	//Possibly redundant
 	//auto DisplayFontDialog = []()
 	//{
 	//	//HFONT hfont, hfontPrev;
@@ -109,7 +110,6 @@ void PropertiesPanel::Show()
 	if (ImGui::Button("Custom font", ImVec2(buttonDimension.x, buttonDimension.y)))
 	{
 		properties.isCustomFont = true;
-		//DisplayFontDialog();
 	}
 
 	ImGui::PopFont();
@@ -171,14 +171,14 @@ void PropertiesPanel::Show()
 
 	if (ImGui::Button("Dealer font", ImVec2(buttonDimension.x, buttonDimension.y)))
 	{
-		//DisplayFontDialog();
+		properties.isCustomFont = true;
 	}
 
 	ImGui::SameLine();
 
 	if (ImGui::Button("Postcode font", ImVec2(buttonDimension.x, buttonDimension.y)))
 	{
-		//DisplayFontDialog();
+		properties.isCustomFont = true;
 	}
 
 	ImGui::EndDisabled();
@@ -201,7 +201,7 @@ void PropertiesPanel::Show()
 
 	if (ImGui::Button("BSAU font", ImVec2(buttonDimension.x, buttonDimension.y)))
 	{
-		//DisplayFontDialog();
+		properties.isCustomFont = true;
 	}
 
 	ImGui::EndDisabled();
