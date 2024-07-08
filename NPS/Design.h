@@ -64,6 +64,8 @@ private:
 	std::unique_ptr<MainMenu> mainMenu;
 
 	std::unique_ptr<FontDialog> fontDialog;
+	
+	//make this a container of dialogs - easier to render/show using a loop
 	std::unique_ptr<AboutDialog> aboutDialog;
 	std::unique_ptr<MessageDialog> messageDialog;
 	std::unique_ptr<CustomDialog> customPlateDialog;

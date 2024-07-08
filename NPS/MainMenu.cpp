@@ -198,6 +198,13 @@ void MainMenu::Show()
 				menuItems.isCustomPlateSelected = true;
 			}
 
+			MenuDivider();
+
+			if (ImGui::MenuItem("Font settings...", nullptr, nullptr))
+			{
+				menuItems.isFontSettingsSelected = true;
+			}
+
 			ImGui::EndMenu();
 		}
 

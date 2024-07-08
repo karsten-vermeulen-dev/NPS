@@ -555,7 +555,7 @@ void Plate::SetProperties(bool isPrinting)
 	//Font
 	//=================================================================================
 
-	if (properties.isCarFont)
+	/*if (properties.isCarFont)
 	{
 		if (properties.is2DRegular)
 		{
@@ -637,7 +637,7 @@ void Plate::SetProperties(bool isPrinting)
 				registration->SetFont("Bike_4D");
 			}
 		}
-	}
+	}*/
 
 	//=================================================================================
 	//Plate

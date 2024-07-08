@@ -16,6 +16,29 @@ public:
 		bool cancel{ false };
 	};
 
+	struct FontToChange
+	{
+		bool isRegistration{ true };
+		bool isDealer{ false };
+		bool isPostcode{ false };
+		bool isBSAU{ false };
+		bool isDealerPostcodeBSAU{ false };
+	};
+
+	struct FontType
+	{
+		bool isCar{ true };
+		bool isMotorCycle{ false };
+		bool isCustom{ false };
+	};
+
+	struct FontStyle
+	{
+		bool is2DRegular{ true };
+		bool is3DGelResin{ false };
+		bool is4DLaserCut{ false };
+	};
+
 	FontDialog();
 
 	const std::string& GetChosenFont() const;
@@ -24,10 +47,12 @@ public:
 
 private:
 
+	FontType fontType;
+	FontStyle fontStyle;
 	ButtonState buttonState;
-	
-	std::string chosenFont;
+	FontToChange fontToChange;
 
+	std::string chosenFont;
 	std::map<std::string, std::string> fontNames;
 
 };

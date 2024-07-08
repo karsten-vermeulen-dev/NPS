@@ -213,7 +213,7 @@ bool Design::OnEnter()
 
 	fontDialog = std::make_unique<FontDialog>();
 	fontDialog->IsVisible(false);
-	fontDialog->SetDimension(glm::uvec2(325, 350));
+	fontDialog->SetDimension(glm::uvec2(325, 650));
 	fontDialog->SetButtonDimension(buttonDimension);
 
 	aboutDialog = std::make_unique<AboutDialog>();
@@ -556,19 +556,19 @@ bool Design::Render()
 			
 			if (lines[1][0] == '2')
 			{
-				plateProperties.is2DRegular = true;
+				//plateProperties.is2DRegular = true;
 			}
 
 			else if (lines[1][0] == '3')
 			{
-				plateProperties.is2DRegular = false;
-				plateProperties.is3DGelResin = true;
+				//plateProperties.is2DRegular = false;
+				//plateProperties.is3DGelResin = true;
 			}
 
 			else if (lines[1][0] == '4')
 			{
-				plateProperties.is2DRegular = false;
-				plateProperties.is4DLaserCut = true;
+				//plateProperties.is2DRegular = false;
+				//plateProperties.is4DLaserCut = true;
 			}
 
 			plateProperties.plateWidth = std::stoi(lines[2]);
@@ -638,7 +638,7 @@ bool Design::Render()
 			file << "[Font]" << std::endl;
 			file << ((plateProperties.isCarFont) ? "Type: Car" : "Type: Bike") << std::endl;
 
-			if (plateProperties.is2DRegular)
+			/*if (plateProperties.is2DRegular)
 			{
 				file << "Font: 2D Regular" << std::endl;
 			}
@@ -651,7 +651,7 @@ bool Design::Render()
 			if (plateProperties.is4DLaserCut)
 			{
 				file << "Font: 4D Laser cut" << std::endl;
-			}
+			}*/
 
 			file << std::endl;
 
@@ -796,6 +796,11 @@ bool Design::Render()
 		customPlateDialog->IsVisible(true);
 	}
 
+	else if (menuItems.isFontSettingsSelected)
+	{
+		fontDialog->IsVisible(true);
+	}
+
 	else if (menuItems.isTutorialSelected)
 	{
 		newState = new Tutorial;
@@ -826,16 +831,24 @@ bool Design::Render()
 	propertiesPanel->Show();
 	auto& plateProperties = propertiesPanel->GetProperties();
 
-	//This block of code executes everytime user clicks on one of the 'Custom Font' buttons
+	//This block of code executes everytime user clicks on one of the 'Custom Font' buttons in Dealer/BSAU
 	//The Font dialog box is flagged as being visible and all code here executes once for every click
 	//Make sure to flag 'plateProperties.isCustomFont' as 'false' so that this block isn't 
 	//executed repeatedly which would keep the font dialog box permanently displayed 
-	if (plateProperties.isCustomFont)
+	/*if (plateProperties.isCustomFont)
 	{
 		isCustomFontRequired = true;
 		fontDialog->IsVisible(true);
 		plateProperties.isCustomFont = false;
-	}
+	}*/
+
+	//This invokes the font settings dialog box under the Registration section
+	//if (plateProperties.isFontSettingsClicked)
+	//{
+	//	//isCustomFontRequired = true;
+	//	fontSettingsDialog->IsVisible(true);
+	//	plateProperties.isFontSettingsClicked = false;
+	//}
 
 	feedbackPanel->SetLegality(plate->IsLegal());
 	feedbackPanel->SetPlateData(plate->GetPlateData());
@@ -854,6 +867,11 @@ bool Design::Render()
 	{
 		fontDialog->Show();
 	}
+
+	/*if (fontSettingsDialog->IsVisible())
+	{
+		fontSettingsDialog->Show();
+	}*/
 
 	if (aboutDialog->IsVisible())
 	{
