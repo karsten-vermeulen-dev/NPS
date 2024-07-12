@@ -380,7 +380,7 @@ bool Design::Render()
 
 		if (isCustomFontRequired)
 		{
-			auto customFont = fontDialog->GetChosenFont();
+			auto customFont = fontDialog->GetFont();
 
 			if (!customFont.empty())
 			{

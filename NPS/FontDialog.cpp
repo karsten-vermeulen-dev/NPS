@@ -10,9 +10,9 @@ FontDialog::FontDialog()
 	fontNames["Gothic"] = "Assets/Fonts/Gothic_bold.ttf";
 }
 //======================================================================================================
-const std::string& FontDialog::GetChosenFont() const
+const std::string& FontDialog::GetFont() const
 {
-	return chosenFont;
+	return font;
 }
 //======================================================================================================
 void FontDialog::Show()
@@ -228,7 +228,7 @@ void FontDialog::Show()
 	if (ImGui::Button("Okay", ImVec2(buttonDimension.x, buttonDimension.y)))
 	{
 		isVisible = false;
-		chosenFont = fontNames[fontsTemp[fontID]];
+		font = fontNames[fontsTemp[fontID]];
 	}
 
 	if (ImGui::Button("Cancel", ImVec2(buttonDimension.x, buttonDimension.y)))
@@ -236,6 +236,11 @@ void FontDialog::Show()
 		isVisible = false;
 	}
 	
+	if (ImGui::Button("Apply", ImVec2(buttonDimension.x, buttonDimension.y)))
+	{
+		font = fontNames[fontsTemp[fontID]];
+	}
+
 	//===================================================================================
 	
 	//slider for text sizes?

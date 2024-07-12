@@ -14,6 +14,7 @@ public:
 	{
 		bool ok{ false };
 		bool cancel{ false };
+		bool apply{ false };
 	};
 
 	struct FontToChange
@@ -41,7 +42,7 @@ public:
 
 	FontDialog();
 
-	const std::string& GetChosenFont() const;
+	const std::string& GetFont() const;
 
 	virtual void Show() override;
 
@@ -52,7 +53,7 @@ private:
 	ButtonState buttonState;
 	FontToChange fontToChange;
 
-	std::string chosenFont;
+	std::string font;
 	std::map<std::string, std::string> fontNames;
 
 };
