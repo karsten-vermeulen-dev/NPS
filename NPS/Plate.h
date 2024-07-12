@@ -101,7 +101,16 @@ public:
 
 	void Render(Shader& shader);
 
-	bool LoadCustomFont(const std::string& filename, GLuint fontSize);
+	enum class FontToChange
+	{
+		Registration,
+		Dealer, 
+		Postcode, 
+		BSAU, 
+		DealerPostcodeBSAU
+	};
+
+	bool LoadCustomFont(FontToChange fontToChange, const std::string& filename, GLuint fontSize);
 
 private:
 

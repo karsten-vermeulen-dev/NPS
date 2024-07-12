@@ -46,12 +46,14 @@ public:
 
 	virtual void Show() override;
 
-private:
-
+	//Make these public for easy access and ability to change when required
+	//This public access also makes code more readable in main codebase
 	FontType fontType;
 	FontStyle fontStyle;
 	ButtonState buttonState;
 	FontToChange fontToChange;
+
+private:
 
 	std::string font;
 	std::map<std::string, std::string> fontNames;

@@ -693,7 +693,7 @@ void Plate::SetProperties(bool isPrinting)
 		const auto dealerPostcodePaddingY = ToNDC(this->dealerPostcodePaddingY, maxDimension.y);
 		const auto postcodeBottomPadding = ToNDC(this->postcodeBottomPadding, maxDimension.y);
 
-		const auto postcodeWithPaddingHeight = (postcodeText->GetHeight()
+		const auto postcodeWithPaddingHeight = (postcodeText->GetMaxHeight()
 			+ dealerPostcodePaddingY
 			+ postcodeBottomPadding);
 
@@ -865,7 +865,7 @@ void Plate::Render(Shader& shader)
 
 		//We need to scale the font size up by 8 to 'pull it down' (WIP)
 		position.x -= customFontRegistration->GetMaxWidth() * 0.5f;
-		position.y -= customFontRegistration->GetHeight() * 0.35f;
+		position.y -= customFontRegistration->GetMaxHeight() * 0.35f;
 
 		customFontRegistration->GetTransform().SetPosition(position);
 		customFontRegistration->SetString(registration->GetString());
@@ -889,17 +889,56 @@ void Plate::Render(Shader& shader)
 	}
 }
 //================================================================================================
-bool Plate::LoadCustomFont(const std::string& filename, GLuint fontSize)
+bool Plate::LoadCustomFont(FontToChange fontToChange, const std::string& filename, GLuint fontSize)
 {
-	//There could be an old version loaded already
-	Text::Unload("CustomFont");	
+	if (fontToChange == FontToChange::Registration)
+	{
+		//There could be an old version loaded already
+		Text::Unload("CustomFontRegistration");
 
-	//Load the new font and use the same tag since we only ever need one at a time
-	Text::Load(filename, fontSize, "CustomFont");
+		//Load the new font and use the same tag since we only ever need one at a time
+		Text::Load(filename, fontSize, "CustomFontRegistration");
 
-	customFontRegistration.reset();
-	customFontRegistration = std::make_unique<Text>(this, "CustomFont");
-	customFontRegistration->SetString("SAMPLE");
+		customFontRegistration.reset();
+		customFontRegistration = std::make_unique<Text>(this, "CustomFontRegistration");
+		customFontRegistration->SetString(registration->GetString());
+	}
+
+	else if (fontToChange == FontToChange::Dealer)
+	{
+		Text::Unload("CustomFontDealer");
+		Text::Load(filename, fontSize, "CustomFontDealer");
+
+		auto text = dealerText->GetString();
+		
+		dealerText.reset();
+		dealerText = std::make_unique<Text>(this, "CustomFontDealer");
+		dealerText->SetString(text);
+	}
+
+	else if (fontToChange == FontToChange::Postcode)
+	{
+		Text::Unload("CustomFontPostcode");
+		Text::Load(filename, fontSize, "CustomFontPostcode");
+
+		auto text = postcodeText->GetString();
+
+		postcodeText.reset();
+		postcodeText = std::make_unique<Text>(this, "CustomFontPostcode");
+		postcodeText->SetString(text);
+	}
+
+	else if (fontToChange == FontToChange::BSAU)
+	{
+		Text::Unload("CustomFontBSAU");
+		Text::Load(filename, fontSize, "CustomFontBSAU");
+
+		auto text = BSAUText->GetString();
+
+		BSAUText.reset();
+		BSAUText = std::make_unique<Text>(this, "CustomFontBSAU");
+		BSAUText->SetString(text);
+	}
 
 	return true;
 }

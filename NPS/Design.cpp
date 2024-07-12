@@ -842,8 +842,32 @@ bool Design::Render()
 
 		if (!customFont.empty())
 		{
-			plate->LoadCustomFont(customFont, 100);
-			//isCustomFontRequired = false;
+			if (fontDialog->fontToChange.isRegistration)
+			{
+				plate->LoadCustomFont(Plate::FontToChange::Registration, customFont, 100);
+			}
+
+			else if (fontDialog->fontToChange.isDealer)
+			{
+				plate->LoadCustomFont(Plate::FontToChange::Dealer, customFont, 10);
+			}
+
+			else if (fontDialog->fontToChange.isPostcode)
+			{
+				plate->LoadCustomFont(Plate::FontToChange::Postcode, customFont, 10);
+			}
+
+			else if (fontDialog->fontToChange.isBSAU)
+			{
+				plate->LoadCustomFont(Plate::FontToChange::BSAU, customFont, 8);
+			}
+
+			else if (fontDialog->fontToChange.isDealerPostcodeBSAU)
+			{
+				plate->LoadCustomFont(Plate::FontToChange::Dealer, customFont, 10);
+				plate->LoadCustomFont(Plate::FontToChange::Postcode, customFont, 10);
+				plate->LoadCustomFont(Plate::FontToChange::BSAU, customFont, 8);
+			}
 		}
 	}
 

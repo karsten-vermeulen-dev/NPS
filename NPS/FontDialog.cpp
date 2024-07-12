@@ -77,8 +77,11 @@ void FontDialog::Show()
 	ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
 	ImGui::PushFont(fonts["MyriadPro_Regular"]);
 
+	//We clear the font so that everytime we click on 
+	//a radio button the font won't automatically apply
 	if (ImGui::RadioButton("Registration", fontToChange.isRegistration))
 	{
+		font.clear();
 		fontToChange.isRegistration = true;
 		fontToChange.isDealer = false;
 		fontToChange.isPostcode = false;
@@ -88,6 +91,7 @@ void FontDialog::Show()
 
 	if (ImGui::RadioButton("Dealer", fontToChange.isDealer))
 	{
+		font.clear();
 		fontToChange.isRegistration = false;
 		fontToChange.isDealer = true;
 		fontToChange.isPostcode = false;
@@ -97,6 +101,7 @@ void FontDialog::Show()
 
 	if (ImGui::RadioButton("Postcode", fontToChange.isPostcode))
 	{
+		font.clear();
 		fontToChange.isRegistration = false;
 		fontToChange.isDealer = false;
 		fontToChange.isPostcode = true;
@@ -106,6 +111,7 @@ void FontDialog::Show()
 
 	if (ImGui::RadioButton("BSAU", fontToChange.isBSAU))
 	{
+		font.clear();
 		fontToChange.isRegistration = false;
 		fontToChange.isDealer = false;
 		fontToChange.isPostcode = false;
@@ -115,6 +121,7 @@ void FontDialog::Show()
 
 	if (ImGui::RadioButton("Dealer/Postcode/BSAU", fontToChange.isDealerPostcodeBSAU))
 	{
+		font.clear();
 		fontToChange.isRegistration = false;
 		fontToChange.isDealer = false;
 		fontToChange.isPostcode = false;
