@@ -40,7 +40,7 @@ public:
 		bool is4DLaserCut{ false };
 	};
 
-	FontDialog();
+	FontDialog(const std::string& filename);
 
 	const std::string& GetFont() const;
 

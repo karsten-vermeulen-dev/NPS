@@ -1,13 +1,23 @@
 #include "FontDialog.h"
+#include "Utility.h"
 
 //======================================================================================================
-FontDialog::FontDialog()
+FontDialog::FontDialog(const std::string& filename)
 {
-	fontNames["Arial"] = "Assets/Fonts/Arial_bold.ttf";
-	fontNames["MyriadPro"] = "Assets/Fonts/MyriadPro_bold.otf";
-	fontNames["Calibri"] = "Assets/Fonts/Calibri_bold.ttf";
-	fontNames["Comic"] = "Assets/Fonts/Comic_bold.ttf";
-	fontNames["Gothic"] = "Assets/Fonts/Gothic_bold.ttf";
+	if (!Utility::LoadConfigFile(filename, fontNames))
+	{
+		//assert if failed to load?
+	}
+
+	//We need to load the fonts into the UI system so that we 
+	//can use them when writing 'Sample' in the font dialog box
+	for (auto& font : fontNames)
+	{
+		if (!UserInterface::LoadFont(font.second, 24.0f, font.first))
+		{
+			//assert if failed to load?
+		}
+	}
 }
 //======================================================================================================
 const std::string& FontDialog::GetFont() const
@@ -32,14 +42,12 @@ void FontDialog::Show()
 	buttonState = { false };
 
 	static int fontID = 0;
-	const auto totalFonts = 5;
-	const char* fontsTemp[totalFonts]{ "", "", "", "", "" };
-
-	auto count = 0;
+	const auto totalFonts = fontNames.size();
+	std::vector<const char*> fontsTemp;
 
 	for (auto& fontName : fontNames)
 	{
-		fontsTemp[count++] = fontName.first.c_str();
+		fontsTemp.push_back(fontName.first.c_str());
 	}
 
 	//For all buttons we indent using a formula and we must subtract 
@@ -196,7 +204,7 @@ void FontDialog::Show()
 		Partition("MyriadPro_Bold_16", "Font name", yellow);
 
 		ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
-		ImGui::Combo(" ", &fontID, fontsTemp, totalFonts);
+		ImGui::Combo(" ", &fontID, &fontsTemp[0], totalFonts);
 
 		Partition("", "", yellow);
 
@@ -224,18 +232,21 @@ void FontDialog::Show()
 	
 	ImGui::Indent(buttonIndent);
 
-	//This is the desired font
+	//This is the desired font, hide the dialog box
 	if (ImGui::Button("Okay", ImVec2(buttonDimension.x, buttonDimension.y)))
 	{
 		isVisible = false;
 		font = fontNames[fontsTemp[fontID]];
 	}
 
+	//Go back to the main screen, hide the dialog box
 	if (ImGui::Button("Cancel", ImVec2(buttonDimension.x, buttonDimension.y)))
 	{
+		font.clear();
 		isVisible = false;
 	}
 	
+	//This is the desired font, continue to display the dialog box
 	if (ImGui::Button("Apply", ImVec2(buttonDimension.x, buttonDimension.y)))
 	{
 		font = fontNames[fontsTemp[fontID]];

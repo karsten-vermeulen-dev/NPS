@@ -170,35 +170,6 @@ bool Design::OnEnter()
 			return false;
 		}
 
-		//--------------------------------------------------------
-		//Load supported fonts to be used in Font dialog box
-		
-		if (!UserInterface::LoadFont("Assets/Fonts/Arial_bold.ttf", 24.0f, "Arial"))
-		{
-			//assert if failed to load
-			return false;
-		}
-
-		if (!UserInterface::LoadFont("Assets/Fonts/MyriadPro_bold.otf", 24.0f, "MyriadPro"))
-		{
-			return false;
-		}
-
-		if (!UserInterface::LoadFont("Assets/Fonts/Calibri_bold.ttf", 24.0f, "Calibri"))
-		{
-			return false;
-		}
-
-		if (!UserInterface::LoadFont("Assets/Fonts/Comic_bold.ttf", 24.0f, "Comic"))
-		{
-			return false;
-		}
-
-		if (!UserInterface::LoadFont("Assets/Fonts/Gothic_bold.ttf", 24.0f, "Gothic"))
-		{
-			return false;
-		}
-
 		isLoaded = true;
 	}
 
@@ -211,7 +182,7 @@ bool Design::OnEnter()
 	mainMenu = std::make_unique<MainMenu>();
 	mainMenu->IsVisible(true);
 
-	fontDialog = std::make_unique<FontDialog>();
+	fontDialog = std::make_unique<FontDialog>("Data/Fonts.ini");
 	fontDialog->IsVisible(false);
 	fontDialog->SetDimension(glm::uvec2(325, 650));
 	fontDialog->SetButtonDimension(buttonDimension);
@@ -378,7 +349,7 @@ bool Design::Render()
 			messageDialog->IsVisible(true);
 		}*/
 
-		if (isCustomFontRequired)
+		/*if (isCustomFontRequired)
 		{
 			auto customFont = fontDialog->GetFont();
 
@@ -387,7 +358,7 @@ bool Design::Render()
 				plate->LoadCustomFont(customFont, 100);
 				isCustomFontRequired = false;
 			}
-		}
+		}*/
 	}
 
 	else if (modePanel->GetMode().isPrint)
@@ -866,12 +837,15 @@ bool Design::Render()
 	if (fontDialog->IsVisible())
 	{
 		fontDialog->Show();
-	}
 
-	/*if (fontSettingsDialog->IsVisible())
-	{
-		fontSettingsDialog->Show();
-	}*/
+		auto customFont = fontDialog->GetFont();
+
+		if (!customFont.empty())
+		{
+			plate->LoadCustomFont(customFont, 100);
+			//isCustomFontRequired = false;
+		}
+	}
 
 	if (aboutDialog->IsVisible())
 	{
@@ -882,6 +856,8 @@ bool Design::Render()
 	{
 		messageDialog->Show();
 
+		//Internal class code?
+		//--------------------------------------------------
 		if (messageDialog->GetButtonState().yes)
 		{
 			isStateComplete = true;
@@ -893,6 +869,7 @@ bool Design::Render()
 		{
 			messageDialog->IsVisible(false);
 		}
+		//--------------------------------------------------
 	}
 
 	else if (customPlateDialog->IsVisible())
