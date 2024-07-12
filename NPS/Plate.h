@@ -46,6 +46,15 @@ public:
 	//The spacing between the dealer name and the bottom of the plate is 7mm (if above the postcode)
 	//const GLuint dealerBottomPaddingAbove = 7;
 
+	enum class FontToChange
+	{
+		Registration,
+		Dealer,
+		Postcode,
+		BSAU,
+		DealerPostcodeBSAU
+	};
+
 	//We need to keep a legal toggle for the inner struct and the plate class
 	//Struct's legal toggle states if this plate is legal at all
 	//Class' legal toggle is a dynamic variable that can change based on properties set
@@ -100,15 +109,6 @@ public:
 	void SetPlateData(const std::string& name, PlateData* plateData = nullptr);
 
 	void Render(Shader& shader);
-
-	enum class FontToChange
-	{
-		Registration,
-		Dealer, 
-		Postcode, 
-		BSAU, 
-		DealerPostcodeBSAU
-	};
 
 	bool LoadCustomFont(FontToChange fontToChange, const std::string& filename, GLuint fontSize);
 
