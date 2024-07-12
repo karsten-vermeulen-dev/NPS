@@ -524,12 +524,6 @@ Plate::Plate(PropertiesPanel::Properties& properties) : properties(properties)
 
 	static auto totalPlateObjects = 0;
 
-	//Possibly redundant
-	//Custom font registration - Not fully working/tested yet
-	//customFontRegistration = std::make_unique<Text>(this, "Arial_bold_8mm");
-	//customFontRegistration->SetString("TEST");
-	//customFontRegistration->SetColor(0.0f, 0.0f, 0.0f);
-
 	const auto middleBufferSize = 30;
 	const auto cornerBufferSize = 4 * (maxCornerPoints + 1);
 
