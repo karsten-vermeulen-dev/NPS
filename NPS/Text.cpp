@@ -131,15 +131,11 @@ Transform& Text::GetTransform()
 	return transform;
 }
 //================================================================================================
-GLfloat Text::GetHeight() const
-{
-	return height;
-}
-//================================================================================================
 GLfloat Text::GetMaxWidth() const
 {
 	//We calculate the max width of the text right here, because we 
 	//don't want to make an unnecessary Render() call to calculate it
+
 	auto viewport = Screen::Instance()->GetViewport();
 
 	FontType ft = font;
@@ -154,6 +150,36 @@ GLfloat Text::GetMaxWidth() const
 	}
 
 	return maxWidth;
+}
+//================================================================================================
+GLfloat Text::GetMaxHeight() const
+{
+	//We calculate the max height of the text right here, because we 
+	//don't want to make an unnecessary Render() call to calculate it
+
+	FontType ft = font;
+	auto str = string;
+	auto maxHeight = 0.0f;
+
+	for (const auto& character : str)
+	{
+		auto glyph = ft[character];
+		
+		//This is the NDC dimension (mm -> ndc)
+		auto height = 2.0f * (glyph.heightMillimeter / Plate::GetMaxDimension().y);
+		
+		if (height > maxHeight)
+		{
+			maxHeight = height;
+		}
+	}
+
+	return maxHeight;
+}
+//================================================================================================
+const std::string& Text::GetString() const
+{
+	return string;
 }
 //================================================================================================
 void Text::SetFont(const std::string& tag)
@@ -233,6 +259,7 @@ void Text::Render(Shader& shader)
 		auto glyphAdvance = static_cast<float>(2.0f * ((glyph.advance / 64.0f) / viewport.w));
 		startX += glyphAdvance;
 
+		//This might be redundant here
 		//This is the NDC dimension (mm -> ndc)
 		height = 2.0f * (glyph.heightMillimeter / Plate::GetMaxDimension().y);
 	}

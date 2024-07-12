@@ -27,8 +27,9 @@ public:
 	Text(Plate* parent, const std::string& tag);
 
 	Transform& GetTransform();
-	GLfloat GetHeight() const;
 	GLfloat GetMaxWidth() const;
+	GLfloat GetMaxHeight() const;
+	const std::string& GetString() const;
 
 	void SetFont(const std::string& tag);
 	void SetColor(const glm::vec4& color);
