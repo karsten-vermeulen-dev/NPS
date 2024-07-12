@@ -45,42 +45,12 @@ bool Screen::Initialize(const std::string& filename)
 {
 	std::map<std::string, std::string> dataMap;
 
-	std::fstream file(filename, std::ios_base::in);
-
-	if (!file.is_open())
+	if (!Utility::LoadConfigFile(filename, dataMap))
 	{
 		Utility::Log(Utility::Destination::WindowsMessageBox,
 			"Error opening config file '" + filename + "'", Utility::Severity::Failure);
 		return false;
 	}
-
-	std::string line;
-
-	while (!file.eof())
-	{
-		std::getline(file, line);
-		std::vector<std::string> subStrings;
-
-		size_t start = 0;
-		size_t end = 0;
-
-		while (end != std::string::npos)
-		{
-			end = line.find('=', start);
-			if ((end - start) > 0)
-			{
-				subStrings.push_back(line.substr(start, end - start));
-			}
-			start = end + 1;
-		}
-
-		if (!subStrings.empty())
-		{
-			dataMap[subStrings[0]] = subStrings[1];
-		}
-	}
-
-	file.close();
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) == -1)
 	{

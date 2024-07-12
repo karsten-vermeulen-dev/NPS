@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <fstream>
 #include "GLAD/gl.h"
 #include "Utility.h"
@@ -7,6 +8,51 @@ HWND Utility::windowHandle{ nullptr };
 void Utility::SetWindowHandle(HWND windowHandle)
 {
 	Utility::windowHandle = windowHandle;
+}
+//======================================================================================================
+void Utility::ParseString(std::string& string, std::vector<std::string>& subStrings, char token)
+{
+	size_t start = 0;
+	size_t end = 0;
+
+	assert(!string.empty());
+
+	while (end != std::string::npos)
+	{
+		end = string.find(token, start);
+		if ((end - start) > 0)
+		{
+			subStrings.push_back(string.substr(start, end - start));
+		}
+		start = end + 1;
+	}
+}
+//======================================================================================================
+bool Utility::LoadConfigFile(const std::string& filename, std::map<std::string, std::string>& dataMap)
+{
+	std::fstream file(filename, std::ios_base::in);
+
+	if (!file.is_open())
+	{
+		return false;
+	}
+
+	std::string line;
+
+	while (!file.eof())
+	{
+		std::getline(file, line);
+		std::vector<std::string> subStrings;
+		ParseString(line, subStrings, '=');
+
+		if (!subStrings.empty())
+		{
+			dataMap[subStrings[0]] = subStrings[1];
+		}
+	}
+
+	file.close();
+	return true;
 }
 //======================================================================================================
 void Utility::Log(Destination destination, const std::string& message, Severity severity)
