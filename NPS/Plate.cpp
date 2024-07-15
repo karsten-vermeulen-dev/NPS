@@ -937,6 +937,97 @@ bool Plate::LoadCustomFont(FontToChange fontToChange, const std::string& filenam
 	return true;
 }
 //================================================================================================
+void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle fontStyle)
+{
+	if (fontType.isCar)
+	{
+		if (fontStyle.is2DRegular)
+		{
+			if (isPrinting)
+			{
+				registration->SetFont("Car_2D_print");
+			}
+
+			else
+			{
+				registration->SetFont("Car_2D");
+			}
+		}
+
+		else if (fontStyle.is3DGelResin)
+		{
+			if (isPrinting)
+			{
+				registration->SetFont("Car_3D_print");
+			}
+
+			else
+			{
+				registration->SetFont("Car_3D");
+			}
+		}
+
+		else if (fontStyle.is4DLaserCut)
+		{
+			if (isPrinting)
+			{
+				registration->SetFont("Car_4D_print");
+			}
+
+			else
+			{
+				registration->SetFont("Car_4D");
+			}
+		}
+	}
+
+	else
+	{
+		if (fontStyle.is2DRegular)
+		{
+			if (isPrinting)
+			{
+				registration->SetFont("Bike_2D_print");
+			}
+
+			else
+			{
+				registration->SetFont("Bike_2D");
+			}
+		}
+
+		else if (fontStyle.is3DGelResin)
+		{
+			if (isPrinting)
+			{
+				registration->SetFont("Bike_3D_print");
+			}
+
+			else
+			{
+				registration->SetFont("Bike_3D");
+			}
+		}
+
+		else if (fontStyle.is4DLaserCut)
+		{
+			if (isPrinting)
+			{
+				registration->SetFont("Bike_4D_print");
+			}
+
+			else
+			{
+				registration->SetFont("Bike_4D");
+			}
+		}
+	}
+
+	//'Deactivate' the custom font so that it's a null object when 
+	//we render and the normal registration object will render instead
+	customFontRegistration.reset();
+}
+//================================================================================================
 void Plate::FillBuffers()
 {
 	const auto sideDimension = 2.0f * (this->sideDimension / maxDimension);

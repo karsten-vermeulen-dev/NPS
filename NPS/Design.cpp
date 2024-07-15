@@ -838,35 +838,44 @@ bool Design::Render()
 	{
 		fontDialog->Show();
 
-		auto customFont = fontDialog->GetFont();
-
-		if (!customFont.empty())
+		//User chose car or motorcycle
+		if (!fontDialog->fontType.isCustom)
 		{
-			if (fontDialog->fontToChange.isRegistration)
-			{
-				plate->LoadCustomFont(Plate::FontToChange::Registration, customFont, 100);
-			}
+			plate->LoadDefaultFont(fontDialog->fontType, fontDialog->fontStyle);
+		}
 
-			else if (fontDialog->fontToChange.isDealer)
-			{
-				plate->LoadCustomFont(Plate::FontToChange::Dealer, customFont, 10);
-			}
+		else
+		{
+			auto customFont = fontDialog->GetFont();
 
-			else if (fontDialog->fontToChange.isPostcode)
+			if (!customFont.empty())
 			{
-				plate->LoadCustomFont(Plate::FontToChange::Postcode, customFont, 10);
-			}
+				if (fontDialog->fontToChange.isRegistration)
+				{
+					plate->LoadCustomFont(Plate::FontToChange::Registration, customFont, 100);
+				}
 
-			else if (fontDialog->fontToChange.isBSAU)
-			{
-				plate->LoadCustomFont(Plate::FontToChange::BSAU, customFont, 8);
-			}
+				else if (fontDialog->fontToChange.isDealer)
+				{
+					plate->LoadCustomFont(Plate::FontToChange::Dealer, customFont, 10);
+				}
 
-			else if (fontDialog->fontToChange.isDealerPostcodeBSAU)
-			{
-				plate->LoadCustomFont(Plate::FontToChange::Dealer, customFont, 10);
-				plate->LoadCustomFont(Plate::FontToChange::Postcode, customFont, 10);
-				plate->LoadCustomFont(Plate::FontToChange::BSAU, customFont, 8);
+				else if (fontDialog->fontToChange.isPostcode)
+				{
+					plate->LoadCustomFont(Plate::FontToChange::Postcode, customFont, 10);
+				}
+
+				else if (fontDialog->fontToChange.isBSAU)
+				{
+					plate->LoadCustomFont(Plate::FontToChange::BSAU, customFont, 8);
+				}
+
+				else if (fontDialog->fontToChange.isDealerPostcodeBSAU)
+				{
+					plate->LoadCustomFont(Plate::FontToChange::Dealer, customFont, 10);
+					plate->LoadCustomFont(Plate::FontToChange::Postcode, customFont, 10);
+					plate->LoadCustomFont(Plate::FontToChange::BSAU, customFont, 8);
+				}
 			}
 		}
 	}

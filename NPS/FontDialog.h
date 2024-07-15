@@ -5,6 +5,12 @@
 #include <vector>
 #include "UserInterface.h"
 
+//There is a debate whether to have this Font dialog with all of its settings
+//or to add these settings into the Properties panel. Having this dialog box
+//means that the user can easily control all font properties under one roof
+//instead of scattered font settings in the Properties panel. This avoids 
+//multiple custom font combo boxes for one and condenses the Properties panel
+
 class FontDialog : public UserInterface
 {
 
