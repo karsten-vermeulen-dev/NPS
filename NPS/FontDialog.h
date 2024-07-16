@@ -61,6 +61,7 @@ public:
 
 private:
 
+	//We need a font string for all font types - reg, dealer, postcode, bsau
 	std::string font;
 	std::map<std::string, std::string> fontNames;
 

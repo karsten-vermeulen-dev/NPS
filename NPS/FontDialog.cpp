@@ -9,6 +9,7 @@ FontDialog::FontDialog(const std::string& filename)
 		//assert if failed to load?
 	}
 
+	//If we remove the SAMPLE text, this will become redundant
 	//We need to load the fonts into the UI system so that we 
 	//can use them when writing 'Sample' in the font dialog box
 	for (auto& font : fontNames)
