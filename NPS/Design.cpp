@@ -15,6 +15,7 @@
 #include "Input.h"
 #include "Screen.h"
 #include "Tutorial.h"
+#include "Utility.h"
 
 //======================================================================================================
 bool Design::OnEnter()
@@ -475,100 +476,94 @@ bool Design::Render()
 		messageDialog->IsVisible(true);
 	}
 
-	//There is a bug when loading a preset .nps 
-	//file and then changing to Print/3D view mode after
-	//Check Plate.cpp line 310 for more details
 	else if (menuItems.isLoadSelected)
 	{
-		//HANDLE dialogHandle;
-		OPENFILENAME openDialog;
-		char filename[260] = { '\0' };
+		//We use a standard Windows 'Open' dialog box because ImGui doesn't have it's own
+		auto filename = Utility::WindowsOpenFile(L"All Number Plate Files\0*.nps\0");
 
-		ZeroMemory(&openDialog, sizeof(openDialog));
-		openDialog.lStructSize = sizeof(openDialog);
-		openDialog.hwndOwner = Screen::Instance()->GetWindowHandle();
-		openDialog.lpstrFile = (LPWSTR)filename;
-		openDialog.nMaxFile = sizeof(filename);
-		openDialog.lpstrFilter = L"All Number Plate Files\0*.nps\0";
-		openDialog.nFilterIndex = 1;
-		openDialog.lpstrFileTitle = nullptr;
-		openDialog.nMaxFileTitle = 0;
-		openDialog.lpstrInitialDir = nullptr;
-		openDialog.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-
-		if (GetOpenFileName(&openDialog) == TRUE)
+		if(!filename.empty())
 		{
-			std::fstream file(openDialog.lpstrFile, std::ios_base::in);
+			std::map<std::string, std::string> dataMap;
 
-			if (!file)
-			{
-				std::cout << "Error opening file" << std::endl;
-			}
-
-			std::string line;
-			std::vector<std::string> lines;
-
-			while (!file.eof())
-			{
-				std::getline(file, line);
-
-				if (!line.empty() && line[0] != '[' && line.find(':') != std::string::npos)
-				{
-					line.erase(0, line.find(':') + 2);
-					lines.push_back(line);
-				}
-			}
-
-			file.close();
+			Utility::LoadConfigFile(filename, dataMap);
 
 			auto& plateProperties = propertiesPanel->GetProperties();
 			
-			plateProperties.isCarFont = (lines[0] == "Car");
+			plate->SetPlateData(dataMap["Plate"]);
+
+			plateProperties.plateWidth = std::stoi(dataMap["PlateWidth"]);
+			plateProperties.plateHeight = std::stoi(dataMap["PlateHeight"]);
+
+			if (dataMap["FontType"] == "Car")
+			{
+				fontDialog->fontType.isCar = true;
+				fontDialog->fontType.isMotorCycle = false;
+				fontDialog->fontType.isCustom = false;
+			}
+
+			else if (dataMap["FontType"] == "Motorcycle")
+			{
+				fontDialog->fontType.isMotorCycle = true;
+				fontDialog->fontType.isCar = false;
+				fontDialog->fontType.isCustom = false;
+			}
+
+			else if (dataMap["FontType"] == "Custom")
+			{
+				fontDialog->fontType.isCustom = true;
+				fontDialog->fontType.isCar = false;
+				fontDialog->fontType.isMotorCycle = false;
+			}
+
+			if (dataMap["FontStyle"] == "2DRegular")
+			{
+				fontDialog->fontStyle.is2DRegular = true;
+				fontDialog->fontStyle.is3DGelResin = false;
+				fontDialog->fontStyle.is4DLaserCut = false;
+			}
 			
-			if (lines[1][0] == '2')
+			else if (dataMap["FontStyle"] == "3DGelResin")
 			{
-				//plateProperties.is2DRegular = true;
+				fontDialog->fontStyle.is3DGelResin = true;
+				fontDialog->fontStyle.is2DRegular = false;
+				fontDialog->fontStyle.is4DLaserCut = false;
+			}
+			
+			else if (dataMap["FontStyle"] == "4DLaserCut")
+			{
+				fontDialog->fontStyle.is4DLaserCut = true;
+				fontDialog->fontStyle.is2DRegular = false;
+				fontDialog->fontStyle.is3DGelResin = false;
 			}
 
-			else if (lines[1][0] == '3')
-			{
-				//plateProperties.is2DRegular = false;
-				//plateProperties.is3DGelResin = true;
-			}
+			plateProperties.raisedRegistration = std::stoi(dataMap["RegTextRaise"]);
+			plateProperties.nudgedRegistration = std::stoi(dataMap["RegTextNudge"]);
 
-			else if (lines[1][0] == '4')
-			{
-				//plateProperties.is2DRegular = false;
-				//plateProperties.is4DLaserCut = true;
-			}
+			plateProperties.raisedTwoLineSpace = std::stoi(dataMap["RegTwoLineSpaceRaise"]);
+			plateProperties.registrationText = dataMap["RegText"];
 
-			plateProperties.plateWidth = std::stoi(lines[2]);
-			plateProperties.plateHeight = std::stoi(lines[3]);
+			plateProperties.isBorderVisible = std::stoi(dataMap["BorderVisible"]);
+			plateProperties.isSideBadgeVisible = std::stoi(dataMap["BorderSideBadge"]);
 
-			plateProperties.raisedRegistration = (std::stoi(lines[4]));
-			plateProperties.nudgedRegistration = (std::stoi(lines[5]));
-			plateProperties.raisedTwoLineSpace = (std::stoi(lines[6]));
-			plateProperties.registrationText = lines[7];
+			plateProperties.borderSize = std::stoi(dataMap["BorderSize"]);
+			plateProperties.marginSize = std::stoi(dataMap["MarginSize"]);
 
-			plateProperties.isBorderVisible = (lines[8] == "Yes");
-			plateProperties.isSideBadgeVisible = (lines[9] == "Yes");
-			plateProperties.borderSize = (std::stoi(lines[10]));
-			plateProperties.marginSize = (std::stoi(lines[11]));
+			plateProperties.dealerText = dataMap["DealerText"];
+			plateProperties.isDealerVisible = std::stoi(dataMap["DealerTextVisible"]);
+			plateProperties.isDealerAbovePostcode = std::stoi(dataMap["DealerTextAbovePostcode"]);
 
-			plateProperties.isDealerVisible = (lines[12] == "Yes");
-			plateProperties.isDealerAbovePostcode = (lines[13] == "Yes");
-			plateProperties.raisedDealer = (std::stoi(lines[14]));
-			plateProperties.nudgedDealer = (std::stoi(lines[15]));
-			plateProperties.raisedPostcode = (std::stoi(lines[16]));
-			plateProperties.nudgedPostcode = (std::stoi(lines[17]));
-			plateProperties.dealerText = lines[18];
-			plateProperties.postcodeText = lines[19];
+			plateProperties.raisedDealer = std::stoi(dataMap["DealerTextRaise"]);
+			plateProperties.nudgedDealer = std::stoi(dataMap["DealerTextNudge"]);
 
-			plateProperties.isBSAUVisible = (lines[20] == "Yes");
-			plateProperties.isBSAUOnBorder = (lines[21] == "Yes");
-			plateProperties.raisedBSAU = (std::stoi(lines[22]));
-			plateProperties.nudgedBSAU = (std::stoi(lines[23]));
-			plateProperties.BSAUText = lines[24];
+			plateProperties.postcodeText = dataMap["PostcodeText"];
+			plateProperties.raisedPostcode = std::stoi(dataMap["PostcodeTextRaise"]);
+			plateProperties.nudgedPostcode = std::stoi(dataMap["PostcodeTextNudge"]);
+
+			plateProperties.BSAUText = dataMap["BSAUText"];
+			plateProperties.isBSAUVisible  = std::stoi(dataMap["BSAUVisible"]); 
+			plateProperties.isBSAUOnBorder = std::stoi(dataMap["BSAUOnBorder"]);
+			plateProperties.raisedBSAU = std::stoi(dataMap["BSAUTextRaise"]);
+			plateProperties.nudgedBSAU = std::stoi(dataMap["BSAUTextNudge"]);
 		}
 	}
 
@@ -594,10 +589,15 @@ bool Design::Render()
 		{
 			std::fstream file(saveDialog.lpstrFile, std::ios_base::out);
 
-			if (!file)
-			{
-				std::cout << "Error opening file" << std::endl;
-			}
+			//NOTE
+			//This is redundant because the Windows 'Save As' dialog box will save to any file that the user types.
+			//if (!file)
+			//{
+			//	//std::cout << "Error saving file" << std::endl;
+			//	Utility::Log(Utility::Destination::WindowsMessageBox, 
+			//				 "Error opening file.", 
+			//				 Utility::Severity::Warning);
+			//}
 
 			auto plateProperties = propertiesPanel->GetProperties();
 
