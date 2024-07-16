@@ -1,39 +1,32 @@
-[Plate]
-Oversize Oblong
+Plate=Oversize Oblong
+PlateWidth=533
+PlateHeight=152
+FontType=Car
+FontStyle=3DGelResin
 
-[Font]
-Type: Car
-Font: 3D Gel/Resin
+RegTextRaise=-4
+RegTextNudge=0
+RegTwoLineSpaceRaise=-3
+RegText=SAVED
 
-[Plate]
-Width: 533
-Height: 152
+BorderVisible=1
+BorderSideBadge=0
+BorderSize=5
+MarginSize=2
 
-[Registration]
-Text raised by: -1
-Text nudged by: 0
-Space raised by: -3
-Text: DSSD
+DealerText=My Plates
+DealerTextVisible=1
+DealerTextAbovePostcode=0
+DealerTextRaise=5
+DealerTextNudge=-7
 
-[Border]
-Visible: Yes
-Side badge: No
-Border size: 5
-Margin size: 2
+PostcodeText=B16 9EQ
+PostcodeTextRaise=4
+PostcodeTextNudge=-5
 
-[Dealer]
-Visible: Yes
-Text above postcode: No
-Text raised by: 5
-Text nudged by: -7
-Postcode raised by: 4
-Postcode nudged by: -5
-Text: Plate factory
-Postcode: B6 7SJ
+BSAUText=NPM BS AU 145e
+BSAUVisible=1
+BSAUOnBorder=1
+BSAUTextRaise=4
+BSAUTextNudge=-4
 
-[BSAU]
-Visible: Yes
-On border: Yes
-Text raised by: 4
-Text nudged by: -4
-Text: NPM BS AU 145e
