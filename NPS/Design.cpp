@@ -802,25 +802,6 @@ bool Design::Render()
 	propertiesPanel->Show();
 	auto& plateProperties = propertiesPanel->GetProperties();
 
-	//This block of code executes everytime user clicks on one of the 'Custom Font' buttons in Dealer/BSAU
-	//The Font dialog box is flagged as being visible and all code here executes once for every click
-	//Make sure to flag 'plateProperties.isCustomFont' as 'false' so that this block isn't 
-	//executed repeatedly which would keep the font dialog box permanently displayed 
-	/*if (plateProperties.isCustomFont)
-	{
-		isCustomFontRequired = true;
-		fontDialog->IsVisible(true);
-		plateProperties.isCustomFont = false;
-	}*/
-
-	//This invokes the font settings dialog box under the Registration section
-	//if (plateProperties.isFontSettingsClicked)
-	//{
-	//	//isCustomFontRequired = true;
-	//	fontSettingsDialog->IsVisible(true);
-	//	plateProperties.isFontSettingsClicked = false;
-	//}
-
 	feedbackPanel->SetLegality(plate->IsLegal());
 	feedbackPanel->SetPlateData(plate->GetPlateData());
 	feedbackPanel->Show();
