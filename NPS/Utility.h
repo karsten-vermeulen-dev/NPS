@@ -35,6 +35,8 @@ public:
 	static void Log(Destination destination,
 		const std::string& message, Severity severity = Severity::Default);
 
+	static const std::string WindowsOpenFile(const WCHAR* filterText);
+
 private:
 
 	static HWND windowHandle;
