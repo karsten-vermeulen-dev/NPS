@@ -569,103 +569,81 @@ bool Design::Render()
 
 	else if (menuItems.isSaveAsSelected)
 	{
-		//HANDLE dialogHandle;
-		OPENFILENAME saveDialog;
-		char filename[260] = { '\0' };
-
-		ZeroMemory(&saveDialog, sizeof(saveDialog));
-		saveDialog.lStructSize = sizeof(saveDialog);
-		saveDialog.hwndOwner = Screen::Instance()->GetWindowHandle();
-		saveDialog.lpstrFile = (LPWSTR)filename;
-		saveDialog.nMaxFile = sizeof(filename);
-		saveDialog.lpstrFilter = L"All Number Plate Files\0*.nps\0";
-		saveDialog.nFilterIndex = 1;
-		saveDialog.lpstrFileTitle = nullptr;
-		saveDialog.nMaxFileTitle = 0;
-		saveDialog.lpstrInitialDir = nullptr;
-		saveDialog.Flags = OFN_OVERWRITEPROMPT;
-
-		if (GetSaveFileName(&saveDialog) == TRUE)
+		//We use a standard Windows 'Save As' dialog box because ImGui doesn't have it's own
+		auto filename = Utility::WindowsSaveFile(L"All Number Plate Files\0*.nps\0");
+		
+		if (!filename.empty())
 		{
-			std::fstream file(saveDialog.lpstrFile, std::ios_base::out);
-
-			//NOTE
-			//This is redundant because the Windows 'Save As' dialog box will save to any file that the user types.
-			//if (!file)
-			//{
-			//	//std::cout << "Error saving file" << std::endl;
-			//	Utility::Log(Utility::Destination::WindowsMessageBox, 
-			//				 "Error opening file.", 
-			//				 Utility::Severity::Warning);
-			//}
+			std::map<std::string, std::string> dataMap;
 
 			auto plateProperties = propertiesPanel->GetProperties();
 
-			file << "[Plate]" << std::endl;
-			file << plate->GetPlateData().name << std::endl;
+			dataMap["Plate"] = plate->GetPlateData().name;
+			dataMap["PlateWidth"] = std::to_string(plateProperties.plateWidth);
+			dataMap["PlateHeight"] = std::to_string(plateProperties.plateHeight);
+
+			if (fontDialog->fontType.isCar)
+			{
+				dataMap["FontType"] = "Car";
+			}
+
+			else if(fontDialog->fontType.isMotorCycle)
+			{
+				dataMap["FontType"] = "Motorcycle";
+			}
+
+			else if (fontDialog->fontType.isCustom)
+			{
+				dataMap["FontType"] = "Custom";
+			}
+
+			//-------------------------------------------------------
+
+			if (fontDialog->fontStyle.is2DRegular)
+			{
+				dataMap["FontStyle"] = "2DRegular";
+			}
+
+			else if (fontDialog->fontStyle.is3DGelResin)
+			{
+				dataMap["FontStyle"] = "3DGelResin";
+			}
+
+			else if (fontDialog->fontStyle.is4DLaserCut)
+			{
+				dataMap["FontStyle"] = "4DLaserCut";
+			}
+
+			//-------------------------------------------------------
 			
-			file << std::endl;
+			dataMap["RegTextRaise"] = std::to_string(plateProperties.raisedRegistration);
+			dataMap["RegTextNudge"] = std::to_string(plateProperties.nudgedRegistration);
+			dataMap["RegTwoLineSpaceRaise"] = std::to_string(plateProperties.raisedTwoLineSpace);
+			dataMap["RegText"] = plateProperties.registrationText;
 
-			file << "[Font]" << std::endl;
-			file << ((plateProperties.isCarFont) ? "Type: Car" : "Type: Bike") << std::endl;
+			dataMap["BorderVisible"] = (plateProperties.isBorderVisible) ? "1" : "0";
+			dataMap["BorderSideBadge"] = (plateProperties.isSideBadgeVisible) ? "1" : "0";
+			
+			dataMap["BorderSize"] = std::to_string(plateProperties.borderSize);
+			dataMap["MarginSize"] = std::to_string(plateProperties.marginSize);
+			
+			dataMap["DealerText"] = plateProperties.dealerText;
+			dataMap["DealerTextVisible"] = (plateProperties.isDealerVisible) ? "1" : "0";
+			dataMap["DealerTextAbovePostcode"] = (plateProperties.isDealerAbovePostcode) ? "1" : "0";
+			dataMap["DealerTextRaise"] = std::to_string(plateProperties.raisedDealer);
+			dataMap["DealerTextNudge"] = std::to_string(plateProperties.nudgedDealer);
 
-			/*if (plateProperties.is2DRegular)
-			{
-				file << "Font: 2D Regular" << std::endl;
-			}
+			dataMap["PostcodeText"] = plateProperties.postcodeText;
+			dataMap["PostcodeTextRaise"] = std::to_string(plateProperties.raisedPostcode);
+			dataMap["PostcodeTextNudge"] = std::to_string(plateProperties.nudgedPostcode);
 
-			else if (plateProperties.is3DGelResin)
-			{
-				file << "Font: 3D Gel/Resin" << std::endl;
-			}
+			dataMap["BSAUText"] = plateProperties.BSAUText;
+			dataMap["BSAUVisible"] = (plateProperties.isBSAUVisible) ? "1" : "0";
+			dataMap["BSAUOnBorder"] = (plateProperties.isBSAUOnBorder) ? "1" : "0";
+			dataMap["BSAUTextRaise"] = std::to_string(plateProperties.raisedBSAU);
+			dataMap["BSAUTextNudge"] = std::to_string(plateProperties.nudgedBSAU);
 
-			if (plateProperties.is4DLaserCut)
-			{
-				file << "Font: 4D Laser cut" << std::endl;
-			}*/
-
-			file << std::endl;
-
-			file << "[Plate]" << std::endl;
-			file << "Width: " + std::to_string(plateProperties.plateWidth) << std::endl;
-			file << "Height: " + std::to_string(plateProperties.plateHeight) << std::endl;
-
-			file << std::endl;
-
-			file << "[Registration]" << std::endl;
-			file << "Text raised by: " + std::to_string(plateProperties.raisedRegistration) << std::endl;
-			file << "Text nudged by: " + std::to_string(plateProperties.nudgedRegistration) << std::endl;
-			file << "Space raised by: " + std::to_string(plateProperties.raisedTwoLineSpace) << std::endl;
-			file << "Text: " + plateProperties.registrationText << std::endl;
-
-			file << std::endl;
-
-			file << "[Border]" << std::endl;
-			file << ((plateProperties.isBorderVisible) ? "Visible: Yes" : "Visible: No") << std::endl;
-			file << ((plateProperties.isSideBadgeVisible) ? "Side badge: Yes" : "Side badge: No") << std::endl;
-			file << "Border size: " + std::to_string(plateProperties.borderSize) << std::endl;
-			file << "Margin size: " + std::to_string(plateProperties.marginSize) << std::endl;
-
-			file << std::endl;
-			file << "[Dealer]" << std::endl;
-			file << ((plateProperties.isDealerVisible) ? "Visible: Yes" : "Visible: No") << std::endl;
-			file << ((plateProperties.isDealerAbovePostcode) ? "Text above postcode: Yes" : "Text above postcode: No") << std::endl;
-			file << "Text raised by: " + std::to_string(plateProperties.raisedDealer) << std::endl;
-			file << "Text nudged by: " + std::to_string(plateProperties.nudgedDealer) << std::endl;
-			file << "Postcode raised by: " + std::to_string(plateProperties.raisedPostcode) << std::endl;
-			file << "Postcode nudged by: " + std::to_string(plateProperties.nudgedPostcode) << std::endl;
-			file << "Text: " + plateProperties.dealerText << std::endl;
-			file << "Postcode: " + plateProperties.postcodeText << std::endl;
-
-			file << std::endl;
-			file << "[BSAU]" << std::endl;
-			file << ((plateProperties.isBSAUVisible) ? "Visible: Yes" : "Visible: No") << std::endl;
-			file << ((plateProperties.isBSAUOnBorder) ? "On border: Yes" : "On border: No") << std::endl;
-			file << "Text raised by: " + std::to_string(plateProperties.raisedBSAU) << std::endl;
-			file << "Text nudged by: " + std::to_string(plateProperties.nudgedBSAU) << std::endl;
-			file << "Text: " + plateProperties.BSAUText << std::endl;
-
-			file.close();
+			Utility::SaveConfigFile(filename, dataMap);
 		}
 	}
 

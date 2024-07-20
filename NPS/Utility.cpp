@@ -5,6 +5,7 @@
 #include "Screen.h"
 
 HWND Utility::windowHandle{ nullptr };
+
 //================================================================================================
 void Utility::SetWindowHandle(HWND windowHandle)
 {
@@ -28,6 +29,25 @@ void Utility::ParseString(std::string& string, std::vector<std::string>& subStri
 			start = end + 1;
 		}
 	}
+}
+//======================================================================================================
+bool Utility::SaveConfigFile(const std::string& filename, std::map<std::string, std::string>& dataMap)
+{
+	std::fstream file(filename, std::ios_base::out);
+
+	//A very low chance this will ever fail
+	if (!file.is_open())
+	{
+		return false;
+	}
+
+	for (auto& data : dataMap)
+	{
+		file << data.first << "=" << data.second << std::endl;
+	}
+
+	file.close();
+	return true;
 }
 //======================================================================================================
 bool Utility::LoadConfigFile(const std::string& filename, std::map<std::string, std::string>& dataMap)
@@ -117,6 +137,33 @@ void Utility::Log(Destination destination, const std::string& message, Severity 
 	}
 }
 //======================================================================================================
+const std::string Utility::WindowsSaveFile(const WCHAR* filterText)
+{
+	OPENFILENAME saveDialog;
+	char filename[260] = { '\0' };
+
+	ZeroMemory(&saveDialog, sizeof(saveDialog));
+	saveDialog.lStructSize = sizeof(saveDialog);
+	saveDialog.hwndOwner = Screen::Instance()->GetWindowHandle();
+	saveDialog.lpstrFile = (LPWSTR)filename;
+	saveDialog.nMaxFile = sizeof(filename);
+	saveDialog.lpstrFilter = filterText;
+	saveDialog.nFilterIndex = 1;
+	saveDialog.lpstrFileTitle = nullptr;
+	saveDialog.nMaxFileTitle = 0;
+	saveDialog.lpstrInitialDir = nullptr;
+	
+	saveDialog.Flags = OFN_OVERWRITEPROMPT;
+
+	if (GetSaveFileName(&saveDialog) == TRUE)
+	{
+		auto filenameWS = std::wstring(saveDialog.lpstrFile);
+		return std::string(filenameWS.begin(), filenameWS.end());
+	}
+
+	return "";
+}
+//======================================================================================================
 const std::string Utility::WindowsOpenFile(const WCHAR* filterText)
 {
 	OPENFILENAME openDialog;
@@ -132,10 +179,11 @@ const std::string Utility::WindowsOpenFile(const WCHAR* filterText)
 	openDialog.lpstrFileTitle = nullptr;
 	openDialog.nMaxFileTitle = 0;
 	openDialog.lpstrInitialDir = nullptr;
+
 	openDialog.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
 	//This calls the actual Windows dialog box and returns a '1' or '0' based 
-	//on if a valid file has been found. If there are any issues, they will be 
+	//on if a valid file has been found. If there are any issues, errors will be 
 	//processed within this function so no need for our own error messages/boxes
 	if (GetOpenFileName(&openDialog) == TRUE)
 	{
