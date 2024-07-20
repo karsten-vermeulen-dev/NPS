@@ -1,13 +1,12 @@
+.vs/
 
 Debug/
 Release/
 NPS/Debug/
 NPS/Release/
 
-.vs/
-
 NPS/imgui.ini
 NPS/Data/imgui.ini
-NPS/Data/Plate2.nps
 
 NPS/Data/Plate.nps
+NPS/Data/Plate2.nps
