@@ -811,7 +811,6 @@ void Plate::SetPlateData(const std::string& name, PlateData* plateData)
 	dealerText->SetFont(this->plateData.fontNameDealerPostcode);
 	postcodeText->SetFont(this->plateData.fontNameDealerPostcode);
 
-	properties.isCarFont = this->plateData.isCarFont;
 	properties.plateWidth = this->plateData.dimensionMM.x;
 	properties.plateHeight = this->plateData.dimensionMM.y;
 	properties.isTwoLineRegistration = this->plateData.isTwoLineRegistration;

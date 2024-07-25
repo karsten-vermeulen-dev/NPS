@@ -23,35 +23,6 @@ void PropertiesPanel::Show()
 
 	//===================================================================================
 
-	//Possibly redundant
-	//auto DisplayFontDialog = []()
-	//{
-	//	//HFONT hfont, hfontPrev;
-	//	//DWORD previousTextColor;
-	//	//HDC deviceContext;             // display device context of owner window
-
-	//	CHOOSEFONT fontDialog;           // common dialog box structure
-	//	static LOGFONT logFont;          // logical font structure
-	//	static DWORD currentTextColor;   // current text color
-
-	//	ZeroMemory(&fontDialog, sizeof(fontDialog));
-	//	fontDialog.lStructSize = sizeof(fontDialog);
-	//	fontDialog.hwndOwner = Screen::Instance()->GetWindowHandle();
-	//	fontDialog.lpLogFont = &logFont;
-	//	fontDialog.rgbColors = currentTextColor;
-	//	fontDialog.Flags = CF_SCREENFONTS | CF_EFFECTS;
-
-	//	if (ChooseFont(&fontDialog) == TRUE)
-	//	{
-	//		/*hfont = CreateFontIndirect(cf.lpLogFont);
-	//		hfontPrev = SelectObject(hdc, hfont);
-	//		rgbCurrent = cf.rgbColors;
-	//		rgbPrev = SetTextColor(hdc, rgbCurrent);*/
-	//	}
-	//};
-
-	//===================================================================================
-
 	ImGui::BeginDisabled(!isActive);
 
 	const auto spacing = 2;
@@ -76,43 +47,6 @@ void PropertiesPanel::Show()
 	ImGui::Checkbox("Two-line registration", &properties.isTwoLineRegistration);
 
 	ImGui::PopFont();
-
-	//===================================================================================
-
-	//Spacing(spacing);
-	//Partition("MyriadPro_Bold_16", "Font", yellow);
-	//ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
-
-	//ImGui::PushFont(fonts["MyriadPro_Regular_14"]);
-	//ImGui::Checkbox("Car font", &properties.isCarFont);
-
-	/*if (ImGui::RadioButton("2D Regular", properties.is2DRegular))
-	{
-		properties.is2DRegular = true;
-		properties.is3DGelResin = false;
-		properties.is4DLaserCut = false;
-	}
-
-	if (ImGui::RadioButton("3D Gel/Resin", properties.is3DGelResin))
-	{
-		properties.is2DRegular = false;
-		properties.is3DGelResin = true;
-		properties.is4DLaserCut = false;
-	}
-
-	if (ImGui::RadioButton("4D Laser cut", properties.is4DLaserCut))
-	{
-		properties.is2DRegular = false;
-		properties.is3DGelResin = false;
-		properties.is4DLaserCut = true;
-	}*/
-
-	/*if (ImGui::Button("Custom font", ImVec2(buttonDimension.x, buttonDimension.y)))
-	{
-		properties.isFontSettingsClicked = true;
-	}*/
-
-	//ImGui::PopFont();
 
 	//===================================================================================
 
@@ -169,18 +103,6 @@ void PropertiesPanel::Show()
 	ImGui::InputText("Enter postcode", postcodeText, 20, ImGuiInputTextFlags_::ImGuiInputTextFlags_CharsUppercase);
 	properties.postcodeText = postcodeText;
 
-	/*if (ImGui::Button("Dealer font", ImVec2(buttonDimension.x, buttonDimension.y)))
-	{
-		properties.isCustomFont = true;
-	}*/
-
-	//ImGui::SameLine();
-
-	/*if (ImGui::Button("Postcode font", ImVec2(buttonDimension.x, buttonDimension.y)))
-	{
-		properties.isCustomFont = true;
-	}*/
-
 	ImGui::EndDisabled();
 	ImGui::PopFont();
 
@@ -198,11 +120,6 @@ void PropertiesPanel::Show()
 	ImGui::Checkbox("BSAU on border", &properties.isBSAUOnBorder);
 	ImGui::SliderInt("Raise BSAU", &properties.raisedBSAU, -10, 10);
 	ImGui::SliderInt("Nudge BSAU", &properties.nudgedBSAU, -10, 10);
-
-	/*if (ImGui::Button("BSAU font", ImVec2(buttonDimension.x, buttonDimension.y)))
-	{
-		properties.isCustomFont = true;
-	}*/
 
 	ImGui::EndDisabled();
 	ImGui::PopFont();
