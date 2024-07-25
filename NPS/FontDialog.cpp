@@ -48,7 +48,7 @@ void FontDialog::Show()
 		                      (buttonDimension.x * 0.5f) - 
 		                      ImGui::GetStyle().WindowPadding.x;
 
-	const auto spacingToButton = 5;
+	const auto spacingToButton = 7;
 	const auto spacingFromTitle = 5;
 	const auto spacingBetweenSections = 2;
 
@@ -139,8 +139,8 @@ void FontDialog::Show()
 
 	//===================================================================================
 	
-	//We only display the 2D/3D/4D radio button selection 
-	//if the 'car' or 'motorcycle' font has been selected
+	//We only display the 2D/3D/4D combo box list if 
+	//the 'Car' or 'Motorcycle' font has been selected
 	if (fontToChange.isRegistration && (fontType.isCar || fontType.isMotorCycle))
 	{
 		Spacing(spacingFromTitle);
@@ -150,26 +150,12 @@ void FontDialog::Show()
 		ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
 		ImGui::PushFont(fonts["MyriadPro_Regular"]);
 
-		if (ImGui::RadioButton("2D Regular", fontStyle.is2DRegular))
-		{
-			fontStyle.is2DRegular = true;
-			fontStyle.is3DGelResin = false;
-			fontStyle.is4DLaserCut = false;
-		}
+		const char* fontStyleList[] = { "2D Regular", "3D Gel/Resin", "4D Laser cut"};
 
-		if (ImGui::RadioButton("3D Gel/Resin", fontStyle.is3DGelResin))
-		{
-			fontStyle.is2DRegular = false;
-			fontStyle.is3DGelResin = true;
-			fontStyle.is4DLaserCut = false;
-		}
+		static int fontStyleID = 0;
+		ImGui::Combo(" ", &fontStyleID, &fontStyleList[0], 3);
 
-		if (ImGui::RadioButton("4D Laser cut", fontStyle.is4DLaserCut))
-		{
-			fontStyle.is2DRegular = false;
-			fontStyle.is3DGelResin = false;
-			fontStyle.is4DLaserCut = true;
-		}
+		fontStyle = (FontStyle)fontStyleID;
 
 		ImGui::PopFont();
 	}

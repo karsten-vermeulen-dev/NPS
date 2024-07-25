@@ -185,7 +185,7 @@ bool Design::OnEnter()
 
 	fontDialog = std::make_unique<FontDialog>("Data/Fonts.ini");
 	fontDialog->IsVisible(false);
-	fontDialog->SetDimension(glm::uvec2(325, 650));
+	fontDialog->SetDimension(glm::uvec2(325, 580));
 	fontDialog->SetButtonDimension(buttonDimension);
 
 	aboutDialog = std::make_unique<AboutDialog>();
@@ -517,23 +517,17 @@ bool Design::Render()
 
 			if (dataMap["FontStyle"] == "2DRegular")
 			{
-				fontDialog->fontStyle.is2DRegular = true;
-				fontDialog->fontStyle.is3DGelResin = false;
-				fontDialog->fontStyle.is4DLaserCut = false;
+				fontDialog->fontStyle = FontDialog::FontStyle::Regular2D;
 			}
 			
 			else if (dataMap["FontStyle"] == "3DGelResin")
 			{
-				fontDialog->fontStyle.is3DGelResin = true;
-				fontDialog->fontStyle.is2DRegular = false;
-				fontDialog->fontStyle.is4DLaserCut = false;
+				fontDialog->fontStyle = FontDialog::FontStyle::GelResin3D;
 			}
 			
 			else if (dataMap["FontStyle"] == "4DLaserCut")
 			{
-				fontDialog->fontStyle.is4DLaserCut = true;
-				fontDialog->fontStyle.is2DRegular = false;
-				fontDialog->fontStyle.is3DGelResin = false;
+				fontDialog->fontStyle = FontDialog::FontStyle::Lasercut4D;
 			}
 
 			plateProperties.raisedRegistration = std::stoi(dataMap["RegTextRaise"]);
@@ -599,17 +593,17 @@ bool Design::Render()
 
 			//-------------------------------------------------------
 
-			if (fontDialog->fontStyle.is2DRegular)
+			if (fontDialog->fontStyle == FontDialog::FontStyle::Regular2D)
 			{
 				dataMap["FontStyle"] = "2DRegular";
 			}
 
-			else if (fontDialog->fontStyle.is3DGelResin)
+			else if (fontDialog->fontStyle == FontDialog::FontStyle::GelResin3D)
 			{
 				dataMap["FontStyle"] = "3DGelResin";
 			}
 
-			else if (fontDialog->fontStyle.is4DLaserCut)
+			else if (fontDialog->fontStyle == FontDialog::FontStyle::Lasercut4D)
 			{
 				dataMap["FontStyle"] = "4DLaserCut";
 			}

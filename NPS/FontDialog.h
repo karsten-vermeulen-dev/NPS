@@ -37,11 +37,12 @@ public:
 		bool isCustom{ false };
 	};
 
-	struct FontStyle
+	//Enums work best with the index values of combo boxes
+	enum class FontStyle
 	{
-		bool is2DRegular{ true };
-		bool is3DGelResin{ false };
-		bool is4DLaserCut{ false };
+		Regular2D, 
+		GelResin3D, 
+		Lasercut4D 
 	};
 
 	FontDialog(const std::string& filename);
@@ -53,9 +54,9 @@ public:
 	//Make these public for easy access and ability to change when required
 	//This public access also makes code more readable in main codebase
 	FontType fontType;
-	FontStyle fontStyle;
 	ButtonState buttonState;
 	FontToChange fontToChange;
+	FontStyle fontStyle{ FontStyle::Regular2D };
 
 private:
 

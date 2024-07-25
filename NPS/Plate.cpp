@@ -883,7 +883,7 @@ void Plate::Render(Shader& shader)
 	}
 }
 //================================================================================================
-bool Plate::LoadCustomFont(FontToChange fontToChange, const std::string& filename, GLuint fontSize)
+bool Plate::LoadCustomFont(FontToChange fontToChange, const std::string& filename, GLfloat fontSize)
 {
 	if (fontToChange == FontToChange::Registration)
 	{
@@ -941,7 +941,7 @@ void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle
 {
 	if (fontType.isCar)
 	{
-		if (fontStyle.is2DRegular)
+		if (fontStyle == FontDialog::FontStyle::Regular2D)
 		{
 			if (isPrinting)
 			{
@@ -954,7 +954,7 @@ void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle
 			}
 		}
 
-		else if (fontStyle.is3DGelResin)
+		else if (fontStyle == FontDialog::FontStyle::GelResin3D)
 		{
 			if (isPrinting)
 			{
@@ -967,7 +967,7 @@ void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle
 			}
 		}
 
-		else if (fontStyle.is4DLaserCut)
+		else if (fontStyle == FontDialog::FontStyle::Lasercut4D)
 		{
 			if (isPrinting)
 			{
@@ -983,7 +983,7 @@ void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle
 
 	else
 	{
-		if (fontStyle.is2DRegular)
+		if (fontStyle == FontDialog::FontStyle::Regular2D)
 		{
 			if (isPrinting)
 			{
@@ -996,7 +996,7 @@ void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle
 			}
 		}
 
-		else if (fontStyle.is3DGelResin)
+		else if (fontStyle == FontDialog::FontStyle::GelResin3D)
 		{
 			if (isPrinting)
 			{
@@ -1009,7 +1009,7 @@ void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle
 			}
 		}
 
-		else if (fontStyle.is4DLaserCut)
+		else if (fontStyle == FontDialog::FontStyle::Lasercut4D)
 		{
 			if (isPrinting)
 			{

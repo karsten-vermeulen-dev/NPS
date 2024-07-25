@@ -111,7 +111,7 @@ public:
 
 	void Render(Shader& shader);
 
-	bool LoadCustomFont(FontToChange fontToChange, const std::string& filename, GLuint fontSize);
+	bool LoadCustomFont(FontToChange fontToChange, const std::string& filename, GLfloat fontSize);
 
 	void LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle fontStyle);
 
