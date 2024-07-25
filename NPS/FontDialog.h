@@ -9,7 +9,7 @@
 //or to add these settings into the Properties panel. Having this dialog box
 //means that the user can easily control all font properties under one roof
 //instead of scattered font settings in the Properties panel. This avoids 
-//multiple custom font combo boxes for one and condenses the Properties panel
+//having multiple custom font combo boxes and condenses the Properties panel
 
 class FontDialog : public UserInterface
 {
@@ -20,7 +20,6 @@ public:
 	{
 		bool ok{ false };
 		bool cancel{ false };
-		bool apply{ false };
 	};
 
 	struct FontToChange
@@ -29,7 +28,6 @@ public:
 		bool isDealer{ false };
 		bool isPostcode{ false };
 		bool isBSAU{ false };
-		bool isDealerPostcodeBSAU{ false };
 	};
 
 	struct FontType
@@ -62,7 +60,11 @@ public:
 private:
 
 	//We need a font string for all font types - reg, dealer, postcode, bsau
+	//This string will be the filename and path of the custom font file (.ttf/.otf) 
 	std::string font;
+
+	//We store all font names and their respective file locations
+	//The names are used by the combo box as the font index list
 	std::map<std::string, std::string> fontNames;
 
 };

@@ -8,17 +8,6 @@ FontDialog::FontDialog(const std::string& filename)
 	{
 		//assert if failed to load?
 	}
-
-	//If we remove the SAMPLE text, this will become redundant
-	//We need to load the fonts into the UI system so that we 
-	//can use them when writing 'Sample' in the font dialog box
-	for (auto& font : fontNames)
-	{
-		if (!UserInterface::LoadFont(font.second, 24.0f, font.first))
-		{
-			//assert if failed to load?
-		}
-	}
 }
 //======================================================================================================
 const std::string& FontDialog::GetFont() const
@@ -44,12 +33,14 @@ void FontDialog::Show()
 
 	static int fontID = 0;
 	const auto totalFonts = fontNames.size();
-	std::vector<const char*> fontsTemp;
+	std::vector<const char*> fontList;
 
 	for (auto& fontName : fontNames)
 	{
-		fontsTemp.push_back(fontName.first.c_str());
+		fontList.push_back(fontName.first.c_str());
 	}
+
+	font = fontNames[fontList[fontID]];
 
 	//For all buttons we indent using a formula and we must subtract 
 	//the window padding because that will have been included by ImGUI
@@ -57,7 +48,6 @@ void FontDialog::Show()
 		                      (buttonDimension.x * 0.5f) - 
 		                      ImGui::GetStyle().WindowPadding.x;
 
-	const auto sampleTextIndent = 117;
 	const auto spacingToButton = 5;
 	const auto spacingFromTitle = 5;
 	const auto spacingBetweenSections = 2;
@@ -78,56 +68,36 @@ void FontDialog::Show()
 	ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
 	ImGui::PushFont(fonts["MyriadPro_Regular"]);
 
-	//We clear the font so that everytime we click on 
-	//a radio button the font won't automatically apply
 	if (ImGui::RadioButton("Registration", fontToChange.isRegistration))
 	{
-		font.clear();
 		fontToChange.isRegistration = true;
 		fontToChange.isDealer = false;
 		fontToChange.isPostcode = false;
 		fontToChange.isBSAU = false;
-		fontToChange.isDealerPostcodeBSAU = false;
 	}
 
 	if (ImGui::RadioButton("Dealer", fontToChange.isDealer))
 	{
-		font.clear();
 		fontToChange.isRegistration = false;
 		fontToChange.isDealer = true;
 		fontToChange.isPostcode = false;
 		fontToChange.isBSAU = false;
-		fontToChange.isDealerPostcodeBSAU = false;
 	}
 
 	if (ImGui::RadioButton("Postcode", fontToChange.isPostcode))
 	{
-		font.clear();
 		fontToChange.isRegistration = false;
 		fontToChange.isDealer = false;
 		fontToChange.isPostcode = true;
 		fontToChange.isBSAU = false;
-		fontToChange.isDealerPostcodeBSAU = false;
 	}
 
 	if (ImGui::RadioButton("BSAU", fontToChange.isBSAU))
 	{
-		font.clear();
 		fontToChange.isRegistration = false;
 		fontToChange.isDealer = false;
 		fontToChange.isPostcode = false;
 		fontToChange.isBSAU = true;
-		fontToChange.isDealerPostcodeBSAU = false;
-	}
-
-	if (ImGui::RadioButton("Dealer/Postcode/BSAU", fontToChange.isDealerPostcodeBSAU))
-	{
-		font.clear();
-		fontToChange.isRegistration = false;
-		fontToChange.isDealer = false;
-		fontToChange.isPostcode = false;
-		fontToChange.isBSAU = false;
-		fontToChange.isDealerPostcodeBSAU = true;
 	}
 
 	ImGui::PopFont();
@@ -212,20 +182,7 @@ void FontDialog::Show()
 		Partition("MyriadPro_Bold_16", "Font name", yellow);
 
 		ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
-		ImGui::Combo(" ", &fontID, &fontsTemp[0], totalFonts);
-
-		Partition("", "", yellow);
-
-		ImGui::PushFont(fonts[fontsTemp[fontID]]);
-
-		ImGui::Spacing();
-
-		//This could be a function
-		ImGui::Indent(sampleTextIndent);
-		ImGui::Text("Sample");
-		ImGui::Unindent(sampleTextIndent);
-
-		ImGui::PopFont();
+		ImGui::Combo(" ", &fontID, &fontList[0], totalFonts);
 	}
 
 	//===================================================================================
@@ -240,26 +197,23 @@ void FontDialog::Show()
 	
 	ImGui::Indent(buttonIndent);
 
-	//This is the desired font, hide the dialog box
+	//Go back to the main screen, hide the dialog box, keep the new settings
 	if (ImGui::Button("Okay", ImVec2(buttonDimension.x, buttonDimension.y)))
 	{
 		isVisible = false;
-		font = fontNames[fontsTemp[fontID]];
+		buttonState.ok = true;
+		buttonState.cancel = false;
 	}
 
-	//Go back to the main screen, hide the dialog box
+	//Go back to the main screen, hide the dialog box, revert to original settings
 	if (ImGui::Button("Cancel", ImVec2(buttonDimension.x, buttonDimension.y)))
 	{
 		font.clear();
 		isVisible = false;
+		buttonState.ok = false;
+		buttonState.cancel = true;
 	}
 	
-	//This is the desired font, continue to display the dialog box
-	if (ImGui::Button("Apply", ImVec2(buttonDimension.x, buttonDimension.y)))
-	{
-		font = fontNames[fontsTemp[fontID]];
-	}
-
 	//===================================================================================
 	
 	//slider for text sizes?

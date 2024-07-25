@@ -797,14 +797,17 @@ bool Design::Render()
 	{
 		fontDialog->Show();
 
-		//User chose car or motorcycle
-		if (!fontDialog->fontType.isCustom)
+		//Load default fonts for car and motorcycle registration (2D/3D/4D)
+		if (fontDialog->fontToChange.isRegistration && 
+			(fontDialog->fontType.isCar || fontDialog->fontType.isMotorCycle))
 		{
 			plate->LoadDefaultFont(fontDialog->fontType, fontDialog->fontStyle);
 		}
 
+		//Load custom font for registration, dealer, postcode or BSAU
 		else
 		{
+			//Path and filename of requested font
 			auto customFont = fontDialog->GetFont();
 
 			if (!customFont.empty())
@@ -826,13 +829,6 @@ bool Design::Render()
 
 				else if (fontDialog->fontToChange.isBSAU)
 				{
-					plate->LoadCustomFont(Plate::FontToChange::BSAU, customFont, 8);
-				}
-
-				else if (fontDialog->fontToChange.isDealerPostcodeBSAU)
-				{
-					plate->LoadCustomFont(Plate::FontToChange::Dealer, customFont, 10);
-					plate->LoadCustomFont(Plate::FontToChange::Postcode, customFont, 10);
 					plate->LoadCustomFont(Plate::FontToChange::BSAU, customFont, 8);
 				}
 			}
