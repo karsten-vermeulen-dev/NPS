@@ -29,6 +29,8 @@ public:
 
 	Registration(Plate* parent);
 
+	//This isn't const because the caller needs 
+	//to make a change to the transformation
 	Transform& GetTransform();
 
 	const std::string& GetString() const;
