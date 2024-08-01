@@ -27,7 +27,6 @@ void PropertiesPanel::Show()
 
 	const auto spacing = 2;
 
-	Spacing(spacing);
 	Partition("MyriadPro_Bold_16", "Registration", yellow);
 	ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
 
