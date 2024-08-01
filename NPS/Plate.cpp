@@ -637,6 +637,8 @@ void Plate::SetProperties(bool isPrinting)
 	//Plate
 	//=================================================================================
 
+	properties.plateName = plateData.name;
+
 	if (properties.plateWidth != plateData.dimensionMM.x ||
 		properties.plateHeight != plateData.dimensionMM.y)
 	{

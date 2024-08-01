@@ -54,6 +54,9 @@ void PropertiesPanel::Show()
 	ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
 
 	ImGui::PushFont(fonts["MyriadPro_Regular_14"]);
+
+	ImGui::Text(("Name: " + properties.plateName).c_str());
+
 	ImGui::SliderInt("Width", &properties.plateWidth, 2, 650);
 	ImGui::SliderInt("Height", &properties.plateHeight, 2, 250);
 

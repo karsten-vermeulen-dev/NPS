@@ -150,4 +150,8 @@ private:
 	//This is hooked up to the properties panel UI
 	PropertiesPanel::Properties& properties;
 
+	//Why don't we hook up the Font settings the same way?
+	
+	//Why don't we hook up the Feedback panel the same way?
+
 };

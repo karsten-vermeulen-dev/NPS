@@ -9,6 +9,8 @@ public:
 
 	struct Properties
 	{
+		std::string plateName;
+
 		int plateWidth{ 0 };
 		int plateHeight{ 0 };
 

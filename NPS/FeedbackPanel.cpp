@@ -28,33 +28,35 @@ void FeedbackPanel::Show()
 
 	//===================================================================================
 
-	Partition("MyriadPro_Bold_16", "Plate details", yellow);
+	//Partition("MyriadPro_Bold_16", "Plate details", yellow);
 
-	ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
+	//ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
 
-	ImGui::PushFont(fonts["MyriadPro_Regular_14"]);
-	ImGui::Text(("Name: " + plateData.name).c_str());
+	//ImGui::PushFont(fonts["MyriadPro_Regular_14"]);
+	//ImGui::Text(("Name: " + plateData.name).c_str());
 
-	auto maxDimension = Plate::GetMaxDimension();
+	//auto maxDimension = Plate::GetMaxDimension();
 
 	//We need to convert the NDC dimensions back to mm for display
-	auto width = plateData.dimensionMM.x; 
-	auto height = plateData.dimensionMM.y; 
+	//auto width = plateData.dimensionMM.x; 
+	//auto height = plateData.dimensionMM.y; 
 
-	ImGui::Text(("Dimension: " + std::to_string(width) + "mm x " + std::to_string(height) + "mm").c_str());
+	//ImGui::Text(("Dimension: " + std::to_string(width) + "mm x " + std::to_string(height) + "mm").c_str());
 
-	ImGui::PopFont();
+	//ImGui::PopFont();
 
 	//===================================================================================
 
-	Spacing(2);
-	Partition("MyriadPro_Bold_16", "Tips", yellow);
+	//Spacing(2);
+	Partition("MyriadPro_Bold_16", "Plate details", yellow);
 
 	ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
 	std::string vehicle = plateData.isCar ? "car" : "motorbike";
 
 	ImGui::PushFont(fonts["MyriadPro_Regular_14"]);
-	ImGui::Text(("- This is a " + vehicle + " plate is allowed a maximum of " + std::to_string(plateData.maxAllowedCharacters) + " characters.").c_str());
+	
+	//Max characters is mentioned but what about spaces?
+	ImGui::Text(("- This is a " + vehicle + " plate and is allowed a maximum of " + std::to_string(plateData.maxAllowedCharacters) + " characters.").c_str());
 
 	if (plateData.isLegal)
 	{
@@ -71,6 +73,20 @@ void FeedbackPanel::Show()
 
 	std::string maxLine = plateData.isTwoLineRegistration ? "two-line" : "one-line";
 	ImGui::Text(("- This is a " + maxLine + " registration plate.").c_str());
+
+	//We have to make this panel higher so that all of the text below can be displayed
+	ImGui::Text("- Character height: 79mm");
+	ImGui::Text("- Wide character width: 50mm");
+	ImGui::Text("- Narrow character width: 14mm");
+	
+	//We have to hook in the numerical values here
+	ImGui::Text("- Padding between registration characters: 11mm");
+	ImGui::Text("- Padding between registration and top of plate: ");
+	ImGui::Text("- Padding between registration and bottom of plate: ");
+	ImGui::Text("- Padding between dealer and border: ");
+	ImGui::Text("- Padding between postcode and border: ");
+	ImGui::Text("- Padding between dealer and postcode: ");
+	ImGui::Text("- Padding between BSAU and border: ");
 
 	ImGui::PopFont();
 
