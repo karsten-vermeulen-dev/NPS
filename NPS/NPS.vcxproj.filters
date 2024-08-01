@@ -156,9 +156,6 @@
     <ClCompile Include="CustomerDialog.cpp">
       <Filter>Source Files\Objects\UI\Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="CustomDialog.cpp">
-      <Filter>Source Files\Objects\UI\Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="MessageDialog.cpp">
       <Filter>Source Files\Objects\UI\Dialogs</Filter>
     </ClCompile>
@@ -273,9 +270,6 @@
       <Filter>Header Files\Objects\UI\Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="CustomerDialog.h">
-      <Filter>Header Files\Objects\UI\Dialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="CustomDialog.h">
       <Filter>Header Files\Objects\UI\Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="MessageDialog.h">

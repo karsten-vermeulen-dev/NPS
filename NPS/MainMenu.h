@@ -34,7 +34,6 @@ public:
 		
 		bool isMicroPlate9x3InchSelected{ false };
 		bool isMicroPlate12x3InchSelected{ false };
-		bool isCustomPlateSelected{ false };
 		bool isFontSettingsSelected{ false };
 		
 		bool isTutorialSelected{ false };

@@ -157,7 +157,6 @@
     <ClCompile Include="Border.cpp" />
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="CustomerDialog.cpp" />
-    <ClCompile Include="CustomDialog.cpp" />
     <ClCompile Include="Design.cpp" />
     <ClCompile Include="FeedbackPanel.cpp" />
     <ClCompile Include="PropertiesPanel.cpp" />
@@ -196,7 +195,6 @@
     <ClInclude Include="Border.h" />
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="CustomerDialog.h" />
-    <ClInclude Include="CustomDialog.h" />
     <ClInclude Include="Design.h" />
     <ClInclude Include="FeedbackPanel.h" />
     <ClInclude Include="PropertiesPanel.h" />

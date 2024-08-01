@@ -198,11 +198,6 @@ bool Design::OnEnter()
 	messageDialog->SetDimension(glm::uvec2(300, 150));
 	messageDialog->SetButtonDimension(buttonDimension);
 
-	customPlateDialog = std::make_unique<CustomDialog>();
-	customPlateDialog->IsVisible(false);
-	customPlateDialog->SetDimension(glm::uvec2(325, 550));
-	customPlateDialog->SetButtonDimension(buttonDimension);
-
 	activateDialog = std::make_unique<ActivateDialog>();
 	activateDialog->IsVisible(false);
 	activateDialog->SetDimension(glm::uvec2(325, 410));
@@ -734,11 +729,6 @@ bool Design::Render()
 		plate->SetPlateData("Micro Plate 12x3 Inch");
 	}
 
-	else if (menuItems.isCustomPlateSelected)
-	{
-		customPlateDialog->IsVisible(true);
-	}
-
 	else if (menuItems.isFontSettingsSelected)
 	{
 		fontDialog->IsVisible(true);
@@ -852,11 +842,6 @@ bool Design::Render()
 			messageDialog->IsVisible(false);
 		}
 		//--------------------------------------------------
-	}
-
-	else if (customPlateDialog->IsVisible())
-	{
-		customPlateDialog->Show();
 	}
 
 	else if (activateDialog->IsVisible())

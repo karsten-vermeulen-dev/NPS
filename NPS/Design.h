@@ -12,7 +12,6 @@
 #include "ActivateDialog.h"
 #include "FontDialog.h"
 #include "PrintPanel.h"
-#include "CustomDialog.h"
 #include "CustomerDialog.h"
 #include "FeedbackPanel.h"
 #include "Image.h"
@@ -68,7 +67,6 @@ private:
 	//make this a container of dialogs - easier to render/show using a loop
 	std::unique_ptr<AboutDialog> aboutDialog;
 	std::unique_ptr<MessageDialog> messageDialog;
-	std::unique_ptr<CustomDialog> customPlateDialog;
 	std::unique_ptr<ActivateDialog> activateDialog;
 	std::unique_ptr<CustomerDialog> customerDialog;
 	std::unique_ptr<LicenseDialog> licenseDialog;

@@ -193,13 +193,6 @@ void MainMenu::Show()
 
 			MenuDivider();
 
-			if (ImGui::MenuItem("Custom plate...", nullptr, nullptr))
-			{
-				menuItems.isCustomPlateSelected = true;
-			}
-
-			MenuDivider();
-
 			if (ImGui::MenuItem("Font settings...", nullptr, nullptr))
 			{
 				menuItems.isFontSettingsSelected = true;
