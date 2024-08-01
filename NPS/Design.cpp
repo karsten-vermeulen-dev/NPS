@@ -344,17 +344,6 @@ bool Design::Render()
 			messageDialog->SetMessage("Licence expired. Please renew now.");
 			messageDialog->IsVisible(true);
 		}*/
-
-		/*if (isCustomFontRequired)
-		{
-			auto customFont = fontDialog->GetFont();
-
-			if (!customFont.empty())
-			{
-				plate->LoadCustomFont(customFont, 100);
-				isCustomFontRequired = false;
-			}
-		}*/
 	}
 
 	else if (modePanel->GetMode().isPrint)
@@ -465,8 +454,9 @@ bool Design::Render()
 
 	if (menuItems.isNewSelected)
 	{
+		messageDialog->SetTag("New");
 		messageDialog->SetButtonType(MessageDialog::ButtonType::YesNo);
-		messageDialog->SetTitle("New plate design");
+		messageDialog->SetTitle("New plate");
 		messageDialog->SetMessage("Are you sure you want to create a new design?");
 		messageDialog->IsVisible(true);
 	}
@@ -638,6 +628,7 @@ bool Design::Render()
 
 	else if (menuItems.isExitSelected)
 	{
+		messageDialog->SetTag("Exit");
 		messageDialog->SetButtonType(MessageDialog::ButtonType::YesNo);
 		messageDialog->SetTitle("Exit application");
 		messageDialog->SetMessage("Are you sure you want to exit?");
@@ -826,11 +817,19 @@ bool Design::Render()
 
 	else if (messageDialog->IsVisible())
 	{
+		//At this stage we want to grey out the background 
+		//and only display/activate the message box
 		messageDialog->Show();
 
 		//Internal class code?
 		//--------------------------------------------------
-		if (messageDialog->GetButtonState().yes)
+		if (messageDialog->GetTag() == "New" && messageDialog->GetButtonState().yes)
+		{
+			ResetView();
+			messageDialog->IsVisible(false);
+		}
+
+		else if (messageDialog->GetTag() == "Exit" && messageDialog->GetButtonState().yes)
 		{
 			isStateComplete = true;
 		}
@@ -949,6 +948,12 @@ void Design::SaveToFile(const std::string& filename, int DPI, bool hasAlphaChann
 
 	//Reset display back to normal
 	Screen::Instance()->SetViewport(viewport.x, viewport.y, viewport.w, viewport.h);
+}
+//======================================================================================================
+void Design::ResetView()
+{
+	propertiesPanel->Reset();
+	fontDialog->Reset(); //we reset but we dont apply to the plate yet
 }
 //======================================================================================================
 void Design::PrintPlate()

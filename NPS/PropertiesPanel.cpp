@@ -129,3 +129,43 @@ void PropertiesPanel::Show()
 	ImGui::EndDisabled();
 	ImGui::End();
 }
+//======================================================================================================
+void PropertiesPanel::Reset()
+{
+	properties.plateWidth = 520;
+	properties.plateHeight = 111;
+
+	properties.isTwoLineRegistration = false;
+
+	properties.raisedRegistration = 0;
+	properties.nudgedRegistration = 0;
+	properties.raisedTwoLineSpace = 0;
+
+	properties.registrationText = "REG 123";
+
+	properties.borderSize = 2;
+	properties.marginSize = 2;
+
+	properties.isBorderVisible = true;
+	properties.isSideBadgeVisible = false;
+
+	properties.raisedDealer = 0;
+	properties.nudgedDealer = 0;
+	properties.raisedPostcode = 0;
+	properties.nudgedPostcode = 0;
+
+	properties.isDealerVisible = true;
+	properties.isDealerAbovePostcode = false;
+
+	properties.postcodeText = "B6 7SJ";
+	properties.dealerText = "Plate factory";
+
+	properties.raisedBSAU = 0;
+	properties.nudgedBSAU = 0;
+
+	properties.isBSAUVisible = true;
+	properties.isBSAUOnBorder = true;
+
+	properties.BSAUText = "NPM BS AU 145e";
+
+}

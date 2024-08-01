@@ -50,6 +50,7 @@ public:
 	const std::string& GetFont() const;
 
 	virtual void Show() override;
+	virtual void Reset() override;
 
 	//Make these public for easy access and ability to change when required
 	//This public access also makes code more readable in main codebase
@@ -68,4 +69,6 @@ private:
 	//The names are used by the combo box as the font index list
 	std::map<std::string, std::string> fontNames;
 
+	int comboBoxFontID{ 0 };
+	int comboBoxFontStyleID{ 0 };
 };

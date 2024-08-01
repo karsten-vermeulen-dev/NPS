@@ -33,6 +33,9 @@ public:
 	void IsVisible(bool flag);
 	void IsActive(bool flag);
 
+	const std::string& GetTag() const;
+
+	void SetTag(const std::string& tag);
 	void SetPosition(const glm::uvec2& position);
 	void SetDimension(const glm::uvec2& dimension);
 	void SetButtonDimension(const glm::uvec2& dimension);
@@ -41,6 +44,7 @@ public:
 	void Partition(const std::string& fontTag, const std::string& title = "", const ImVec4& color = white);
 
 	virtual void Show() = 0;
+	virtual void Reset() = 0;
 
 protected:
 
@@ -48,6 +52,8 @@ protected:
 
 	bool isActive{ true };
 	bool isVisible{ false };
+
+	std::string tag;
 
 	glm::vec2 position{ 0.0f };
 	glm::vec2 dimension{ 0.0f };

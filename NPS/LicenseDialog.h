@@ -14,6 +14,7 @@ public:
 	const ButtonState& GetButtonState();
 
 	virtual void Show() override;
+	virtual void Reset() override {}
 
 private:
 

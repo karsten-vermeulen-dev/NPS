@@ -31,7 +31,6 @@ void FontDialog::Show()
 
 	buttonState = { false };
 
-	static int fontID = 0;
 	const auto totalFonts = fontNames.size();
 	std::vector<const char*> fontList;
 
@@ -40,7 +39,7 @@ void FontDialog::Show()
 		fontList.push_back(fontName.first.c_str());
 	}
 
-	font = fontNames[fontList[fontID]];
+	font = fontNames[fontList[comboBoxFontID]];
 
 	//For all buttons we indent using a formula and we must subtract 
 	//the window padding because that will have been included by ImGUI
@@ -57,7 +56,7 @@ void FontDialog::Show()
 	Partition("MyriadPro_Bold_16", "Font settings", yellow);
 
 	ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
-	ImGui::Text("Select options below to adjust the registration font.");
+	ImGui::Text("Select options below to adjust the various fonts.");
 
 	//===================================================================================
 	
@@ -152,10 +151,9 @@ void FontDialog::Show()
 
 		const char* fontStyleList[] = { "2D Regular", "3D Gel/Resin", "4D Laser cut"};
 
-		static int fontStyleID = 0;
-		ImGui::Combo(" ", &fontStyleID, &fontStyleList[0], 3);
+		ImGui::Combo(" ", &comboBoxFontStyleID, &fontStyleList[0], 3);
 
-		fontStyle = (FontStyle)fontStyleID;
+		fontStyle = (FontStyle)comboBoxFontStyleID;
 
 		ImGui::PopFont();
 	}
@@ -168,7 +166,7 @@ void FontDialog::Show()
 		Partition("MyriadPro_Bold_16", "Font name", yellow);
 
 		ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
-		ImGui::Combo(" ", &fontID, &fontList[0], totalFonts);
+		ImGui::Combo(" ", &comboBoxFontID, &fontList[0], totalFonts);
 	}
 
 	//===================================================================================
@@ -210,4 +208,25 @@ void FontDialog::Show()
 
 	ImGui::End();
 
+}
+//======================================================================================================
+void FontDialog::Reset()
+{
+	font.clear();
+	comboBoxFontID = 0;
+	comboBoxFontStyleID = 0;
+
+	fontType.isCar = true;
+	fontType.isMotorCycle = false;
+	fontType.isCustom = false;
+
+	buttonState.ok = false;
+	buttonState.cancel = false;
+
+	fontToChange.isRegistration = true;
+	fontToChange.isDealer = false;
+	fontToChange.isPostcode = false;
+	fontToChange.isBSAU = false;
+	
+	fontStyle = FontStyle::Regular2D;
 }

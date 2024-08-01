@@ -43,6 +43,8 @@ private:
 	void PrintPlate();
 	void SaveToFile(const std::string& filename, int DPI, bool hasAlphaChannel, bool isPrinting);
 
+	void ResetView();
+
 	State* newState{ nullptr };
 	bool isStateComplete{ false };
 

@@ -12,6 +12,7 @@ public:
 	void SetPlateData(const Plate::PlateData& plateData);
 
 	virtual void Show() override;
+	virtual void Reset() override {}
 
 private:
 

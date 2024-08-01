@@ -49,6 +49,7 @@ public:
 	const MenuItems& GetMenuItems() const;
 
 	virtual void Show() override;
+	virtual void Reset() override {}
 
 private:
 

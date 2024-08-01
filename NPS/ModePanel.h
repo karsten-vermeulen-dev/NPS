@@ -17,6 +17,7 @@ public:
 	const Mode& GetMode();
 
 	virtual void Show() override;
+	virtual void Reset() override {}
 
 private:
 

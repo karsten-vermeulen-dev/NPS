@@ -64,6 +64,16 @@ void UserInterface::IsActive(bool flag)
 	isActive = flag;
 }
 //======================================================================================================
+const std::string& UserInterface::GetTag() const
+{
+	return tag;
+}
+//======================================================================================================
+void UserInterface::SetTag(const std::string& tag)
+{
+	this->tag = tag;
+}
+//======================================================================================================
 void UserInterface::SetPosition(const glm::uvec2& position)
 {
 	this->position = position;

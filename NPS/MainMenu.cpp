@@ -25,6 +25,7 @@ void MainMenu::Show()
 		ImGui::Spacing();
 	};
 
+	//This resets the state of the menu items
 	menuItems = { false };
 
 	if (ImGui::BeginMainMenuBar())

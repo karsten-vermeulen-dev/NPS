@@ -28,6 +28,7 @@ public:
 	void SetButtonType(ButtonType buttonType);
 
 	virtual void Show() override;
+	virtual void Reset() override {}
 
 private:
 
