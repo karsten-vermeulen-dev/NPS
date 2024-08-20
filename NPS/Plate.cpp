@@ -22,10 +22,6 @@ void Plate::Initialize(GLfloat maxWidth)
 			2.0f * (dimensionMM.y / maxDimension.y));
 	};
 
-	//Refer to [10] Meeting video for extra help
-	//Side badge not allowed
-	//Maximum 7 characters + 1 space allowed - legal
-
 	PlateData plateData;
 
 	plateData.name = "Standard Oblong";
@@ -36,19 +32,19 @@ void Plate::Initialize(GLfloat maxWidth)
 	plateData.dimensionMM.y = 111;
 	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
 
+	plateData.maxAllowedSpace = 1;
 	plateData.maxAllowedCharacters = 7;
 
 	plateData.isCar = true;
 	plateData.isLegal = true;
 	plateData.isCarFont = true;
+	plateData.isSpaceRequired = true;
 	plateData.isSideBadgeAllowed = true;
 	plateData.isTwoLineRegistration = false;
 
 	plateDataMap["Standard Oblong"] = plateData;
 
 	//============================================================================
-
-	//Maximum 5 characters only (space must be included) - legal
 
 	plateData.name = "Short 13\"";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
@@ -58,19 +54,19 @@ void Plate::Initialize(GLfloat maxWidth)
 	plateData.dimensionMM.y = 111;
 	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
 
+	plateData.maxAllowedSpace = 1;
 	plateData.maxAllowedCharacters = 5;
 
 	plateData.isCar = true;
 	plateData.isLegal = true;
 	plateData.isCarFont = true;
+	plateData.isSpaceRequired = true;
 	plateData.isSideBadgeAllowed = true;
 	plateData.isTwoLineRegistration = false;
 
 	plateDataMap["Short 13 Inch"] = plateData;
 
 	//============================================================================
-
-	//Maximum 6 characters only (space must be included) - legal
 
 	plateData.name = "Short 16\"";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
@@ -80,20 +76,19 @@ void Plate::Initialize(GLfloat maxWidth)
 	plateData.dimensionMM.y = 111;
 	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
 
+	plateData.maxAllowedSpace = 1;
 	plateData.maxAllowedCharacters = 5;
 
 	plateData.isCar = true;
 	plateData.isLegal = true;
 	plateData.isCarFont = true;
+	plateData.isSpaceRequired = true;
 	plateData.isSideBadgeAllowed = true;
 	plateData.isTwoLineRegistration = false;
 
 	plateDataMap["Short 16 Inch"] = plateData;
 
 	//============================================================================
-
-	//Side badge not allowed
-	//Maximum 7 characters only (space must be included) - legal
 
 	plateData.name = "Shorter 17\"";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
@@ -103,21 +98,19 @@ void Plate::Initialize(GLfloat maxWidth)
 	plateData.dimensionMM.y = 111;
 	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
 
-	plateData.maxAllowedCharacters = 5;
+	plateData.maxAllowedSpace = 1;
+	plateData.maxAllowedCharacters = 6;
 
 	plateData.isCar = true;
 	plateData.isLegal = true;
 	plateData.isCarFont = true;
-	plateData.isSideBadgeAllowed = true;
+	plateData.isSpaceRequired = true;
+	plateData.isSideBadgeAllowed = false;
 	plateData.isTwoLineRegistration = false;
 
 	plateDataMap["Shorter 17 Inch"] = plateData;
 
 	//============================================================================
-
-	//Side badge not allowed
-	//Maximum 5 characters + 1 space allowed (with side badge) - illegal
-	//Maximum 7 characters + 1 space allowed (without side badge) - legal
 
 	plateData.name = "Shorter 18\"";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
@@ -127,12 +120,14 @@ void Plate::Initialize(GLfloat maxWidth)
 	plateData.dimensionMM.y = 111;
 	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
 
-	plateData.maxAllowedCharacters = 5;
+	plateData.maxAllowedSpace = 1;
+	plateData.maxAllowedCharacters = 7;
 
 	plateData.isCar = true;
 	plateData.isLegal = true;
 	plateData.isCarFont = true;
-	plateData.isSideBadgeAllowed = true;
+	plateData.isSpaceRequired = true;
+	plateData.isSideBadgeAllowed = false;
 	plateData.isTwoLineRegistration = false;
 
 	plateDataMap["Shorter 18 Inch"] = plateData;
@@ -147,11 +142,13 @@ void Plate::Initialize(GLfloat maxWidth)
 	plateData.dimensionMM.y = 152;
 	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
 
+	plateData.maxAllowedSpace = 1;
 	plateData.maxAllowedCharacters = 7;
 
 	plateData.isCar = true;
 	plateData.isLegal = true;
 	plateData.isCarFont = true;
+	plateData.isSpaceRequired = true;
 	plateData.isSideBadgeAllowed = true;
 	plateData.isTwoLineRegistration = false;
 
@@ -167,11 +164,13 @@ void Plate::Initialize(GLfloat maxWidth)
 	plateData.dimensionMM.y = 152;
 	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
 
+	plateData.maxAllowedSpace = 1;
 	plateData.maxAllowedCharacters = 7;
 
 	plateData.isCar = true;
 	plateData.isLegal = true;
 	plateData.isCarFont = true;
+	plateData.isSpaceRequired = true;
 	plateData.isSideBadgeAllowed = true;
 	plateData.isTwoLineRegistration = false;
 
@@ -180,14 +179,10 @@ void Plate::Initialize(GLfloat maxWidth)
 	//============================================================================
 	//Two-line plates
 	//============================================================================
-
-	//No character space between the text
-
-	//Maximum 4 characters on top and bottom line - legal
-	//Minimum 7mm gap between top and bottom lines - legal
-
+	
+	//TODO - Add this info to the 'info dialog box'
 	//Line gap should be 13mm and can be increased as long as padding
-	//from border is 7mm and padding from plate edge is 11mm - legal
+	//from border is 7mm and padding from plate edge is 11mm 
 
 	//For 4 or less characters user has option to use one line (centered) or two lines
 
@@ -201,11 +196,14 @@ void Plate::Initialize(GLfloat maxWidth)
 	plateData.dimensionMM.y = 127;
 	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
 
-	plateData.maxAllowedCharacters = 7;
+	plateData.minAllowedGapMM = 7;
+	plateData.maxAllowedSpace = 0;
+	plateData.maxAllowedCharacters = 4;
 
 	plateData.isCar = false;
 	plateData.isLegal = false;
 	plateData.isCarFont = false;
+	plateData.isSpaceRequired = false;
 	plateData.isSideBadgeAllowed = true;
 	plateData.isTwoLineRegistration = true;
 
@@ -221,11 +219,14 @@ void Plate::Initialize(GLfloat maxWidth)
 	plateData.dimensionMM.y = 152;
 	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
 
-	plateData.maxAllowedCharacters = 7;
+	plateData.minAllowedGapMM = 7;
+	plateData.maxAllowedSpace = 0;
+	plateData.maxAllowedCharacters = 4;
 
 	plateData.isCar = false;
 	plateData.isLegal = false;
 	plateData.isCarFont = false;
+	plateData.isSpaceRequired = false;
 	plateData.isSideBadgeAllowed = true;
 	plateData.isTwoLineRegistration = true;
 
@@ -241,11 +242,14 @@ void Plate::Initialize(GLfloat maxWidth)
 	plateData.dimensionMM.y = 178;
 	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
 
-	plateData.maxAllowedCharacters = 7;
+	plateData.minAllowedGapMM = 7;
+	plateData.maxAllowedSpace = 0;
+	plateData.maxAllowedCharacters = 4;
 
 	plateData.isCar = false;
 	plateData.isLegal = true;
 	plateData.isCarFont = false;
+	plateData.isSpaceRequired = false;
 	plateData.isSideBadgeAllowed = true;
 	plateData.isTwoLineRegistration = true;
 
@@ -261,11 +265,14 @@ void Plate::Initialize(GLfloat maxWidth)
 	plateData.dimensionMM.y = 203;
 	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
 
-	plateData.maxAllowedCharacters = 7;
+	plateData.minAllowedGapMM = 7;
+	plateData.maxAllowedSpace = 0;
+	plateData.maxAllowedCharacters = 4;
 
 	plateData.isCar = true;
 	plateData.isLegal = true;
 	plateData.isCarFont = true;
+	plateData.isSpaceRequired = false;
 	plateData.isSideBadgeAllowed = false;
 	plateData.isTwoLineRegistration = true;
 
@@ -281,11 +288,14 @@ void Plate::Initialize(GLfloat maxWidth)
 	plateData.dimensionMM.y = 152;
 	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
 
-	plateData.maxAllowedCharacters = 7;
+	plateData.minAllowedGapMM = 7;
+	plateData.maxAllowedSpace = 0;
+	plateData.maxAllowedCharacters = 4;
 
 	plateData.isCar = true;
 	plateData.isLegal = true;
 	plateData.isCarFont = false;
+	plateData.isSpaceRequired = false;
 	plateData.isSideBadgeAllowed = false;
 	plateData.isTwoLineRegistration = true;
 
@@ -301,11 +311,14 @@ void Plate::Initialize(GLfloat maxWidth)
 	plateData.dimensionMM.y = 203;
 	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
 
-	plateData.maxAllowedCharacters = 7;
+	plateData.minAllowedGapMM = 7;
+	plateData.maxAllowedSpace = 0;
+	plateData.maxAllowedCharacters = 4;
 
 	plateData.isCar = true;
 	plateData.isLegal = true;
 	plateData.isCarFont = true;
+	plateData.isSpaceRequired = false;
 	plateData.isSideBadgeAllowed = true;
 	plateData.isTwoLineRegistration = true;
 
@@ -321,11 +334,14 @@ void Plate::Initialize(GLfloat maxWidth)
 	plateData.dimensionMM.y = 165;
 	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
 
-	plateData.maxAllowedCharacters = 7;
+	plateData.minAllowedGapMM = 7;
+	plateData.maxAllowedSpace = 0;
+	plateData.maxAllowedCharacters = 4;
 
 	plateData.isCar = true;
 	plateData.isLegal = true;
 	plateData.isCarFont = false;
+	plateData.isSpaceRequired = false;
 	plateData.isSideBadgeAllowed = false;
 	plateData.isTwoLineRegistration = true;
 
@@ -341,11 +357,14 @@ void Plate::Initialize(GLfloat maxWidth)
 	plateData.dimensionMM.y = 178;
 	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
 
-	plateData.maxAllowedCharacters = 7;
+	plateData.minAllowedGapMM = 7;
+	plateData.maxAllowedSpace = 0;
+	plateData.maxAllowedCharacters = 4;
 
 	plateData.isCar = true;
 	plateData.isLegal = true;
 	plateData.isCarFont = false;
+	plateData.isSpaceRequired = false;
 	plateData.isSideBadgeAllowed = false;
 	plateData.isTwoLineRegistration = true;
 
@@ -361,11 +380,14 @@ void Plate::Initialize(GLfloat maxWidth)
 	plateData.dimensionMM.y = 76;
 	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
 
-	plateData.maxAllowedCharacters = 7;
+	plateData.minAllowedGapMM = 7;
+	plateData.maxAllowedSpace = 0;
+	plateData.maxAllowedCharacters = 4;
 
 	plateData.isCar = true;
 	plateData.isLegal = false;
 	plateData.isCarFont = true;
+	plateData.isSpaceRequired = false;
 	plateData.isSideBadgeAllowed = false;
 	plateData.isTwoLineRegistration = false;
 
@@ -381,11 +403,14 @@ void Plate::Initialize(GLfloat maxWidth)
 	plateData.dimensionMM.y = 76;
 	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
 
-	plateData.maxAllowedCharacters = 7;
+	plateData.minAllowedGapMM = 7;
+	plateData.maxAllowedSpace = 0;
+	plateData.maxAllowedCharacters = 4;
 
 	plateData.isCar = true;
 	plateData.isLegal = false;
 	plateData.isCarFont = true;
+	plateData.isSpaceRequired = false;
 	plateData.isSideBadgeAllowed = false;
 	plateData.isTwoLineRegistration = false;
 

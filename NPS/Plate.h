@@ -56,25 +56,25 @@ public:
 		DealerPostcodeBSAU
 	};
 
-	//We need to keep a legal toggle for the inner struct and the plate class
-	//Struct's legal toggle states if this plate is legal at all
-	//Class' legal toggle is a dynamic variable that can change based on properties set
 	struct PlateData
 	{
-		std::string name;
-		std::string fontNameBSAU;
-		std::string fontNameDealerPostcode;
+		std::string name;                        //Official legal name of plate
+		std::string fontNameBSAU;                //Name and size of font required for BSAU text           
+		std::string fontNameDealerPostcode;      //Name and size of font required for Dealer/Postcode text
 
-		glm::ivec2 dimensionMM{ 0 };
-		glm::vec2 dimensionNDC{ 0.0f };
+		glm::ivec2 dimensionMM{ 0 };             //Legal dimension of plate
+		glm::vec2 dimensionNDC{ 0.0f };          //Converted NDC dimension for use in application (not saved to file)
 
-		GLuint maxAllowedCharacters{ 0 };
+		GLuint minAllowedGapMM{ 0 };             //The spacing in mm between lines in two-line plates
+		GLuint maxAllowedSpace{ 0 };             //Maximum space legally permitted between characters
+		GLuint maxAllowedCharacters{ 0 };        //Maximum characters legally permitted in registration
 
-		bool isCar{ false };
-		bool isLegal{ false };
-		bool isCarFont{ false };
-		bool isSideBadgeAllowed{ false };
-		bool isTwoLineRegistration{ false };
+		bool isCar{ false };                     //Flag stating whether this plate is for a car or motorcycle
+		bool isLegal{ false };                   //Flag stating whether this plate is legal at all (The 'islegal' flag within Plate class is a dynamic variable that can change based on properties set)
+		bool isCarFont{ false };                 //Flag stating whether this plate owns a car font (Generally speaking car plates own car fonts)
+		bool isSpaceRequired{ false };           //Flag stating whether a space between the characters is legally required
+		bool isSideBadgeAllowed{ false };        //Flag stating whether a side badge is legally permitted for this plate
+		bool isTwoLineRegistration{ false };     //Flag stating whether this plate is a one-liner or two-line plate (Generally speaking car plates are one-liners and motorcycle plates are two-line plates)
 	};
 
 	static void Initialize(GLfloat maxWidth);
@@ -130,6 +130,7 @@ private:
 	void FillBuffers();
 
 	bool isLegal{ true };
+	bool hasTwoLines{ false };
 
 	std::unique_ptr<Buffer> middle;
 	std::unique_ptr<Buffer> corners;
