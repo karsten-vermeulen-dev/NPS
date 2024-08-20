@@ -65,7 +65,11 @@ bool Utility::LoadConfigFile(const std::string& filename, std::map<std::string, 
 	{
 		std::getline(file, line);
 		std::vector<std::string> subStrings;
-		ParseString(line, subStrings, '=');
+		
+		if (!line.empty() && line[0] != '#')
+		{
+			ParseString(line, subStrings, '=');
+		}
 
 		if (!subStrings.empty())
 		{
