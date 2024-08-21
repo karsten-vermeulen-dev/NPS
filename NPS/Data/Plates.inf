@@ -1,0 +1,257 @@
+# Plate data structure
+# ---------------------
+# [...] - The official legal name of the plate
+# 'FontNameBSAU' - Name and size of the font required for the BSAU text           
+# 'FontNameDealerPostcode' - Name and size of the font required for the Dealer/Postcode text
+# 'Dimension' - Legal millimeter dimension of the plate
+# 'MinAllowedGap' - The spacing in millimeters between the lines in two-line plates
+# 'MaxAllowedSpace' - The maximum space legally permitted between characters in the registration
+# 'MaxAllowedCharacters' - The maximum characters legally permitted in the registration
+# 'IsCar' - Flag stating whether this plate is for a car or a motorcycle
+# 'IsLegal' - Flag stating whether this plate is legal at all
+# (There is a separate flag within the program that changes dynamically based on properties set)
+# 'IsCarFont' - Flag stating whether this plate owns a car font
+# (Generally speaking car plates own car fonts)
+# 'IsSpaceRequired' - Flag stating whether a space between the characters is legally required
+# 'IsSideBadgeAllowed' - Flag stating whether a side badge is legally permitted for this plate
+# 'IsTwoLineRegistration' - Flag stating whether this plate is a one-liner or two-line plate
+# (Generally speaking car plates are one-liners and motorcycle plates are two-line plates)
+# ---------------------
+
+[Standard Oblong]
+FontNameBSAU=Arial_bold_4mm
+FontNameDealerPostcode=Arial_bold_7mm
+Dimension=520,111
+MinAllowedGap=0
+MaxAllowedSpace=1
+MaxAllowedCharacters=7
+IsCar=Yes
+IsLegal=Yes
+IsCarFont=Yes
+IsSpaceRequired=Yes
+IsSideBadgeAllowed=Yes
+IsTwoLineRegistration=No
+
+[Short 13"]
+FontNameBSAU=Arial_bold_4mm
+FontNameDealerPostcode=Arial_bold_7mm
+Dimension=337,111
+MinAllowedGap=0
+MaxAllowedSpace=1
+MaxAllowedCharacters=5
+IsCar=Yes
+IsLegal=Yes
+IsCarFont=Yes
+IsSpaceRequired=Yes
+IsSideBadgeAllowed=Yes
+IsTwoLineRegistration=No
+
+[Short 16"]
+FontNameBSAU=Arial_bold_4mm
+FontNameDealerPostcode=Arial_bold_7mm
+Dimension=405,111
+MinAllowedGap=0
+MaxAllowedSpace=1
+MaxAllowedCharacters=5
+IsCar=Yes
+IsLegal=Yes
+IsCarFont=Yes
+IsSpaceRequired=Yes
+IsSideBadgeAllowed=Yes
+IsTwoLineRegistration=No
+
+[Short 17"]
+FontNameBSAU=Arial_bold_4mm
+FontNameDealerPostcode=Arial_bold_7mm
+Dimension=431,111
+MinAllowedGap=0
+MaxAllowedSpace=1
+MaxAllowedCharacters=6
+IsCar=Yes
+IsLegal=Yes
+IsCarFont=Yes
+IsSpaceRequired=Yes
+IsSideBadgeAllowed=No
+IsTwoLineRegistration=No
+
+[Short 18"]
+FontNameBSAU=Arial_bold_4mm
+FontNameDealerPostcode=Arial_bold_7mm
+Dimension=455,111
+MinAllowedGap=0
+MaxAllowedSpace=1
+MaxAllowedCharacters=7
+IsCar=Yes
+IsLegal=Yes
+IsCarFont=Yes
+IsSpaceRequired=Yes
+IsSideBadgeAllowed=No
+IsTwoLineRegistration=No
+
+[Oversize Oblong]
+FontNameBSAU=Arial_bold_4mm
+FontNameDealerPostcode=Arial_bold_7mm
+Dimension=533,152
+MinAllowedGap=0
+MaxAllowedSpace=1
+MaxAllowedCharacters=7
+IsCar=Yes
+IsLegal=Yes
+IsCarFont=Yes
+IsSpaceRequired=Yes
+IsSideBadgeAllowed=Yes
+IsTwoLineRegistration=No
+
+[Shaped Plate]
+FontNameBSAU=Arial_bold_4mm
+FontNameDealerPostcode=Arial_bold_7mm
+Dimension=616,152
+MinAllowedGap=0
+MaxAllowedSpace=1
+MaxAllowedCharacters=7
+IsCar=Yes
+IsLegal=Yes
+IsCarFont=Yes
+IsSpaceRequired=Yes
+IsSideBadgeAllowed=Yes
+IsTwoLineRegistration=No
+
+[Motorcycle 7x5"]
+FontNameBSAU=Arial_bold_4mm
+FontNameDealerPostcode=Arial_bold_7mm
+Dimension=178,127
+MinAllowedGap=7
+MaxAllowedSpace=0
+MaxAllowedCharacters=4
+IsCar=No
+IsLegal=No
+IsCarFont=No
+IsSpaceRequired=No
+IsSideBadgeAllowed=Yes
+IsTwoLineRegistration=Yes
+
+[Motorcycle 8x6"]
+FontNameBSAU=Arial_bold_4mm
+FontNameDealerPostcode=Arial_bold_7mm
+Dimension=203,152
+MinAllowedGap=7
+MaxAllowedSpace=0
+MaxAllowedCharacters=4
+IsCar=No
+IsLegal=No
+IsCarFont=No
+IsSpaceRequired=No
+IsSideBadgeAllowed=Yes
+IsTwoLineRegistration=Yes
+
+[Motorcycle 9x7"]
+FontNameBSAU=Arial_bold_4mm
+FontNameDealerPostcode=Arial_bold_7mm
+Dimension=235,178
+MinAllowedGap=7
+MaxAllowedSpace=0
+MaxAllowedCharacters=4
+IsCar=No
+IsLegal=Yes
+IsCarFont=No
+IsSpaceRequired=No
+IsSideBadgeAllowed=Yes
+IsTwoLineRegistration=Yes
+
+[Square 11x8"]
+FontNameBSAU=Arial_bold_4mm
+FontNameDealerPostcode=Arial_bold_7mm
+Dimension=279,203
+MinAllowedGap=7
+MaxAllowedSpace=0
+MaxAllowedCharacters=4
+IsCar=Yes
+IsLegal=Yes
+IsCarFont=Yes
+IsSpaceRequired=No
+IsSideBadgeAllowed=No
+IsTwoLineRegistration=Yes
+
+[USA Import 12x6"]
+FontNameBSAU=Arial_bold_4mm
+FontNameDealerPostcode=Arial_bold_7mm
+Dimension=310,152
+MinAllowedGap=7
+MaxAllowedSpace=0
+MaxAllowedCharacters=4
+IsCar=Yes
+IsLegal=Yes
+IsCarFont=No
+IsSpaceRequired=No
+IsSideBadgeAllowed=No
+IsTwoLineRegistration=Yes
+
+[Large Euro Square]
+FontNameBSAU=Arial_bold_4mm
+FontNameDealerPostcode=Arial_bold_7mm
+Dimension=310,203
+MinAllowedGap=7
+MaxAllowedSpace=0
+MaxAllowedCharacters=4
+IsCar=Yes
+IsLegal=Yes
+IsCarFont=Yes
+IsSpaceRequired=No
+IsSideBadgeAllowed=Yes
+IsTwoLineRegistration=Yes
+
+[Import 13x6.5"]
+FontNameBSAU=Arial_bold_4mm
+FontNameDealerPostcode=Arial_bold_7mm
+Dimension=330,165
+MinAllowedGap=7
+MaxAllowedSpace=0
+MaxAllowedCharacters=4
+IsCar=Yes
+IsLegal=Yes
+IsCarFont=No
+IsSpaceRequired=No
+IsSideBadgeAllowed=No
+IsTwoLineRegistration=Yes
+
+[Import 13x7"]
+FontNameBSAU=Arial_bold_4mm
+FontNameDealerPostcode=Arial_bold_7mm
+Dimension=330,178
+MinAllowedGap=7
+MaxAllowedSpace=0
+MaxAllowedCharacters=4
+IsCar=Yes
+IsLegal=Yes
+IsCarFont=No
+IsSpaceRequired=No
+IsSideBadgeAllowed=No
+IsTwoLineRegistration=Yes
+
+[Micro Plate 9x3"]
+FontNameBSAU=Arial_bold_4mm
+FontNameDealerPostcode=Arial_bold_7mm
+Dimension=228,76
+MinAllowedGap=7
+MaxAllowedSpace=0
+MaxAllowedCharacters=4
+IsCar=Yes
+IsLegal=No
+IsCarFont=Yes
+IsSpaceRequired=No
+IsSideBadgeAllowed=No
+IsTwoLineRegistration=No
+
+[Micro Plate 12x3"]
+FontNameBSAU=Arial_bold_4mm
+FontNameDealerPostcode=Arial_bold_7mm
+Dimension=310,76
+MinAllowedGap=7
+MaxAllowedSpace=0
+MaxAllowedCharacters=4
+IsCar=Yes
+IsLegal=No
+IsCarFont=Yes
+IsSpaceRequired=No
+IsSideBadgeAllowed=No
+IsTwoLineRegistration=No
