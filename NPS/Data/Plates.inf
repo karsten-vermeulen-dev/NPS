@@ -1,6 +1,7 @@
 # Plate data structure
 # ---------------------
 # [...] - The official legal name of the plate
+# Flag variables beginning with 'Is' either have a '1' (yes) or a '0' (no) value 
 # 'FontNameBSAU' - Name and size of the font required for the BSAU text           
 # 'FontNameDealerPostcode' - Name and size of the font required for the Dealer/Postcode text
 # 'Dimension' - Legal millimeter dimension of the plate
@@ -25,12 +26,12 @@ Dimension=520,111
 MinAllowedGap=0
 MaxAllowedSpace=1
 MaxAllowedCharacters=7
-IsCar=Yes
-IsLegal=Yes
-IsCarFont=Yes
-IsSpaceRequired=Yes
-IsSideBadgeAllowed=Yes
-IsTwoLineRegistration=No
+IsCar=1
+IsLegal=1
+IsCarFont=1
+IsSpaceRequired=1
+IsSideBadgeAllowed=1
+IsTwoLineRegistration=0
 
 [Short 13"]
 FontNameBSAU=Arial_bold_4mm
@@ -39,12 +40,12 @@ Dimension=337,111
 MinAllowedGap=0
 MaxAllowedSpace=1
 MaxAllowedCharacters=5
-IsCar=Yes
-IsLegal=Yes
-IsCarFont=Yes
-IsSpaceRequired=Yes
-IsSideBadgeAllowed=Yes
-IsTwoLineRegistration=No
+IsCar=1
+IsLegal=1
+IsCarFont=1
+IsSpaceRequired=1
+IsSideBadgeAllowed=1
+IsTwoLineRegistration=0
 
 [Short 16"]
 FontNameBSAU=Arial_bold_4mm
@@ -53,12 +54,12 @@ Dimension=405,111
 MinAllowedGap=0
 MaxAllowedSpace=1
 MaxAllowedCharacters=5
-IsCar=Yes
-IsLegal=Yes
-IsCarFont=Yes
-IsSpaceRequired=Yes
-IsSideBadgeAllowed=Yes
-IsTwoLineRegistration=No
+IsCar=1
+IsLegal=1
+IsCarFont=1
+IsSpaceRequired=1
+IsSideBadgeAllowed=1
+IsTwoLineRegistration=0
 
 [Short 17"]
 FontNameBSAU=Arial_bold_4mm
@@ -67,12 +68,12 @@ Dimension=431,111
 MinAllowedGap=0
 MaxAllowedSpace=1
 MaxAllowedCharacters=6
-IsCar=Yes
-IsLegal=Yes
-IsCarFont=Yes
-IsSpaceRequired=Yes
-IsSideBadgeAllowed=No
-IsTwoLineRegistration=No
+IsCar=1
+IsLegal=1
+IsCarFont=1
+IsSpaceRequired=1
+IsSideBadgeAllowed=0
+IsTwoLineRegistration=0
 
 [Short 18"]
 FontNameBSAU=Arial_bold_4mm
@@ -81,12 +82,12 @@ Dimension=455,111
 MinAllowedGap=0
 MaxAllowedSpace=1
 MaxAllowedCharacters=7
-IsCar=Yes
-IsLegal=Yes
-IsCarFont=Yes
-IsSpaceRequired=Yes
-IsSideBadgeAllowed=No
-IsTwoLineRegistration=No
+IsCar=1
+IsLegal=1
+IsCarFont=1
+IsSpaceRequired=1
+IsSideBadgeAllowed=0
+IsTwoLineRegistration=0
 
 [Oversize Oblong]
 FontNameBSAU=Arial_bold_4mm
@@ -95,12 +96,12 @@ Dimension=533,152
 MinAllowedGap=0
 MaxAllowedSpace=1
 MaxAllowedCharacters=7
-IsCar=Yes
-IsLegal=Yes
-IsCarFont=Yes
-IsSpaceRequired=Yes
-IsSideBadgeAllowed=Yes
-IsTwoLineRegistration=No
+IsCar=1
+IsLegal=1
+IsCarFont=1
+IsSpaceRequired=1
+IsSideBadgeAllowed=1
+IsTwoLineRegistration=0
 
 [Shaped Plate]
 FontNameBSAU=Arial_bold_4mm
@@ -109,12 +110,12 @@ Dimension=616,152
 MinAllowedGap=0
 MaxAllowedSpace=1
 MaxAllowedCharacters=7
-IsCar=Yes
-IsLegal=Yes
-IsCarFont=Yes
-IsSpaceRequired=Yes
-IsSideBadgeAllowed=Yes
-IsTwoLineRegistration=No
+IsCar=1
+IsLegal=1
+IsCarFont=1
+IsSpaceRequired=1
+IsSideBadgeAllowed=1
+IsTwoLineRegistration=0
 
 [Motorcycle 7x5"]
 FontNameBSAU=Arial_bold_4mm
@@ -123,12 +124,12 @@ Dimension=178,127
 MinAllowedGap=7
 MaxAllowedSpace=0
 MaxAllowedCharacters=4
-IsCar=No
-IsLegal=No
-IsCarFont=No
-IsSpaceRequired=No
-IsSideBadgeAllowed=Yes
-IsTwoLineRegistration=Yes
+IsCar=0
+IsLegal=0
+IsCarFont=0
+IsSpaceRequired=0
+IsSideBadgeAllowed=1
+IsTwoLineRegistration=1
 
 [Motorcycle 8x6"]
 FontNameBSAU=Arial_bold_4mm
@@ -137,12 +138,12 @@ Dimension=203,152
 MinAllowedGap=7
 MaxAllowedSpace=0
 MaxAllowedCharacters=4
-IsCar=No
-IsLegal=No
-IsCarFont=No
-IsSpaceRequired=No
-IsSideBadgeAllowed=Yes
-IsTwoLineRegistration=Yes
+IsCar=0
+IsLegal=0
+IsCarFont=0
+IsSpaceRequired=0
+IsSideBadgeAllowed=1
+IsTwoLineRegistration=1
 
 [Motorcycle 9x7"]
 FontNameBSAU=Arial_bold_4mm
@@ -151,12 +152,12 @@ Dimension=235,178
 MinAllowedGap=7
 MaxAllowedSpace=0
 MaxAllowedCharacters=4
-IsCar=No
-IsLegal=Yes
-IsCarFont=No
-IsSpaceRequired=No
-IsSideBadgeAllowed=Yes
-IsTwoLineRegistration=Yes
+IsCar=0
+IsLegal=1
+IsCarFont=0
+IsSpaceRequired=0
+IsSideBadgeAllowed=1
+IsTwoLineRegistration=1
 
 [Square 11x8"]
 FontNameBSAU=Arial_bold_4mm
@@ -165,12 +166,12 @@ Dimension=279,203
 MinAllowedGap=7
 MaxAllowedSpace=0
 MaxAllowedCharacters=4
-IsCar=Yes
-IsLegal=Yes
-IsCarFont=Yes
-IsSpaceRequired=No
-IsSideBadgeAllowed=No
-IsTwoLineRegistration=Yes
+IsCar=1
+IsLegal=1
+IsCarFont=1
+IsSpaceRequired=0
+IsSideBadgeAllowed=0
+IsTwoLineRegistration=1
 
 [USA Import 12x6"]
 FontNameBSAU=Arial_bold_4mm
@@ -179,12 +180,12 @@ Dimension=310,152
 MinAllowedGap=7
 MaxAllowedSpace=0
 MaxAllowedCharacters=4
-IsCar=Yes
-IsLegal=Yes
-IsCarFont=No
-IsSpaceRequired=No
-IsSideBadgeAllowed=No
-IsTwoLineRegistration=Yes
+IsCar=1
+IsLegal=1
+IsCarFont=0
+IsSpaceRequired=0
+IsSideBadgeAllowed=0
+IsTwoLineRegistration=1
 
 [Large Euro Square]
 FontNameBSAU=Arial_bold_4mm
@@ -193,12 +194,12 @@ Dimension=310,203
 MinAllowedGap=7
 MaxAllowedSpace=0
 MaxAllowedCharacters=4
-IsCar=Yes
-IsLegal=Yes
-IsCarFont=Yes
-IsSpaceRequired=No
-IsSideBadgeAllowed=Yes
-IsTwoLineRegistration=Yes
+IsCar=1
+IsLegal=1
+IsCarFont=1
+IsSpaceRequired=0
+IsSideBadgeAllowed=1
+IsTwoLineRegistration=1
 
 [Import 13x6.5"]
 FontNameBSAU=Arial_bold_4mm
@@ -207,12 +208,12 @@ Dimension=330,165
 MinAllowedGap=7
 MaxAllowedSpace=0
 MaxAllowedCharacters=4
-IsCar=Yes
-IsLegal=Yes
-IsCarFont=No
-IsSpaceRequired=No
-IsSideBadgeAllowed=No
-IsTwoLineRegistration=Yes
+IsCar=1
+IsLegal=1
+IsCarFont=0
+IsSpaceRequired=0
+IsSideBadgeAllowed=0
+IsTwoLineRegistration=1
 
 [Import 13x7"]
 FontNameBSAU=Arial_bold_4mm
@@ -221,12 +222,12 @@ Dimension=330,178
 MinAllowedGap=7
 MaxAllowedSpace=0
 MaxAllowedCharacters=4
-IsCar=Yes
-IsLegal=Yes
-IsCarFont=No
-IsSpaceRequired=No
-IsSideBadgeAllowed=No
-IsTwoLineRegistration=Yes
+IsCar=1
+IsLegal=1
+IsCarFont=0
+IsSpaceRequired=0
+IsSideBadgeAllowed=0
+IsTwoLineRegistration=1
 
 [Micro Plate 9x3"]
 FontNameBSAU=Arial_bold_4mm
@@ -235,12 +236,12 @@ Dimension=228,76
 MinAllowedGap=7
 MaxAllowedSpace=0
 MaxAllowedCharacters=4
-IsCar=Yes
-IsLegal=No
-IsCarFont=Yes
-IsSpaceRequired=No
-IsSideBadgeAllowed=No
-IsTwoLineRegistration=No
+IsCar=1
+IsLegal=0
+IsCarFont=1
+IsSpaceRequired=0
+IsSideBadgeAllowed=0
+IsTwoLineRegistration=0
 
 [Micro Plate 12x3"]
 FontNameBSAU=Arial_bold_4mm
@@ -249,9 +250,9 @@ Dimension=310,76
 MinAllowedGap=7
 MaxAllowedSpace=0
 MaxAllowedCharacters=4
-IsCar=Yes
-IsLegal=No
-IsCarFont=Yes
-IsSpaceRequired=No
-IsSideBadgeAllowed=No
-IsTwoLineRegistration=No
+IsCar=1
+IsLegal=0
+IsCarFont=1
+IsSpaceRequired=0
+IsSideBadgeAllowed=0
+IsTwoLineRegistration=0
