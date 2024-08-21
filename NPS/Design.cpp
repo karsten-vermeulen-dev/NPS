@@ -93,7 +93,7 @@ bool Design::OnEnter()
 
 	//The maximum width of the viewport is 650mm, 
 	//The height will adjust based on aspect ratio
-	Plate::Initialize(650.0f);
+	Plate::Initialize("Data/Plates.inf", 650.0f);
 
 	//===================================================================
 

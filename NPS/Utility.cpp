@@ -64,16 +64,70 @@ bool Utility::LoadConfigFile(const std::string& filename, std::map<std::string, 
 	while (!file.eof())
 	{
 		std::getline(file, line);
-		std::vector<std::string> subStrings;
 		
+		//Files may consist of empty spaces or 
+		//comments('#') which the parser ignores
 		if (!line.empty() && line[0] != '#')
 		{
+			std::vector<std::string> subStrings;
+
 			ParseString(line, subStrings, '=');
+			
+			if (!subStrings.empty())
+			{
+				dataMap[subStrings[0]] = subStrings[1];
+			}
+		}
+	}
+
+	file.close();
+	return true;
+}
+//======================================================================================================
+bool Utility::LoadDataFile(const std::string& filename, 
+	                       std::map<std::string, 
+	                       std::map<std::string, std::string>>& dataMap)
+{
+	std::fstream file(filename, std::ios_base::in);
+
+	if (!file.is_open())
+	{
+		return false;
+	}
+
+	std::string line;
+	std::string section;
+	std::map<std::string, std::string> hashMap;
+
+	while (!file.eof())
+	{
+		std::getline(file, line);
+
+		if (line[0] == '[' || file.eof())
+		{
+			if (!section.empty())
+			{
+				dataMap[section] = hashMap;
+			}
+
+			auto it = std::remove_if(line.begin(), line.end(),
+				[](char c) { return (c == '[' || c == ']'); });
+			line.erase(it, line.end());
+			section = line;
 		}
 
-		if (!subStrings.empty())
+		//Files may consist of empty spaces or 
+		//comments('#') which the parser ignores
+		else if (!line.empty() && line[0] != '#')
 		{
-			dataMap[subStrings[0]] = subStrings[1];
+			std::vector<std::string> subStrings;
+
+			ParseString(line, subStrings, '=');
+
+			if (!subStrings.empty())
+			{
+				hashMap[subStrings[0]] = subStrings[1];
+			}
 		}
 	}
 

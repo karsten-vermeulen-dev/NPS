@@ -8,7 +8,7 @@ bool Plate::isPrinting{ false };
 glm::vec2 Plate::maxDimension{ 0.0f };
 std::map<std::string, Plate::PlateData> Plate::plateDataMap;
 //================================================================================================
-void Plate::Initialize(GLfloat maxWidth)
+void Plate::Initialize(const std::string& filename, GLfloat maxWidth)
 {
 	auto viewport = Screen::Instance()->GetViewport();
 	auto aspectRatio = viewport.w / static_cast<float>(viewport.h);
@@ -22,8 +22,16 @@ void Plate::Initialize(GLfloat maxWidth)
 			2.0f * (dimensionMM.y / maxDimension.y));
 	};
 
+	std::map<std::string, std::map<std::string, std::string>> dataMap;
+
+	if (!Utility::LoadDataFile(filename, dataMap))
+	{
+		//assert if failed to load?
+	}
+
 	PlateData plateData;
 
+	//Moved to file
 	plateData.name = "Standard Oblong";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
 	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
@@ -44,8 +52,7 @@ void Plate::Initialize(GLfloat maxWidth)
 
 	plateDataMap["Standard Oblong"] = plateData;
 
-	//============================================================================
-
+	//Moved to file
 	plateData.name = "Short 13\"";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
 	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
@@ -66,8 +73,7 @@ void Plate::Initialize(GLfloat maxWidth)
 
 	plateDataMap["Short 13 Inch"] = plateData;
 
-	//============================================================================
-
+	//Moved to file
 	plateData.name = "Short 16\"";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
 	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
@@ -88,8 +94,7 @@ void Plate::Initialize(GLfloat maxWidth)
 
 	plateDataMap["Short 16 Inch"] = plateData;
 
-	//============================================================================
-
+	//Moved to file
 	plateData.name = "Shorter 17\"";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
 	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
@@ -110,8 +115,7 @@ void Plate::Initialize(GLfloat maxWidth)
 
 	plateDataMap["Shorter 17 Inch"] = plateData;
 
-	//============================================================================
-
+	//Moved to file
 	plateData.name = "Shorter 18\"";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
 	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
@@ -132,8 +136,7 @@ void Plate::Initialize(GLfloat maxWidth)
 
 	plateDataMap["Shorter 18 Inch"] = plateData;
 
-	//============================================================================
-
+	//Moved to file
 	plateData.name = "Oversize Oblong";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
 	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
@@ -154,8 +157,7 @@ void Plate::Initialize(GLfloat maxWidth)
 
 	plateDataMap["Oversize Oblong"] = plateData;
 
-	//============================================================================
-
+	//Moved to file
 	plateData.name = "Shaped Plate";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
 	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
@@ -186,8 +188,7 @@ void Plate::Initialize(GLfloat maxWidth)
 
 	//For 4 or less characters user has option to use one line (centered) or two lines
 
-	//============================================================================
-
+	//Moved to file
 	plateData.name = "Motorcycle 7x5\"";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
 	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
@@ -209,8 +210,7 @@ void Plate::Initialize(GLfloat maxWidth)
 
 	plateDataMap["Motorcycle 7x5 Inch"] = plateData;
 
-	//============================================================================
-
+	//Moved to file
 	plateData.name = "Motorcycle 8x6\"";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
 	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
@@ -232,8 +232,7 @@ void Plate::Initialize(GLfloat maxWidth)
 
 	plateDataMap["Motorcycle 8x6 Inch"] = plateData;
 
-	//============================================================================
-
+	//Moved to file
 	plateData.name = "Motorcycle 9x7\"";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
 	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
@@ -255,8 +254,7 @@ void Plate::Initialize(GLfloat maxWidth)
 
 	plateDataMap["Motorcycle 9x7 Inch"] = plateData;
 
-	//============================================================================
-
+	//Moved to file
 	plateData.name = "Square 11x8\"";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
 	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
@@ -278,8 +276,7 @@ void Plate::Initialize(GLfloat maxWidth)
 
 	plateDataMap["Square 11x8 Inch"] = plateData;
 
-	//============================================================================
-
+	//Moved to file
 	plateData.name = "USA Import 12x6\"";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
 	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
@@ -301,8 +298,7 @@ void Plate::Initialize(GLfloat maxWidth)
 
 	plateDataMap["USA Import 12x6 Inch"] = plateData;
 
-	//============================================================================
-
+	//Moved to file
 	plateData.name = "Large Euro Square";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
 	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
@@ -324,8 +320,7 @@ void Plate::Initialize(GLfloat maxWidth)
 
 	plateDataMap["Large Euro Square"] = plateData;
 
-	//============================================================================
-
+	//Moved to file
 	plateData.name = "Import 13x6.5\"";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
 	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
@@ -347,8 +342,7 @@ void Plate::Initialize(GLfloat maxWidth)
 
 	plateDataMap["Import 13x6.5 Inch"] = plateData;
 
-	//============================================================================
-
+	//Moved to file
 	plateData.name = "Import 13x7\"";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
 	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
@@ -370,8 +364,7 @@ void Plate::Initialize(GLfloat maxWidth)
 
 	plateDataMap["Import 13x7 Inch"] = plateData;
 
-	//============================================================================
-
+	//Moved to file
 	plateData.name = "Micro Plate 9x3\"";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
 	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
@@ -393,8 +386,7 @@ void Plate::Initialize(GLfloat maxWidth)
 
 	plateDataMap["Micro Plate 9x3 Inch"] = plateData;
 
-	//============================================================================
-
+	//Moved to file
 	plateData.name = "Micro Plate 12x3\"";
 	plateData.fontNameBSAU = "Arial_bold_4mm";
 	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
