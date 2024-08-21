@@ -11,6 +11,11 @@ void Utility::SetWindowHandle(HWND windowHandle)
 {
 	Utility::windowHandle = windowHandle;
 }
+//================================================================================================
+float Utility::ConvertToNDC(int value, float maxValue)
+{
+	return 2.0f * (value / maxValue);
+}
 //======================================================================================================
 void Utility::ParseString(std::string& string, std::vector<std::string>& subStrings, char token)
 {

@@ -27,6 +27,8 @@ public:
 
 	static void SetWindowHandle(HWND windowHandle);
 
+	static float ConvertToNDC(int value, float maxValue);
+
 	static void ParseString(std::string& string,
 		std::vector<std::string>& subStrings, char token);
 
