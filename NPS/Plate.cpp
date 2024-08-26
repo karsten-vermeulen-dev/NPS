@@ -156,6 +156,8 @@ Plate::Plate(const std::string& tag,
 	//default plate name when creating the first plate
 	plateData = plateDataMap[tag];
 
+	this->tag = tag;
+
 	std::vector<std::string> subStrings;
 	Utility::ParseString(plateData["Dimension"], subStrings, ',');
 
