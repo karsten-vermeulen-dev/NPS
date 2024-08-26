@@ -27,6 +27,7 @@ public:
 
 	static void SetWindowHandle(HWND windowHandle);
 
+	//TODO - consider passing vec2 here instead of scalar values
 	static float ConvertToNDC(int value, float maxValue);
 
 	static void ParseString(std::string& string,

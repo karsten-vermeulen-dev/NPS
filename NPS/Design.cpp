@@ -228,10 +228,10 @@ bool Design::OnEnter()
 	propertiesPanel->SetPosition(glm::uvec2(0, menuBarHeight));
 	propertiesPanel->SetDimension(glm::uvec2(minorWidth * mainResolution.x, mainResolution.y - menuBarHeight));
 
-	feedbackPanel = std::make_unique<FeedbackPanel>();
+	/*feedbackPanel = std::make_unique<FeedbackPanel>();
 	feedbackPanel->IsVisible(true);
 	feedbackPanel->SetPosition(glm::uvec2(minorWidth * mainResolution.x - UIPadding, majorHeight * mainResolution.y));
-	feedbackPanel->SetDimension(glm::uvec2(majorWidth * mainResolution.x - (minorWidth * mainResolution.x) + (UIPadding * 2), minorHeight * mainResolution.y + UIPadding));
+	feedbackPanel->SetDimension(glm::uvec2(majorWidth * mainResolution.x - (minorWidth * mainResolution.x) + (UIPadding * 2), minorHeight * mainResolution.y + UIPadding));*/
 
 	printPanel = std::make_unique<PrintPanel>();
 	printPanel->IsVisible(true);
@@ -241,8 +241,7 @@ bool Design::OnEnter()
 
 	//===================================================================
 
-	plate = std::make_unique<Plate>(propertiesPanel->GetProperties());
-	plate->SetPlateData("Standard Oblong");
+	plate = std::make_unique<Plate>("Standard Oblong", propertiesPanel->GetProperties());
 
 	//===================================================================
 
@@ -374,10 +373,13 @@ bool Design::Render()
 
 			//We add on 5mm of extra printing paper space
 			auto extraSpace = glm::vec2(2.0f * (5.0f / maxDimension.x), 2.0f * (5.0f / maxDimension.y));
-			auto dimension = plate->GetPlateData().dimensionNDC;
+			
+			auto dimensionNDC = glm::vec2(0.0f);
+			dimensionNDC.x = Utility::ConvertToNDC(plate->GetProperties().plateWidth, maxDimension.x);
+			dimensionNDC.y = Utility::ConvertToNDC(plate->GetProperties().plateHeight, maxDimension.y);
 
-			plateToPrint->SetDimension(dimension.x, dimension.y);
-			paper->SetDimension(dimension.x + extraSpace.x, dimension.y + extraSpace.y);
+			plateToPrint->SetDimension(dimensionNDC.x, dimensionNDC.y);
+			paper->SetDimension(dimensionNDC.x + extraSpace.x, dimensionNDC.y + extraSpace.y);
 
 			isPrintModeLoaded = true;
 		}
@@ -415,7 +417,8 @@ bool Design::Render()
 			//Here, we are not printing, we only save the file to preview later
 			//SaveToFile("Plates/Plate_3D_view.png", 203, true, false);
 
-			auto dimension = plate->GetPlateData().dimensionNDC;
+			//auto dimension = plate->GetPlateData().dimensionNDC;
+			auto dimension = plate->GetLegalDimensionNDC();
 
 			plateToPrint.release();
 			plateToPrint = std::make_unique<Image>("Plates/Plate_3D_view.png");
@@ -557,7 +560,7 @@ bool Design::Render()
 
 			auto plateProperties = propertiesPanel->GetProperties();
 
-			dataMap["Plate"] = plate->GetPlateData().name;
+			dataMap["Plate"] = plateProperties.plateName;
 			dataMap["PlateWidth"] = std::to_string(plateProperties.plateWidth);
 			dataMap["PlateHeight"] = std::to_string(plateProperties.plateHeight);
 
@@ -642,22 +645,22 @@ bool Design::Render()
 
 	else if (menuItems.isShort13InchSelected)
 	{
-		plate->SetPlateData("Short 13 Inch");
+		plate->SetPlateData("Short 13\"");
 	}
 
 	else if (menuItems.isShort16InchSelected)
 	{
-		plate->SetPlateData("Short 16 Inch");
+		plate->SetPlateData("Short 16\"");
 	}
 
 	else if (menuItems.isShorter17InchSelected)
 	{
-		plate->SetPlateData("Shorter 17 Inch");
+		plate->SetPlateData("Shorter 17\"");
 	}
 
 	else if (menuItems.isShorter18InchSelected)
 	{
-		plate->SetPlateData("Shorter 18 Inch");
+		plate->SetPlateData("Shorter 18\"");
 	}
 
 	else if (menuItems.isOversizeOblongSelected)
@@ -672,27 +675,27 @@ bool Design::Render()
 
 	else if (menuItems.isMotorcycle7x5InchSelected)
 	{
-		plate->SetPlateData("Motorcycle 7x5 Inch");
+		plate->SetPlateData("Motorcycle 7x5\"");
 	}
 
 	else if (menuItems.isMotorcycle8x6InchSelected)
 	{
-		plate->SetPlateData("Motorcycle 8x6 Inch");
+		plate->SetPlateData("Motorcycle 8x6\"");
 	}
 
 	else if (menuItems.isMotorcycle9x7InchSelected)
 	{
-		plate->SetPlateData("Motorcycle 9x7 Inch");
+		plate->SetPlateData("Motorcycle 9x7\"");
 	}
 
 	else if (menuItems.isSquare11x8InchSelected)
 	{
-		plate->SetPlateData("Square 11x8 Inch");
+		plate->SetPlateData("Square 11x8\"");
 	}
 
 	else if (menuItems.isUSAImport12x6InchSelected)
 	{
-		plate->SetPlateData("USA Import 12x6 Inch");
+		plate->SetPlateData("USA Import 12x6\"");
 	}
 
 	else if (menuItems.isLargeEuroSquare12x8InchSelected)
@@ -702,22 +705,22 @@ bool Design::Render()
 
 	else if (menuItems.isImport13x6Point5InchSelected)
 	{
-		plate->SetPlateData("Import 13x6.5 Inch");
+		plate->SetPlateData("Import 13x6.5\"");
 	}
 
 	else if (menuItems.isImport13x7InchSelected)
 	{
-		plate->SetPlateData("Import 13x7 Inch");
+		plate->SetPlateData("Import 13x7\"");
 	}
 
 	else if (menuItems.isMicroPlate9x3InchSelected)
 	{
-		plate->SetPlateData("Micro Plate 9x3 Inch");
+		plate->SetPlateData("Micro Plate 9x3\"");
 	}
 
 	else if (menuItems.isMicroPlate12x3InchSelected)
 	{
-		plate->SetPlateData("Micro Plate 12x3 Inch");
+		plate->SetPlateData("Micro Plate 12x3\"");
 	}
 
 	else if (menuItems.isFontSettingsSelected)
@@ -755,9 +758,9 @@ bool Design::Render()
 	propertiesPanel->Show();
 	auto& plateProperties = propertiesPanel->GetProperties();
 
-	feedbackPanel->SetLegality(plate->IsLegal());
-	feedbackPanel->SetPlateData(plate->GetPlateData());
-	feedbackPanel->Show();
+	//feedbackPanel->SetLegality(plate->IsLegal());
+	//feedbackPanel->SetPlateData(plate->GetPlateData());
+	//feedbackPanel->Show();
 
 	modePanel->Show();
 
@@ -897,13 +900,19 @@ void Design::OnExit()
 void Design::SaveToFile(const std::string& filename, int DPI, bool hasAlphaChannel, bool isPrinting)
 {
 	//This will be in NDC coordinates
-	auto plateDimension = plate->GetPlateData().dimensionNDC;
+	//auto plateDimension = plate->GetPlateData().dimensionNDC;
+	//auto plateDimension = plate->GetLegalDimensionNDC();
 
 	//The max dimension of the viewport in mm
 	auto maxDimension = Plate::GetMaxDimension();
 
+	auto plateDimensionNDC = glm::vec2(0.0f);
+	plateDimensionNDC.x = Utility::ConvertToNDC(plate->GetProperties().plateWidth, maxDimension.x);
+	plateDimensionNDC.y = Utility::ConvertToNDC(plate->GetProperties().plateHeight, maxDimension.y);
+
 	//convert plate dimension back to mm
-	auto mm = glm::vec2(0.5f * plateDimension.x * maxDimension.x, 0.5f * plateDimension.y * maxDimension.y);
+	//auto mm = glm::vec2(0.5f * plateDimension.x * maxDimension.x, 0.5f * plateDimension.y * maxDimension.y);
+	auto mm = glm::vec2(0.5f * plateDimensionNDC.x * maxDimension.x, 0.5f * plateDimensionNDC.y * maxDimension.y);
 
 	//Then convert mm to inches
 	auto inches = glm::highp_dvec2(mm.x * 0.03937007874, mm.y * 0.03937007874);

@@ -61,7 +61,7 @@ IsSpaceRequired=1
 IsSideBadgeAllowed=1
 IsTwoLineRegistration=0
 
-[Short 17"]
+[Shorter 17"]
 FontNameBSAU=Arial_bold_4mm
 FontNameDealerPostcode=Arial_bold_7mm
 Dimension=431,111
@@ -75,7 +75,7 @@ IsSpaceRequired=1
 IsSideBadgeAllowed=0
 IsTwoLineRegistration=0
 
-[Short 18"]
+[Shorter 18"]
 FontNameBSAU=Arial_bold_4mm
 FontNameDealerPostcode=Arial_bold_7mm
 Dimension=455,111

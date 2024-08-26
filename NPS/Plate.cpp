@@ -6,7 +6,7 @@
 
 bool Plate::isPrinting{ false };
 glm::vec2 Plate::maxDimension{ 0.0f };
-std::map<std::string, Plate::PlateData> Plate::plateDataMap;
+std::map<std::string, std::map<std::string, std::string>> Plate::plateDataMap;
 //================================================================================================
 void Plate::Initialize(const std::string& filename, GLfloat maxWidth)
 {
@@ -16,397 +16,21 @@ void Plate::Initialize(const std::string& filename, GLfloat maxWidth)
 	maxDimension.x = maxWidth;
 	maxDimension.y = maxDimension.x / aspectRatio;
 
-	auto NormalizePlate = [](const glm::ivec2& dimensionMM)
-	{
-		return glm::vec2(2.0f * (dimensionMM.x / maxDimension.x),
-			2.0f * (dimensionMM.y / maxDimension.y));
-	};
-
-	std::map<std::string, std::map<std::string, std::string>> dataMap;
-
-	if (!Utility::LoadDataFile(filename, dataMap))
+	if (!Utility::LoadDataFile(filename, plateDataMap))
 	{
 		//assert if failed to load?
 	}
 
-	PlateData plateData;
 
-	//Moved to file
-	plateData.name = "Standard Oblong";
-	plateData.fontNameBSAU = "Arial_bold_4mm";
-	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
-
-	plateData.dimensionMM.x = 520;
-	plateData.dimensionMM.y = 111;
-	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
-
-	plateData.maxAllowedSpace = 1;
-	plateData.maxAllowedCharacters = 7;
-
-	plateData.isCar = true;
-	plateData.isLegal = true;
-	plateData.isCarFont = true;
-	plateData.isSpaceRequired = true;
-	plateData.isSideBadgeAllowed = true;
-	plateData.isTwoLineRegistration = false;
-
-	plateDataMap["Standard Oblong"] = plateData;
-
-	//Moved to file
-	plateData.name = "Short 13\"";
-	plateData.fontNameBSAU = "Arial_bold_4mm";
-	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
-
-	plateData.dimensionMM.x = 337;
-	plateData.dimensionMM.y = 111;
-	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
-
-	plateData.maxAllowedSpace = 1;
-	plateData.maxAllowedCharacters = 5;
-
-	plateData.isCar = true;
-	plateData.isLegal = true;
-	plateData.isCarFont = true;
-	plateData.isSpaceRequired = true;
-	plateData.isSideBadgeAllowed = true;
-	plateData.isTwoLineRegistration = false;
-
-	plateDataMap["Short 13 Inch"] = plateData;
-
-	//Moved to file
-	plateData.name = "Short 16\"";
-	plateData.fontNameBSAU = "Arial_bold_4mm";
-	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
-
-	plateData.dimensionMM.x = 405;
-	plateData.dimensionMM.y = 111;
-	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
-
-	plateData.maxAllowedSpace = 1;
-	plateData.maxAllowedCharacters = 5;
-
-	plateData.isCar = true;
-	plateData.isLegal = true;
-	plateData.isCarFont = true;
-	plateData.isSpaceRequired = true;
-	plateData.isSideBadgeAllowed = true;
-	plateData.isTwoLineRegistration = false;
-
-	plateDataMap["Short 16 Inch"] = plateData;
-
-	//Moved to file
-	plateData.name = "Shorter 17\"";
-	plateData.fontNameBSAU = "Arial_bold_4mm";
-	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
-
-	plateData.dimensionMM.x = 431;
-	plateData.dimensionMM.y = 111;
-	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
-
-	plateData.maxAllowedSpace = 1;
-	plateData.maxAllowedCharacters = 6;
-
-	plateData.isCar = true;
-	plateData.isLegal = true;
-	plateData.isCarFont = true;
-	plateData.isSpaceRequired = true;
-	plateData.isSideBadgeAllowed = false;
-	plateData.isTwoLineRegistration = false;
-
-	plateDataMap["Shorter 17 Inch"] = plateData;
-
-	//Moved to file
-	plateData.name = "Shorter 18\"";
-	plateData.fontNameBSAU = "Arial_bold_4mm";
-	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
-
-	plateData.dimensionMM.x = 455;
-	plateData.dimensionMM.y = 111;
-	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
-
-	plateData.maxAllowedSpace = 1;
-	plateData.maxAllowedCharacters = 7;
-
-	plateData.isCar = true;
-	plateData.isLegal = true;
-	plateData.isCarFont = true;
-	plateData.isSpaceRequired = true;
-	plateData.isSideBadgeAllowed = false;
-	plateData.isTwoLineRegistration = false;
-
-	plateDataMap["Shorter 18 Inch"] = plateData;
-
-	//Moved to file
-	plateData.name = "Oversize Oblong";
-	plateData.fontNameBSAU = "Arial_bold_4mm";
-	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
-
-	plateData.dimensionMM.x = 533;
-	plateData.dimensionMM.y = 152;
-	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
-
-	plateData.maxAllowedSpace = 1;
-	plateData.maxAllowedCharacters = 7;
-
-	plateData.isCar = true;
-	plateData.isLegal = true;
-	plateData.isCarFont = true;
-	plateData.isSpaceRequired = true;
-	plateData.isSideBadgeAllowed = true;
-	plateData.isTwoLineRegistration = false;
-
-	plateDataMap["Oversize Oblong"] = plateData;
-
-	//Moved to file
-	plateData.name = "Shaped Plate";
-	plateData.fontNameBSAU = "Arial_bold_4mm";
-	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
-
-	plateData.dimensionMM.x = 616;
-	plateData.dimensionMM.y = 152;
-	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
-
-	plateData.maxAllowedSpace = 1;
-	plateData.maxAllowedCharacters = 7;
-
-	plateData.isCar = true;
-	plateData.isLegal = true;
-	plateData.isCarFont = true;
-	plateData.isSpaceRequired = true;
-	plateData.isSideBadgeAllowed = true;
-	plateData.isTwoLineRegistration = false;
-
-	plateDataMap["Shaped Plate"] = plateData;
-
-	//============================================================================
-	//Two-line plates
-	//============================================================================
-	
+	//========================================================================================
 	//TODO - Add this info to the 'info dialog box'
+	//Two-line plates
 	//Line gap should be 13mm and can be increased as long as padding
 	//from border is 7mm and padding from plate edge is 11mm 
-
 	//For 4 or less characters user has option to use one line (centered) or two lines
+	//========================================================================================
 
-	//Moved to file
-	plateData.name = "Motorcycle 7x5\"";
-	plateData.fontNameBSAU = "Arial_bold_4mm";
-	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
 
-	plateData.dimensionMM.x = 178;
-	plateData.dimensionMM.y = 127;
-	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
-
-	plateData.minAllowedGapMM = 7;
-	plateData.maxAllowedSpace = 0;
-	plateData.maxAllowedCharacters = 4;
-
-	plateData.isCar = false;
-	plateData.isLegal = false;
-	plateData.isCarFont = false;
-	plateData.isSpaceRequired = false;
-	plateData.isSideBadgeAllowed = true;
-	plateData.isTwoLineRegistration = true;
-
-	plateDataMap["Motorcycle 7x5 Inch"] = plateData;
-
-	//Moved to file
-	plateData.name = "Motorcycle 8x6\"";
-	plateData.fontNameBSAU = "Arial_bold_4mm";
-	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
-
-	plateData.dimensionMM.x = 203;
-	plateData.dimensionMM.y = 152;
-	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
-
-	plateData.minAllowedGapMM = 7;
-	plateData.maxAllowedSpace = 0;
-	plateData.maxAllowedCharacters = 4;
-
-	plateData.isCar = false;
-	plateData.isLegal = false;
-	plateData.isCarFont = false;
-	plateData.isSpaceRequired = false;
-	plateData.isSideBadgeAllowed = true;
-	plateData.isTwoLineRegistration = true;
-
-	plateDataMap["Motorcycle 8x6 Inch"] = plateData;
-
-	//Moved to file
-	plateData.name = "Motorcycle 9x7\"";
-	plateData.fontNameBSAU = "Arial_bold_4mm";
-	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
-
-	plateData.dimensionMM.x = 235;
-	plateData.dimensionMM.y = 178;
-	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
-
-	plateData.minAllowedGapMM = 7;
-	plateData.maxAllowedSpace = 0;
-	plateData.maxAllowedCharacters = 4;
-
-	plateData.isCar = false;
-	plateData.isLegal = true;
-	plateData.isCarFont = false;
-	plateData.isSpaceRequired = false;
-	plateData.isSideBadgeAllowed = true;
-	plateData.isTwoLineRegistration = true;
-
-	plateDataMap["Motorcycle 9x7 Inch"] = plateData;
-
-	//Moved to file
-	plateData.name = "Square 11x8\"";
-	plateData.fontNameBSAU = "Arial_bold_4mm";
-	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
-
-	plateData.dimensionMM.x = 279;
-	plateData.dimensionMM.y = 203;
-	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
-
-	plateData.minAllowedGapMM = 7;
-	plateData.maxAllowedSpace = 0;
-	plateData.maxAllowedCharacters = 4;
-
-	plateData.isCar = true;
-	plateData.isLegal = true;
-	plateData.isCarFont = true;
-	plateData.isSpaceRequired = false;
-	plateData.isSideBadgeAllowed = false;
-	plateData.isTwoLineRegistration = true;
-
-	plateDataMap["Square 11x8 Inch"] = plateData;
-
-	//Moved to file
-	plateData.name = "USA Import 12x6\"";
-	plateData.fontNameBSAU = "Arial_bold_4mm";
-	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
-
-	plateData.dimensionMM.x = 310;
-	plateData.dimensionMM.y = 152;
-	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
-
-	plateData.minAllowedGapMM = 7;
-	plateData.maxAllowedSpace = 0;
-	plateData.maxAllowedCharacters = 4;
-
-	plateData.isCar = true;
-	plateData.isLegal = true;
-	plateData.isCarFont = false;
-	plateData.isSpaceRequired = false;
-	plateData.isSideBadgeAllowed = false;
-	plateData.isTwoLineRegistration = true;
-
-	plateDataMap["USA Import 12x6 Inch"] = plateData;
-
-	//Moved to file
-	plateData.name = "Large Euro Square";
-	plateData.fontNameBSAU = "Arial_bold_4mm";
-	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
-
-	plateData.dimensionMM.x = 310;
-	plateData.dimensionMM.y = 203;
-	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
-
-	plateData.minAllowedGapMM = 7;
-	plateData.maxAllowedSpace = 0;
-	plateData.maxAllowedCharacters = 4;
-
-	plateData.isCar = true;
-	plateData.isLegal = true;
-	plateData.isCarFont = true;
-	plateData.isSpaceRequired = false;
-	plateData.isSideBadgeAllowed = true;
-	plateData.isTwoLineRegistration = true;
-
-	plateDataMap["Large Euro Square"] = plateData;
-
-	//Moved to file
-	plateData.name = "Import 13x6.5\"";
-	plateData.fontNameBSAU = "Arial_bold_4mm";
-	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
-
-	plateData.dimensionMM.x = 330;
-	plateData.dimensionMM.y = 165;
-	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
-
-	plateData.minAllowedGapMM = 7;
-	plateData.maxAllowedSpace = 0;
-	plateData.maxAllowedCharacters = 4;
-
-	plateData.isCar = true;
-	plateData.isLegal = true;
-	plateData.isCarFont = false;
-	plateData.isSpaceRequired = false;
-	plateData.isSideBadgeAllowed = false;
-	plateData.isTwoLineRegistration = true;
-
-	plateDataMap["Import 13x6.5 Inch"] = plateData;
-
-	//Moved to file
-	plateData.name = "Import 13x7\"";
-	plateData.fontNameBSAU = "Arial_bold_4mm";
-	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
-
-	plateData.dimensionMM.x = 330;
-	plateData.dimensionMM.y = 178;
-	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
-
-	plateData.minAllowedGapMM = 7;
-	plateData.maxAllowedSpace = 0;
-	plateData.maxAllowedCharacters = 4;
-
-	plateData.isCar = true;
-	plateData.isLegal = true;
-	plateData.isCarFont = false;
-	plateData.isSpaceRequired = false;
-	plateData.isSideBadgeAllowed = false;
-	plateData.isTwoLineRegistration = true;
-
-	plateDataMap["Import 13x7 Inch"] = plateData;
-
-	//Moved to file
-	plateData.name = "Micro Plate 9x3\"";
-	plateData.fontNameBSAU = "Arial_bold_4mm";
-	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
-
-	plateData.dimensionMM.x = 228;
-	plateData.dimensionMM.y = 76;
-	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
-
-	plateData.minAllowedGapMM = 7;
-	plateData.maxAllowedSpace = 0;
-	plateData.maxAllowedCharacters = 4;
-
-	plateData.isCar = true;
-	plateData.isLegal = false;
-	plateData.isCarFont = true;
-	plateData.isSpaceRequired = false;
-	plateData.isSideBadgeAllowed = false;
-	plateData.isTwoLineRegistration = false;
-
-	plateDataMap["Micro Plate 9x3 Inch"] = plateData;
-
-	//Moved to file
-	plateData.name = "Micro Plate 12x3\"";
-	plateData.fontNameBSAU = "Arial_bold_4mm";
-	plateData.fontNameDealerPostcode = "Arial_bold_7mm";
-
-	plateData.dimensionMM.x = 310;
-	plateData.dimensionMM.y = 76;
-	plateData.dimensionNDC = NormalizePlate(plateData.dimensionMM);
-
-	plateData.minAllowedGapMM = 7;
-	plateData.maxAllowedSpace = 0;
-	plateData.maxAllowedCharacters = 4;
-
-	plateData.isCar = true;
-	plateData.isLegal = false;
-	plateData.isCarFont = true;
-	plateData.isSpaceRequired = false;
-	plateData.isSideBadgeAllowed = false;
-	plateData.isTwoLineRegistration = false;
-
-	plateDataMap["Micro Plate 12x3 Inch"] = plateData;
 }
 //================================================================================================
 void Plate::Print(const Plate& plate,
@@ -417,9 +41,6 @@ void Plate::Print(const Plate& plate,
 {
 	auto oldMaxDimension = Plate::maxDimension;
 	Plate::maxDimension = maxDimension;
-
-	auto plateData = plate.GetPlateData();
-	plateData.dimensionNDC = glm::vec2(2.0f, 2.0f);
 
 	//We need to load temp. printing fonts
 	//The height of the text is multiplied by 1.37 because 
@@ -446,10 +67,10 @@ void Plate::Print(const Plate& plate,
 	Registration::Load("Assets/Images/Fonts/3D_motorcycle_under", "Bike_3D_print");
 	Registration::Load("Assets/Images/Fonts/4D_motorcycle_under", "Bike_4D_print");
 
-	plateData.fontNameBSAU = plate.GetPlateData().fontNameBSAU + "_print";
+	//plateData.fontNameBSAU = plate.GetPlateData().fontNameBSAU + "_print";
 
-	Plate printPlate(properties);
-	printPlate.SetPlateData("Custom", &plateData);
+	Plate printPlate(plate.tag, properties);
+	printPlate.SetPlateData("Custom");
 
 	//Why do we have a 'isPrinting' flag and pass a flag to 'SetProperties'?
 	Plate::isPrinting = isPrinting;
@@ -499,6 +120,16 @@ glm::vec2 Plate::GetMaxDimension()
 	return maxDimension;
 }
 //================================================================================================
+const glm::vec2& Plate::GetLegalDimensionNDC() const
+{
+	return legalDimensionNDC;
+}
+//================================================================================================
+const std::map<std::string, std::string>& Plate::GetPlateData() const
+{
+	return plateData;
+}
+//================================================================================================
 const Text* Plate::GetBSAUText() const
 {
 	return BSAUText.get();
@@ -519,14 +150,23 @@ const PropertiesPanel::Properties& Plate::GetProperties() const
 	return properties;
 }
 //================================================================================================
-const Plate::PlateData& Plate::GetPlateData() const
+Plate::Plate(const std::string& tag, 
+	         PropertiesPanel::Properties& properties) : properties(properties)
 {
-	return plateData;
-}
-//================================================================================================
-Plate::Plate(PropertiesPanel::Properties& properties) : properties(properties)
-{
-	plateData = plateDataMap["Standard Oblong"];
+	//default plate name when creating the first plate
+	plateData = plateDataMap[tag];
+
+	std::vector<std::string> subStrings;
+	Utility::ParseString(plateData["Dimension"], subStrings, ',');
+
+	legalDimension.x = stoi(subStrings[0]);
+	legalDimension.y = stoi(subStrings[1]);
+
+	legalDimensionNDC.x = Utility::ConvertToNDC(legalDimension.x, maxDimension.x);
+	legalDimensionNDC.y = Utility::ConvertToNDC(legalDimension.y, maxDimension.y);
+
+	properties.plateWidth = legalDimension.x;
+	properties.plateHeight = legalDimension.y;
 
 	border = std::make_unique<Border>(this);
 
@@ -535,9 +175,9 @@ Plate::Plate(PropertiesPanel::Properties& properties) : properties(properties)
 	registration->SetString("REG 123");
 
 	//The height of the text is 8mm
-	dealerText = std::make_unique<Text>(this, "Arial_bold_8mm");
-	postcodeText = std::make_unique<Text>(this, "Arial_bold_8mm");
-	BSAUText = std::make_unique<Text>(this, "Arial_bold_8mm");
+	dealerText = std::make_unique<Text>(this, plateData["FontNameDealerPostcode"]);
+	postcodeText = std::make_unique<Text>(this, plateData["FontNameDealerPostcode"]);
+	BSAUText = std::make_unique<Text>(this, plateData["FontNameBSAU"]);
 
 	static auto totalPlateObjects = 0;
 
@@ -555,11 +195,6 @@ Plate::Plate(PropertiesPanel::Properties& properties) : properties(properties)
 //================================================================================================
 void Plate::SetProperties(bool isPrinting)
 {
-	auto ToNDC = [](int value, float maxValue)
-	{
-		return 2.0f * (value / maxValue);
-	};
-
 	auto position = transform.GetPosition();
 
 	//=================================================================================
@@ -654,21 +289,21 @@ void Plate::SetProperties(bool isPrinting)
 	//Plate
 	//=================================================================================
 
-	properties.plateName = plateData.name;
+	auto dimensionNDC = glm::vec2(0.0f);
+	dimensionNDC.x = Utility::ConvertToNDC(properties.plateWidth, maxDimension.x);
+	dimensionNDC.y = Utility::ConvertToNDC(properties.plateHeight, maxDimension.y);
+	
+	properties.plateName = tag;
 
-	if (properties.plateWidth != plateData.dimensionMM.x ||
-		properties.plateHeight != plateData.dimensionMM.y)
+	//If the dimension of the plate deviates from its 
+	//legal dimension then it becomes a 'Custom' plate
+	if (properties.plateWidth != legalDimension.x || 
+		properties.plateHeight != legalDimension.y)
 	{
-		PlateData plateData = this->plateData;
-		plateData.name = "Custom";
+		tag = "Custom"; 
 
-		plateData.dimensionMM.x = properties.plateWidth;
-		plateData.dimensionMM.y = properties.plateHeight;
-
-		plateData.dimensionNDC.x = 2.0f * (plateData.dimensionMM.x / maxDimension.x);
-		plateData.dimensionNDC.y = 2.0f * (plateData.dimensionMM.y / maxDimension.y);
-
-		SetPlateData("Custom", &plateData);
+		//Rebuild the plate with new dimensions
+		FillBuffers();
 	}
 
 	//=================================================================================
@@ -677,12 +312,12 @@ void Plate::SetProperties(bool isPrinting)
 
 	registration->SetString(properties.registrationText);
 
-	position.x += ToNDC(properties.nudgedRegistration, maxDimension.x);
-	position.y += ToNDC(properties.raisedRegistration, maxDimension.y);
+	position.x += Utility::ConvertToNDC(properties.nudgedRegistration, maxDimension.x);
+	position.y += Utility::ConvertToNDC(properties.raisedRegistration, maxDimension.y);
 
 	if (properties.isSideBadgeVisible)
 	{
-		position.x += ToNDC(this->sideBadgeMargin, maxDimension.x) * 0.5f;
+		position.x += 0.5f * Utility::ConvertToNDC(this->sideBadgeMargin, maxDimension.x);
 	}
 
 	registration->GetTransform().SetPosition(position);
@@ -700,27 +335,27 @@ void Plate::SetProperties(bool isPrinting)
 	{
 		if (properties.isSideBadgeVisible)
 		{
-			position.x += ToNDC(this->sideBadgeMargin, maxDimension.x) * 0.5f;
+			position.x += 0.5f * Utility::ConvertToNDC(this->sideBadgeMargin, maxDimension.x);
 		}
 
-		const auto dealerPostcodePaddingY = ToNDC(this->dealerPostcodePaddingY, maxDimension.y);
-		const auto postcodeBottomPadding = ToNDC(this->postcodeBottomPadding, maxDimension.y);
+		const auto dealerPostcodePaddingY = Utility::ConvertToNDC(this->dealerPostcodePaddingY, maxDimension.y);
+		const auto postcodeBottomPadding = Utility::ConvertToNDC(this->postcodeBottomPadding, maxDimension.y);
 
 		const auto postcodeWithPaddingHeight = (postcodeText->GetMaxHeight()
 			+ dealerPostcodePaddingY
 			+ postcodeBottomPadding);
 
 		//Dealer
-		position.x -= 0.5f * dealerText->GetMaxWidth() - ToNDC(properties.nudgedDealer, maxDimension.x);
-		position.y -= 0.5f * plateData.dimensionNDC.y - postcodeWithPaddingHeight;
-		position.y += ToNDC(properties.raisedDealer, maxDimension.y);
+		position.x -= 0.5f * dealerText->GetMaxWidth() - Utility::ConvertToNDC(properties.nudgedDealer, maxDimension.x);
+		position.y -= 0.5f * dimensionNDC.y - postcodeWithPaddingHeight;
+		position.y += Utility::ConvertToNDC(properties.raisedDealer, maxDimension.y);
 
 		dealerText->GetTransform().SetPosition(position);
 
 		//Postcode
-		position.x += ToNDC(properties.nudgedPostcode, maxDimension.x);
+		position.x += Utility::ConvertToNDC(properties.nudgedPostcode, maxDimension.x);
 		position.y -= postcodeWithPaddingHeight - (postcodeBottomPadding);
-		position.y += ToNDC(properties.raisedPostcode, maxDimension.y);
+		position.y += Utility::ConvertToNDC(properties.raisedPostcode, maxDimension.y);
 
 		postcodeText->GetTransform().SetPosition(position);
 	}
@@ -729,27 +364,27 @@ void Plate::SetProperties(bool isPrinting)
 	{
 		if (properties.isSideBadgeVisible)
 		{
-			position.x += ToNDC(this->sideBadgeMargin, maxDimension.x) * 0.5f;
+			position.x += 0.5f * Utility::ConvertToNDC(this->sideBadgeMargin, maxDimension.x);
 		}
 
-		const auto dealerBottomPadding = ToNDC(this->dealerBottomPadding, maxDimension.y);
-		const auto dealerPostcodePaddingX = ToNDC(this->dealerPostcodePaddingX, maxDimension.x);
+		const auto dealerBottomPadding = Utility::ConvertToNDC(this->dealerBottomPadding, maxDimension.y);
+		const auto dealerPostcodePaddingX = Utility::ConvertToNDC(this->dealerPostcodePaddingX, maxDimension.x);
 
 		const auto width = dealerText->GetMaxWidth()
 			+ postcodeText->GetMaxWidth()
 			+ dealerPostcodePaddingX;
 
 		//Dealer
-		position.x -= 0.5f * width - (ToNDC(properties.nudgedDealer, maxDimension.x));
-		position.y -= 0.5f * plateData.dimensionNDC.y - dealerBottomPadding;
-		position.y += ToNDC(properties.raisedDealer, maxDimension.y);
+		position.x -= 0.5f * width - Utility::ConvertToNDC(properties.nudgedDealer, maxDimension.x);
+		position.y -= 0.5f * dimensionNDC.y - dealerBottomPadding;
+		position.y += Utility::ConvertToNDC(properties.raisedDealer, maxDimension.y);
 
 		dealerText->GetTransform().SetPosition(position);
 
 		//Postcode
 		position.x += dealerText->GetMaxWidth() + dealerPostcodePaddingX
-			+ (ToNDC(properties.nudgedPostcode, maxDimension.x));
-		position.y += ToNDC(properties.raisedPostcode, maxDimension.y);
+			+ Utility::ConvertToNDC(properties.nudgedPostcode, maxDimension.x);
+		position.y += Utility::ConvertToNDC(properties.raisedPostcode, maxDimension.y);
 
 		postcodeText->GetTransform().SetPosition(position);
 	}
@@ -763,37 +398,37 @@ void Plate::SetProperties(bool isPrinting)
 	position = transform.GetPosition();
 
 	//Text padding for BSAU text
-	const auto BSAUPadding = ToNDC(this->textPadding, maxDimension.x);
+	const auto BSAUPadding = Utility::ConvertToNDC(this->textPadding, maxDimension.x);
 
 	if (properties.isBSAUOnBorder)
 	{
-		const auto marginX = ToNDC(properties.marginSize, maxDimension.x);
-		const auto marginY = ToNDC(properties.marginSize, maxDimension.y);
+		const auto marginX = Utility::ConvertToNDC(properties.marginSize, maxDimension.x);
+		const auto marginY = Utility::ConvertToNDC(properties.marginSize, maxDimension.y);
 
-		const auto sideDimension = ToNDC((int)this->sideDimension.x, maxDimension.x);
+		const auto sideDimension = Utility::ConvertToNDC((int)this->sideDimension.x, maxDimension.x);
 		const auto width = sideDimension + marginX + BSAUText->GetMaxWidth() + BSAUPadding;
 
-		position.x += 0.5f * plateData.dimensionNDC.x - width + ToNDC(properties.nudgedBSAU, maxDimension.x);
-		position.y -= 0.5f * plateData.dimensionNDC.y - marginY;
-		position.y += ToNDC(properties.raisedBSAU, maxDimension.y);
+		position.x += 0.5f * dimensionNDC.x - width + Utility::ConvertToNDC(properties.nudgedBSAU, maxDimension.x);
+		position.y -= 0.5f * dimensionNDC.y - marginY;
+		position.y += Utility::ConvertToNDC(properties.raisedBSAU, maxDimension.y);
 
 		BSAUText->GetTransform().SetPosition(position);
 	}
 
 	else
 	{
-		const auto size = ToNDC(properties.borderSize, maxDimension.y);
-		const auto marginX = ToNDC(properties.marginSize, maxDimension.x);
-		const auto marginY = ToNDC(properties.marginSize, maxDimension.y);
+		const auto size = Utility::ConvertToNDC(properties.borderSize, maxDimension.y);
+		const auto marginX = Utility::ConvertToNDC(properties.marginSize, maxDimension.x);
+		const auto marginY = Utility::ConvertToNDC(properties.marginSize, maxDimension.y);
 
-		const auto sideDimension = ToNDC((int)this->sideDimension.x, maxDimension.x);
-		const auto width = sideDimension * plateData.dimensionNDC.x + marginX + BSAUText->GetMaxWidth();
+		const auto sideDimension = Utility::ConvertToNDC((int)this->sideDimension.x, maxDimension.x);
+		const auto width = sideDimension * legalDimensionNDC.x + marginX + BSAUText->GetMaxWidth();
 
 		const auto height = marginY + size;
 
-		position.x += 0.5f * plateData.dimensionNDC.x - width + ToNDC(properties.nudgedBSAU, maxDimension.x);
-		position.y -= 0.5f * plateData.dimensionNDC.y - height;
-		position.y += ToNDC(properties.raisedBSAU, maxDimension.y);
+		position.x += 0.5f * dimensionNDC.x - width + Utility::ConvertToNDC(properties.nudgedBSAU, maxDimension.x);
+		position.y -= 0.5f * dimensionNDC.y - height;
+		position.y += Utility::ConvertToNDC(properties.raisedBSAU, maxDimension.y);
 
 		BSAUText->GetTransform().SetPosition(position);
 	}
@@ -806,33 +441,38 @@ void Plate::SetProperties(bool isPrinting)
 
 	//If user has requested a side badge but this is not allowed
 	//for this particular plate then the plate becomes illegal
-	if (properties.isSideBadgeVisible && !plateData.isSideBadgeAllowed)
+	//if (properties.isSideBadgeVisible && !plateData.isSideBadgeAllowed)
+	if (properties.isSideBadgeVisible && !stoi(plateData["IsSideBadgeAllowed"]))
 	{
 		isLegal = false;
 	}
 }
 //================================================================================================
-void Plate::SetPlateData(const std::string& name, PlateData* plateData)
+void Plate::SetPlateData(const std::string& tag)
 {
-	if (name == "Custom")
-	{
-		this->plateData = *plateData;
-	}
+	this->tag = tag;
+	plateData = plateDataMap[tag];
 
-	else
-	{
-		this->plateData = plateDataMap[name];
-	}
+	std::vector<std::string> subStrings;
+	Utility::ParseString(plateData["Dimension"], subStrings, ',');
 
+	legalDimension.x = stoi(subStrings[0]);
+	legalDimension.y = stoi(subStrings[1]);
+
+	legalDimensionNDC.x = Utility::ConvertToNDC(legalDimension.x, maxDimension.x);
+	legalDimensionNDC.y = Utility::ConvertToNDC(legalDimension.y, maxDimension.y);
+
+	BSAUText->SetFont(plateData["FontNameBSAU"]);
+	dealerText->SetFont(plateData["FontNameDealerPostcode"]);
+	postcodeText->SetFont(plateData["FontNameDealerPostcode"]);
+
+	properties.plateWidth = legalDimension.x;
+	properties.plateHeight = legalDimension.y;
+
+	properties.isTwoLineRegistration = stoi(plateData["IsTwoLineRegistration"]);
+
+	//Rebuild the plate
 	FillBuffers();
-
-	BSAUText->SetFont(this->plateData.fontNameBSAU);
-	dealerText->SetFont(this->plateData.fontNameDealerPostcode);
-	postcodeText->SetFont(this->plateData.fontNameDealerPostcode);
-
-	properties.plateWidth = this->plateData.dimensionMM.x;
-	properties.plateHeight = this->plateData.dimensionMM.y;
-	properties.isTwoLineRegistration = this->plateData.isTwoLineRegistration;
 }
 //================================================================================================
 void Plate::Render(Shader& shader)
@@ -1050,7 +690,11 @@ void Plate::FillBuffers()
 {
 	const auto sideDimension = 2.0f * (this->sideDimension / maxDimension);
 
-	auto halfDimension = glm::vec2(plateData.dimensionNDC) * 0.5f;
+	auto dimensionNDC = glm::vec2(0.0f);
+	dimensionNDC.x = Utility::ConvertToNDC(properties.plateWidth, maxDimension.x);
+	dimensionNDC.y = Utility::ConvertToNDC(properties.plateHeight, maxDimension.y);
+
+	auto halfDimension = 0.5f * dimensionNDC;
 	auto middleDimension = halfDimension - sideDimension;
 
 	//main block 

@@ -13,7 +13,7 @@
 #include "FontDialog.h"
 #include "PrintPanel.h"
 #include "CustomerDialog.h"
-#include "FeedbackPanel.h"
+//#include "FeedbackPanel.h"
 #include "Image.h"
 #include "LicenseDialog.h"
 #include "MainMenu.h"
@@ -75,7 +75,7 @@ private:
 
 	std::unique_ptr<ModePanel> modePanel;
 	std::unique_ptr<PrintPanel> printPanel;
-	std::unique_ptr<FeedbackPanel> feedbackPanel;
+	//std::unique_ptr<FeedbackPanel> feedbackPanel;
 	std::unique_ptr<PropertiesPanel> propertiesPanel;
 
 };

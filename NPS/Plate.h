@@ -56,28 +56,6 @@ public:
 		DealerPostcodeBSAU
 	};
 
-	//Check Plates.inf file for more information
-	struct PlateData
-	{
-		std::string name;                        
-		std::string fontNameBSAU;                
-		std::string fontNameDealerPostcode;      
-
-		glm::ivec2 dimensionMM{ 0 };             
-		glm::vec2 dimensionNDC{ 0.0f };          
-
-		GLuint minAllowedGapMM{ 0 };             
-		GLuint maxAllowedSpace{ 0 };             
-		GLuint maxAllowedCharacters{ 0 };        
-
-		bool isCar{ false };                     
-		bool isLegal{ false };                   
-		bool isCarFont{ false };                 
-		bool isSpaceRequired{ false };           
-		bool isSideBadgeAllowed{ false };        
-		bool isTwoLineRegistration{ false };     
-	};
-
 	static void Initialize(const std::string& filename, GLfloat maxWidth);
 	
 	static void Print(const Plate& plate, 
@@ -86,7 +64,7 @@ public:
 		Shader& shader, 
 		bool isPrinting);
 
-	Plate(PropertiesPanel::Properties& properties);
+	Plate(const std::string& tag, PropertiesPanel::Properties& properties);
 
 	bool IsLegal() const;
 	void IsLegal(bool flag);
@@ -95,11 +73,14 @@ public:
 
 	static glm::vec2 GetMaxDimension();
 
+	const glm::vec2& GetLegalDimensionNDC() const;
+
+	const std::map<std::string, std::string>& GetPlateData() const;
+
 	const Text* GetBSAUText() const;
 	const Text* GetDealerText() const;
 	const Text* GetPostcodeText() const;
 
-	const PlateData& GetPlateData() const;
 	const PropertiesPanel::Properties& GetProperties() const;
 
 	//Temp. fix using 'isPrinting' parameter to set the 
@@ -108,7 +89,7 @@ public:
 	//Should we move all code from this function to the 'Render' function?
 	void SetProperties(bool isPrinting = false);
 
-	void SetPlateData(const std::string& name, PlateData* plateData = nullptr);
+	void SetPlateData(const std::string& tag);
 
 	void Render(Shader& shader);
 
@@ -126,8 +107,13 @@ private:
 	//function, we can disable the rendering of the yellow plate 
 	static bool isPrinting;
 	
-	static std::map<std::string, PlateData> plateDataMap;
+	//The globally accessible data map containing information about all the plates
+	static std::map<std::string, std::map<std::string, std::string>> plateDataMap;
 
+	//We need our own local map of data pertaining to this 
+	//particular plate ("Standard Oblong", "Micro Plate", etc)
+	std::map<std::string, std::string> plateData;
+	
 	void FillBuffers();
 
 	bool isLegal{ true };
@@ -146,8 +132,15 @@ private:
 	//Not fully working/tested yet
 	std::unique_ptr<Text> customFontRegistration;
 
-	Transform transform;
-	PlateData plateData;
+	Transform transform; //Is this really needed since the plate is always at 0,0?
+	
+	//We need a means of identifying THIS plate
+	std::string tag;
+
+	//Official legal dimensions (mm and NDC) of the current plate (not actual dimension!)
+	//We require these in various places so let's make them members 
+	glm::uvec2 legalDimension;    
+	glm::vec2 legalDimensionNDC;
 
 	//This is hooked up to the properties panel UI
 	PropertiesPanel::Properties& properties;

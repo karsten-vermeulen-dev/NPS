@@ -120,7 +120,11 @@ void Registration::Render(Shader& shader)
 	//These two string objects will be passed in to the private 'Render'
 	//function individually as well the two starting positions for top/bottom
 	//All registration positions are based on the plate's main position
-	if (parent->GetPlateData().isTwoLineRegistration)
+
+	auto plateData = parent->GetPlateData();
+
+	//if (parent->GetPlateData().isTwoLineRegistration)
+	if (std::stoi(plateData["IsTwoLineRegistration"]))
 	{
 		std::string registrationTop;
 		std::string registrationBottom;
@@ -176,7 +180,8 @@ void Registration::Render(Shader& shader)
 		Render(shader, string, position);
 	}
 
-	if (string.size() > parent->GetPlateData().maxAllowedCharacters)
+	//if (string.size() > parent->GetPlateData().maxAllowedCharacters)
+	if (string.size() > std::stoi(plateData["MaxAllowedCharacters"]))
 	{
 		parent->IsLegal(false);
 	}

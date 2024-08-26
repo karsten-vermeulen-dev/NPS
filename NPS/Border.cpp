@@ -66,7 +66,12 @@ void Border::FillBuffers()
 	}
 
 	const auto sideDimension = 2.0f * (parent->sideDimension / maxPlateDimension);
-	const auto halfDimension = glm::vec2(parent->GetPlateData().dimensionNDC) * 0.5f;
+	
+	auto dimensionNDC = glm::vec2(0.0f);
+	dimensionNDC.x = Utility::ConvertToNDC(parent->GetProperties().plateWidth, maxPlateDimension.x);
+	dimensionNDC.y = Utility::ConvertToNDC(parent->GetProperties().plateHeight, maxPlateDimension.y);
+
+	const auto halfDimension = 0.5f * dimensionNDC;
 	const auto middleDimension = halfDimension - sideDimension;
 
 	const auto marginSize = parent->GetProperties().marginSize;

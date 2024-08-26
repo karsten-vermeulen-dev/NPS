@@ -169,5 +169,4 @@ void PropertiesPanel::Reset()
 	properties.isBSAUOnBorder = true;
 
 	properties.BSAUText = "NPM BS AU 145e";
-
 }
