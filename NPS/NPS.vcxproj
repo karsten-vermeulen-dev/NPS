@@ -151,7 +151,6 @@
     <ClCompile Include="FontDialog.cpp" />
     <ClCompile Include="LicenseDialog.cpp" />
     <ClCompile Include="MainMenu.cpp" />
-    <ClCompile Include="PrintPanel.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Border.cpp" />
     <ClCompile Include="Buffer.cpp" />
@@ -187,7 +186,6 @@
     <ClInclude Include="FontDialog.h" />
     <ClInclude Include="LicenseDialog.h" />
     <ClInclude Include="MainMenu.h" />
-    <ClInclude Include="PrintPanel.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="Border.h" />
     <ClInclude Include="Buffer.h" />

@@ -130,6 +130,43 @@ void PropertiesPanel::Show()
 
 	ImGui::EndDisabled();
 	ImGui::End();
+
+	//===================================================================================
+	//===================================================================================
+
+	//Migrated from older 'PrintPanel'
+	/*ImGui::BeginDisabled(!isActive);
+
+	Partition("MyriadPro_Bold_16", "Margin", yellow);
+	ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
+
+	ImGui::SliderInt("Top", &metrics.topMargin, -25, 25);
+	ImGui::SliderInt("Left", &metrics.leftMargin, -25, 25);*/
+
+	//===================================================================================
+
+	/*Spacing(3);
+	Partition("MyriadPro_Bold_16", "Character", yellow);
+	ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
+
+	ImGui::SliderInt("Wide width", &metrics.wideCharacterWidth, -10, 10);
+	ImGui::SliderInt("Wide height", &metrics.wideCharacterHeight, -10, 10);
+	ImGui::SliderInt("Narrow width", &metrics.narrowCharacterWidth, -10, 10);*/
+
+	//===================================================================================
+
+	/*Spacing(3);
+
+	buttonState.print = false;
+
+	if (ImGui::Button("Print", ImVec2(buttonDimension.x, buttonDimension.y)))
+	{
+		buttonState.print = true;
+	}*/
+
+	//===================================================================================
+
+	//ImGui::EndDisabled();
 }
 //======================================================================================================
 void PropertiesPanel::Reset()

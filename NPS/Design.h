@@ -10,7 +10,7 @@
 
 #include "ActivateDialog.h"
 #include "FontDialog.h"
-#include "PrintPanel.h"
+
 #include "CustomerDialog.h"
 
 #include "Image.h"
@@ -74,8 +74,7 @@ private:
 	std::unique_ptr<LicenseDialog> licenseDialog;
 
 	std::unique_ptr<ModePanel> modePanel;
-	std::unique_ptr<PrintPanel> printPanel;
-	
+		
 	std::unique_ptr<PropertiesPanel> propertiesPanel;
 
 };

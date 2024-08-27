@@ -7,6 +7,26 @@ class PropertiesPanel : public UserInterface
 
 public:
 
+	//Use these when in 'Print' mode
+	/*struct ButtonState
+	{
+		bool print{ false };
+	};
+
+	struct Metrics
+	{
+		int topMargin{ 0 };
+		int leftMargin{ 0 };
+		int plateWidth{ 0 };
+		int plateHeight{ 0 };
+		int wideCharacterWidth{ 0 };
+		int wideCharacterHeight{ 0 };
+		int narrowCharacterWidth{ 0 };
+	};*/
+
+	//const Metrics& GetMetrics() const;
+	//const ButtonState& GetButtonState();
+
 	struct Properties
 	{
 		std::string plateName;
@@ -57,4 +77,7 @@ private:
 
 	Properties properties;
 
+	//Use these when in 'Print' mode
+	//Metrics metrics;
+	//ButtonState buttonState;
 };

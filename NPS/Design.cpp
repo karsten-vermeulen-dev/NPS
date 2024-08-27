@@ -223,12 +223,6 @@ bool Design::OnEnter()
 	propertiesPanel->SetPosition(glm::uvec2(0, menuBarHeight));
 	propertiesPanel->SetDimension(glm::uvec2(minorWidth * mainResolution.x, mainResolution.y - menuBarHeight));
 
-	printPanel = std::make_unique<PrintPanel>();
-	printPanel->IsVisible(true);
-	printPanel->SetButtonDimension(buttonDimension);
-	printPanel->SetPosition(glm::uvec2(mainResolution.x - (minorWidth * mainResolution.x), majorHeight * mainResolution.y));
-	printPanel->SetDimension(glm::uvec2(minorWidth * mainResolution.x, minorHeight * mainResolution.y + UIPadding));
-
 	//===================================================================
 
 	plate = std::make_unique<Plate>("Standard Oblong", propertiesPanel->GetProperties());
@@ -301,7 +295,6 @@ bool Design::Render()
 		isPrintModeLoaded = false;
 		is3DViewModeLoaded = false;
 
-		printPanel->IsActive(false);
 		propertiesPanel->IsActive(true);
 
 		mainShader->Use();
@@ -328,10 +321,10 @@ bool Design::Render()
 		//Check licence
 		/*if (licence < currentTime)
 		{
-			messageDialog->SetButtonType(MessageDialog::ButtonType::OkCancel);
-			messageDialog->SetTitle("Licence error");
-			messageDialog->SetMessage("Licence expired. Please renew now.");
-			messageDialog->IsVisible(true);
+			msgBox->SetButtonType(MsgBox::ButtonType::OkCancel);
+			msgBox->SetTitle("Licence error");
+			msgBox->SetMessage("Licence expired. Please renew now.");
+			msgBox->IsVisible(true);
 		}*/
 	}
 
@@ -374,7 +367,6 @@ bool Design::Render()
 			isPrintModeLoaded = true;
 		}
 
-		printPanel->IsActive(true);
 		propertiesPanel->IsActive(false);
 
 		mainShader->Use();
@@ -385,8 +377,9 @@ bool Design::Render()
 
 		auto position = glm::vec3(0.0f);
 
-		position.x += 2.0f * (printPanel->GetMetrics().leftMargin / maxDimension.x);
-		position.y -= 2.0f * (printPanel->GetMetrics().topMargin / maxDimension.y);
+		//Reactivate once 'properties' has the relevant features built-in
+		//position.x += 2.0f * (properties->GetMetrics().leftMargin / maxDimension.x);
+		//position.y -= 2.0f * (properties->GetMetrics().topMargin / maxDimension.y);
 
 		plateToPrint->GetTransform().SetPosition(position);
 		plateToPrint->Render(*mainShader);
@@ -418,7 +411,6 @@ bool Design::Render()
 			is3DViewModeLoaded = true;
 		}
 
-		printPanel->IsActive(false);
 		propertiesPanel->IsActive(false);
 
 		lightShader->Use();
@@ -754,13 +746,6 @@ bool Design::Render()
 
 	modePanel->Show();
 
-	printPanel->Show();
-
-	if (printPanel->GetButtonState().print)
-	{
-		PrintPlate();
-	}
-
 	if (fontDialog->IsVisible())
 	{
 		fontDialog->Show();
@@ -1063,8 +1048,9 @@ void Design::PrintPlate()
 					memoryDeviceContext.SetMapMode(deviceContext.GetMapMode());
 					deviceContext.SetStretchBltMode(HALFTONE);
 
+					//Temp. disable - DO NOT REMOVE - must replace 'printPanel' with 'properties'
 					//Render loaded image to the printer in memory
-					deviceContext.StretchBlt(
+					/*deviceContext.StretchBlt(
 						printPanel->GetMetrics().leftMargin,
 						printPanel->GetMetrics().topMargin,
 						pageWidth,
@@ -1074,7 +1060,7 @@ void Design::PrintPlate()
 						0,
 						width,
 						height,
-						SRCCOPY);
+						SRCCOPY);*/
 
 					//Clean up
 					memoryDeviceContext.SelectObject(bitmapHandle);
