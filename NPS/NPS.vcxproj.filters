@@ -147,9 +147,6 @@
     <ClCompile Include="UserInterface.cpp">
       <Filter>Source Files\Objects\UI</Filter>
     </ClCompile>
-    <ClCompile Include="AboutDialog.cpp">
-      <Filter>Source Files\Objects\UI\Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="ActivateDialog.cpp">
       <Filter>Source Files\Objects\UI\Dialogs</Filter>
     </ClCompile>
@@ -262,9 +259,6 @@
     </ClInclude>
     <ClInclude Include="UserInterface.h">
       <Filter>Header Files\Objects\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="AboutDialog.h">
-      <Filter>Header Files\Objects\UI\Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="ActivateDialog.h">
       <Filter>Header Files\Objects\UI\Dialogs</Filter>

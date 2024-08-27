@@ -188,11 +188,6 @@ bool Design::OnEnter()
 	fontDialog->SetDimension(glm::uvec2(325, 580));
 	fontDialog->SetButtonDimension(buttonDimension);
 
-	aboutDialog = std::make_unique<AboutDialog>();
-	aboutDialog->IsVisible(false);
-	aboutDialog->SetDimension(glm::uvec2(300, 125));
-	aboutDialog->SetButtonDimension(buttonDimension);
-
 	messageDialog = std::make_unique<MessageDialog>();
 	messageDialog->IsVisible(false);
 	messageDialog->SetDimension(glm::uvec2(300, 150));
@@ -735,7 +730,13 @@ bool Design::Render()
 
 	else if (menuItems.isAboutSelected)
 	{
-		aboutDialog->IsVisible(true);
+		//aboutDialog->IsVisible(true);
+		
+		messageDialog->SetTag("About");
+		messageDialog->SetButtonType(MessageDialog::ButtonType::Okay);
+		messageDialog->SetTitle("About application");
+		messageDialog->SetMessage("Number plate software. Copyright 2024.");
+		messageDialog->IsVisible(true);
 	}
 
 	else if (menuItems.isActivateProgramSelected)
@@ -811,11 +812,6 @@ bool Design::Render()
 				}
 			}
 		}
-	}
-
-	if (aboutDialog->IsVisible())
-	{
-		aboutDialog->Show();
 	}
 
 	else if (messageDialog->IsVisible())

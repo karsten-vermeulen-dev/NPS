@@ -35,7 +35,6 @@ void MessageDialog::Show()
 
 	//===================================================================================
 
-	const auto buttonIndent = 90;
 	const auto spacingToButton = 5;
 	
 	//===================================================================================
@@ -53,7 +52,15 @@ void MessageDialog::Show()
 
 	buttonState = { false };
 
-	if (buttonType == ButtonType::YesNo)
+	if ((buttonType == ButtonType::Okay))
+	{
+		if (ImGui::Button("Okay", ImVec2(buttonDimension.x, buttonDimension.y)))
+		{
+			buttonState.ok = true;
+		}
+	}
+
+	else if (buttonType == ButtonType::YesNo)
 	{
 		if (ImGui::Button("Yes", ImVec2(buttonDimension.x, buttonDimension.y)))
 		{
@@ -68,7 +75,7 @@ void MessageDialog::Show()
 
 	else if (buttonType == ButtonType::OkCancel)
 	{
-		if (ImGui::Button("OK", ImVec2(buttonDimension.x, buttonDimension.y)))
+		if (ImGui::Button("Okay", ImVec2(buttonDimension.x, buttonDimension.y)))
 		{
 			buttonState.ok = true;
 		}

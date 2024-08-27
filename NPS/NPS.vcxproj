@@ -147,7 +147,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AboutDialog.cpp" />
     <ClCompile Include="ActivateDialog.cpp" />
     <ClCompile Include="FontDialog.cpp" />
     <ClCompile Include="LicenseDialog.cpp" />
@@ -185,7 +184,6 @@
     <ClCompile Include="ModePanel.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AboutDialog.h" />
     <ClInclude Include="ActivateDialog.h" />
     <ClInclude Include="FontDialog.h" />
     <ClInclude Include="LicenseDialog.h" />

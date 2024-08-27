@@ -8,7 +8,6 @@
 #include <glm.hpp>
 #include <SDL.h>
 
-#include "AboutDialog.h"
 #include "ActivateDialog.h"
 #include "FontDialog.h"
 #include "PrintPanel.h"
@@ -67,7 +66,7 @@ private:
 	std::unique_ptr<FontDialog> fontDialog;
 	
 	//make this a container of dialogs - easier to render/show using a loop
-	std::unique_ptr<AboutDialog> aboutDialog;
+	
 	std::unique_ptr<MessageDialog> messageDialog;
 	std::unique_ptr<ActivateDialog> activateDialog;
 	std::unique_ptr<CustomerDialog> customerDialog;
