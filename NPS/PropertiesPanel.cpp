@@ -127,6 +127,12 @@ void PropertiesPanel::Show()
 	ImGui::PopFont();
 
 	//===================================================================================
+	
+	Spacing(spacing);
+	Partition("MyriadPro_Bold_16", "Mode", yellow);
+	ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
+	
+	//===================================================================================
 
 	ImGui::EndDisabled();
 	ImGui::End();
