@@ -17,7 +17,6 @@
 #include "LicenseDialog.h"
 #include "MainMenu.h"
 #include "MsgBox.h"
-#include "ModePanel.h"
 #include "Plate.h"
 #include "PropertiesPanel.h"
 #include "Screen.h"
@@ -30,6 +29,13 @@ class Design : public State
 
 public:
 
+	enum class Mode
+	{
+		Design, 
+		PrintPreview, 
+		View3D
+	};
+
 	virtual ~Design() {}
 	virtual bool OnEnter();
 	virtual State* Update();
@@ -37,6 +43,8 @@ public:
 	virtual void OnExit();
 
 private:
+
+	Mode mode{ Mode::Design };
 
 	//void View3D();
 	void PrintPlate();
@@ -73,7 +81,6 @@ private:
 	std::unique_ptr<CustomerDialog> customerDialog;
 	std::unique_ptr<LicenseDialog> licenseDialog;
 
-	std::unique_ptr<ModePanel> modePanel;
 		
 	std::unique_ptr<PropertiesPanel> propertiesPanel;
 

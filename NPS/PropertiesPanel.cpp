@@ -128,10 +128,37 @@ void PropertiesPanel::Show()
 
 	//===================================================================================
 	
+	const auto spacingToButton = 7;
+
 	Spacing(spacing);
 	Partition("MyriadPro_Bold_16", "Mode", yellow);
 	ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
 	
+	Spacing(spacingToButton);
+
+	ImGui::Indent(buttonIndent);
+
+	if (ImGui::Button("Design", ImVec2(buttonDimension.x, buttonDimension.y)))
+	{
+		buttonState.design = true;
+		buttonState.printPreview = false;
+		buttonState.view3D = false;
+	}
+
+	if (ImGui::Button("Print preview", ImVec2(buttonDimension.x, buttonDimension.y)))
+	{
+		buttonState.design = false;
+		buttonState.printPreview = true;
+		buttonState.view3D = false;
+	}
+
+	if (ImGui::Button("3D view", ImVec2(buttonDimension.x, buttonDimension.y)))
+	{
+		buttonState.design = false;
+		buttonState.printPreview = false;
+		buttonState.view3D = true;
+	}
+
 	//===================================================================================
 
 	ImGui::EndDisabled();

@@ -153,19 +153,7 @@
     <ClCompile Include="CustomerDialog.cpp">
       <Filter>Source Files\Objects\UI\Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="MessageDialog.cpp">
-      <Filter>Source Files\Objects\UI\Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="PropertiesPanel.cpp">
-      <Filter>Source Files\Objects\UI\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="FeedbackPanel.cpp">
-      <Filter>Source Files\Objects\UI\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="ModePanel.cpp">
-      <Filter>Source Files\Objects\UI\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="PrintPanel.cpp">
       <Filter>Source Files\Objects\UI\Panels</Filter>
     </ClCompile>
     <ClCompile Include="MainMenu.cpp">
@@ -176,6 +164,9 @@
     </ClCompile>
     <ClCompile Include="FontDialog.cpp">
       <Filter>Source Files\Objects\UI\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="MsgBox.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -266,19 +257,7 @@
     <ClInclude Include="CustomerDialog.h">
       <Filter>Header Files\Objects\UI\Dialogs</Filter>
     </ClInclude>
-    <ClInclude Include="MessageDialog.h">
-      <Filter>Header Files\Objects\UI\Dialogs</Filter>
-    </ClInclude>
     <ClInclude Include="PropertiesPanel.h">
-      <Filter>Header Files\Objects\UI\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="FeedbackPanel.h">
-      <Filter>Header Files\Objects\UI\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="ModePanel.h">
-      <Filter>Header Files\Objects\UI\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="PrintPanel.h">
       <Filter>Header Files\Objects\UI\Panels</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
@@ -289,6 +268,9 @@
     </ClInclude>
     <ClInclude Include="FontDialog.h">
       <Filter>Header Files\Objects\UI\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="MsgBox.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

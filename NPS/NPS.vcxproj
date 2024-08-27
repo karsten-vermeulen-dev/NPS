@@ -179,7 +179,6 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Tutorial.cpp" />
     <ClCompile Include="Utility.cpp" />
-    <ClCompile Include="ModePanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActivateDialog.h" />
@@ -216,7 +215,6 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Tutorial.h" />
     <ClInclude Include="Utility.h" />
-    <ClInclude Include="ModePanel.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Light.frag" />

@@ -212,11 +212,6 @@ bool Design::OnEnter()
 
 	const auto UIPadding = 1;
 
-	modePanel = std::make_unique<ModePanel>();
-	modePanel->IsVisible(true);
-	modePanel->SetPosition(glm::uvec2(mainResolution.x - (0.3f * minorWidth * mainResolution.x) + UIPadding, menuBarHeight));
-	modePanel->SetDimension(glm::uvec2(0.3f * minorWidth * mainResolution.x, (0.65f * minorHeight * mainResolution.y) + UIPadding));
-
 	propertiesPanel = std::make_unique<PropertiesPanel>();
 	propertiesPanel->IsVisible(true);
 	propertiesPanel->SetButtonDimension(buttonDimension);
@@ -290,12 +285,12 @@ bool Design::Render()
 
 	Screen::Instance()->Refresh();
 
-	if (modePanel->GetMode().isDesign)
+	if (mode == Mode::Design)
 	{
 		isPrintModeLoaded = false;
 		is3DViewModeLoaded = false;
 
-		propertiesPanel->IsActive(true);
+		//propertiesPanel->IsActive(true);
 
 		mainShader->Use();
 		Screen::Instance()->CreateNDCView();
@@ -328,7 +323,7 @@ bool Design::Render()
 		}*/
 	}
 
-	else if (modePanel->GetMode().isPrint)
+	else if (mode == Mode::PrintPreview)
 	{
 		is3DViewModeLoaded = false;
 
@@ -367,7 +362,7 @@ bool Design::Render()
 			isPrintModeLoaded = true;
 		}
 
-		propertiesPanel->IsActive(false);
+		//propertiesPanel->IsActive(false);
 
 		mainShader->Use();
 		Screen::Instance()->CreateNDCView();
@@ -385,7 +380,7 @@ bool Design::Render()
 		plateToPrint->Render(*mainShader);
 	}
 
-	else if (modePanel->GetMode().is3DView)
+	else if (mode == Mode::View3D)
 	{
 		isPrintModeLoaded = false;
 
@@ -411,7 +406,7 @@ bool Design::Render()
 			is3DViewModeLoaded = true;
 		}
 
-		propertiesPanel->IsActive(false);
+		//propertiesPanel->IsActive(false);
 
 		lightShader->Use();
 		Screen::Instance()->CreatePerspView(*lightShader);
@@ -744,7 +739,20 @@ bool Design::Render()
 	propertiesPanel->Show();
 	auto& plateProperties = propertiesPanel->GetProperties();
 
-	modePanel->Show();
+	if (propertiesPanel->buttonState.design)
+	{
+		mode = Mode::Design;
+	}
+
+	else if (propertiesPanel->buttonState.printPreview)
+	{
+		mode = Mode::PrintPreview;
+	}
+
+	else if (propertiesPanel->buttonState.view3D)
+	{
+		mode = Mode::View3D;
+	}
 
 	if (fontDialog->IsVisible())
 	{

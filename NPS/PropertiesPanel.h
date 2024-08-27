@@ -27,6 +27,13 @@ public:
 	//const Metrics& GetMetrics() const;
 	//const ButtonState& GetButtonState();
 
+	struct ButtonState
+	{
+		bool design{ false };
+		bool printPreview{ false };
+		bool view3D{ false };
+	};
+
 	struct Properties
 	{
 		std::string plateName;
@@ -72,6 +79,9 @@ public:
 
 	virtual void Show() override;
 	virtual void Reset() override;
+
+	//Make private later with a getter?
+	ButtonState buttonState;
 
 private:
 
