@@ -18,7 +18,7 @@
 #include "MainMenu.h"
 #include "MsgBox.h"
 #include "Plate.h"
-#include "PropertiesPanel.h"
+#include "Properties.h"
 #include "Screen.h"
 #include "Shader.h"
 #include "State.h"
@@ -81,7 +81,6 @@ private:
 	std::unique_ptr<CustomerDialog> customerDialog;
 	std::unique_ptr<LicenseDialog> licenseDialog;
 
-		
-	std::unique_ptr<PropertiesPanel> propertiesPanel;
+	std::unique_ptr<Properties> properties;
 
 };

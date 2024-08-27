@@ -156,7 +156,7 @@
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="CustomerDialog.cpp" />
     <ClCompile Include="Design.cpp" />
-    <ClCompile Include="PropertiesPanel.cpp" />
+    <ClCompile Include="Properties.cpp" />
     <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="GLAD\gl.c" />
     <ClCompile Include="Image.cpp" />
@@ -190,7 +190,7 @@
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="CustomerDialog.h" />
     <ClInclude Include="Design.h" />
-    <ClInclude Include="PropertiesPanel.h" />
+    <ClInclude Include="Properties.h" />
     <ClInclude Include="UserInterface.h" />
     <ClInclude Include="GLAD\gl.h" />
     <ClInclude Include="GLAD\khrplatform.h" />

@@ -91,12 +91,6 @@ bool Design::OnEnter()
 
 	//===================================================================
 
-	//The maximum width of the viewport is 650mm, 
-	//The height will adjust based on aspect ratio
-	Plate::Initialize("Data/Plates.inf", 650.0f);
-
-	//===================================================================
-
 	//The height of the text is multiplied by 1.37 because 
 	//the resulting pixel size is not always as we expect
 	const auto scale = 1.37f;
@@ -176,6 +170,15 @@ bool Design::OnEnter()
 
 	//===================================================================
 
+	//The maximum width of the viewport is 650mm, 
+	//The height will adjust based on aspect ratio
+	Plate::Initialize("Data/Plates.inf", 650.0f);
+
+	//Hook up the properties and other UI later on, after plate and UI has been created
+	plate = std::make_unique<Plate>("Standard Oblong");
+
+	//===================================================================
+
 	//Dimensions of UI must adjust based on app's resolution
 
 	const auto buttonDimension = glm::uvec2(100, 22);
@@ -212,15 +215,15 @@ bool Design::OnEnter()
 
 	const auto UIPadding = 1;
 
-	propertiesPanel = std::make_unique<PropertiesPanel>();
-	propertiesPanel->IsVisible(true);
-	propertiesPanel->SetButtonDimension(buttonDimension);
-	propertiesPanel->SetPosition(glm::uvec2(0, menuBarHeight));
-	propertiesPanel->SetDimension(glm::uvec2(minorWidth * mainResolution.x, mainResolution.y - menuBarHeight));
+	properties = std::make_unique<Properties>();
+	properties->IsVisible(true);
+	properties->SetButtonDimension(buttonDimension);
+	properties->SetPosition(glm::uvec2(0, menuBarHeight));
+	properties->SetDimension(glm::uvec2(minorWidth * mainResolution.x, mainResolution.y - menuBarHeight));
 
 	//===================================================================
-
-	plate = std::make_unique<Plate>("Standard Oblong", propertiesPanel->GetProperties());
+	
+	plate->SetUserInterfaces(properties.get(), fontDialog.get());
 
 	//===================================================================
 
@@ -353,8 +356,12 @@ bool Design::Render()
 			auto extraSpace = glm::vec2(2.0f * (5.0f / maxDimension.x), 2.0f * (5.0f / maxDimension.y));
 			
 			auto dimensionNDC = glm::vec2(0.0f);
-			dimensionNDC.x = Utility::ConvertToNDC(plate->GetProperties().plateWidth, maxDimension.x);
-			dimensionNDC.y = Utility::ConvertToNDC(plate->GetProperties().plateHeight, maxDimension.y);
+			dimensionNDC.x = Utility::ConvertToNDC(properties->plateWidth, maxDimension.x);
+			dimensionNDC.y = Utility::ConvertToNDC(properties->plateHeight, maxDimension.y);
+
+			//dimensionNDC.x = Utility::ConvertToNDC(plate->GetProperties()->plateWidth, maxDimension.x);
+			//dimensionNDC.y = Utility::ConvertToNDC(plate->GetProperties()->plateHeight, maxDimension.y);
+
 
 			plateToPrint->SetDimension(dimensionNDC.x, dimensionNDC.y);
 			paper->SetDimension(dimensionNDC.x + extraSpace.x, dimensionNDC.y + extraSpace.y);
@@ -452,12 +459,12 @@ bool Design::Render()
 
 			Utility::LoadConfigFile(filename, dataMap);
 
-			auto& plateProperties = propertiesPanel->GetProperties();
+			//auto& properties = propertiesPanel->GetProperties();
 			
 			plate->SetPlateData(dataMap["Plate"]);
 
-			plateProperties.plateWidth = std::stoi(dataMap["PlateWidth"]);
-			plateProperties.plateHeight = std::stoi(dataMap["PlateHeight"]);
+			properties->plateWidth = std::stoi(dataMap["PlateWidth"]);
+			properties->plateHeight = std::stoi(dataMap["PlateHeight"]);
 
 			if (dataMap["FontType"] == "Car")
 			{
@@ -495,34 +502,34 @@ bool Design::Render()
 				fontDialog->fontStyle = FontDialog::FontStyle::Lasercut4D;
 			}
 
-			plateProperties.raisedRegistration = std::stoi(dataMap["RegTextRaise"]);
-			plateProperties.nudgedRegistration = std::stoi(dataMap["RegTextNudge"]);
-
-			plateProperties.raisedTwoLineSpace = std::stoi(dataMap["RegTwoLineSpaceRaise"]);
-			plateProperties.registrationText = dataMap["RegText"];
-
-			plateProperties.isBorderVisible = std::stoi(dataMap["BorderVisible"]);
-			plateProperties.isSideBadgeVisible = std::stoi(dataMap["BorderSideBadge"]);
-
-			plateProperties.borderSize = std::stoi(dataMap["BorderSize"]);
-			plateProperties.marginSize = std::stoi(dataMap["MarginSize"]);
-
-			plateProperties.dealerText = dataMap["DealerText"];
-			plateProperties.isDealerVisible = std::stoi(dataMap["DealerTextVisible"]);
-			plateProperties.isDealerAbovePostcode = std::stoi(dataMap["DealerTextAbovePostcode"]);
-
-			plateProperties.raisedDealer = std::stoi(dataMap["DealerTextRaise"]);
-			plateProperties.nudgedDealer = std::stoi(dataMap["DealerTextNudge"]);
-
-			plateProperties.postcodeText = dataMap["PostcodeText"];
-			plateProperties.raisedPostcode = std::stoi(dataMap["PostcodeTextRaise"]);
-			plateProperties.nudgedPostcode = std::stoi(dataMap["PostcodeTextNudge"]);
-
-			plateProperties.BSAUText = dataMap["BSAUText"];
-			plateProperties.isBSAUVisible  = std::stoi(dataMap["BSAUVisible"]); 
-			plateProperties.isBSAUOnBorder = std::stoi(dataMap["BSAUOnBorder"]);
-			plateProperties.raisedBSAU = std::stoi(dataMap["BSAUTextRaise"]);
-			plateProperties.nudgedBSAU = std::stoi(dataMap["BSAUTextNudge"]);
+			properties->raisedRegistration = std::stoi(dataMap["RegTextRaise"]);
+			properties->nudgedRegistration = std::stoi(dataMap["RegTextNudge"]);
+					  
+			properties->raisedTwoLineSpace = std::stoi(dataMap["RegTwoLineSpaceRaise"]);
+			properties->registrationText = dataMap["RegText"];
+					  
+			properties->isBorderVisible = std::stoi(dataMap["BorderVisible"]);
+			properties->isSideBadgeVisible = std::stoi(dataMap["BorderSideBadge"]);
+					  
+			properties->borderSize = std::stoi(dataMap["BorderSize"]);
+			properties->marginSize = std::stoi(dataMap["MarginSize"]);
+					 
+			properties->dealerText = dataMap["DealerText"];
+			properties->isDealerVisible = std::stoi(dataMap["DealerTextVisible"]);
+			properties->isDealerAbovePostcode = std::stoi(dataMap["DealerTextAbovePostcode"]);
+					  
+			properties->raisedDealer = std::stoi(dataMap["DealerTextRaise"]);
+			properties->nudgedDealer = std::stoi(dataMap["DealerTextNudge"]);
+					  
+			properties->postcodeText = dataMap["PostcodeText"];
+			properties->raisedPostcode = std::stoi(dataMap["PostcodeTextRaise"]);
+			properties->nudgedPostcode = std::stoi(dataMap["PostcodeTextNudge"]);
+					  
+			properties->BSAUText = dataMap["BSAUText"];
+			properties->isBSAUVisible  = std::stoi(dataMap["BSAUVisible"]); 
+			properties->isBSAUOnBorder = std::stoi(dataMap["BSAUOnBorder"]);
+			properties->raisedBSAU = std::stoi(dataMap["BSAUTextRaise"]);
+			properties->nudgedBSAU = std::stoi(dataMap["BSAUTextNudge"]);
 		}
 	}
 
@@ -535,11 +542,11 @@ bool Design::Render()
 		{
 			std::map<std::string, std::string> dataMap;
 
-			auto plateProperties = propertiesPanel->GetProperties();
+			//auto plateProperties = propertiesPanel->GetProperties();
 
-			dataMap["Plate"] = plateProperties.plateName;
-			dataMap["PlateWidth"] = std::to_string(plateProperties.plateWidth);
-			dataMap["PlateHeight"] = std::to_string(plateProperties.plateHeight);
+			dataMap["Plate"] = properties->plateName;
+			dataMap["PlateWidth"] = std::to_string(properties->plateWidth);
+			dataMap["PlateHeight"] = std::to_string(properties->plateHeight);
 
 			if (fontDialog->fontType.isCar)
 			{
@@ -575,32 +582,32 @@ bool Design::Render()
 
 			//-------------------------------------------------------
 			
-			dataMap["RegTextRaise"] = std::to_string(plateProperties.raisedRegistration);
-			dataMap["RegTextNudge"] = std::to_string(plateProperties.nudgedRegistration);
-			dataMap["RegTwoLineSpaceRaise"] = std::to_string(plateProperties.raisedTwoLineSpace);
-			dataMap["RegText"] = plateProperties.registrationText;
+			dataMap["RegTextRaise"] = std::to_string(properties->raisedRegistration);
+			dataMap["RegTextNudge"] = std::to_string(properties->nudgedRegistration);
+			dataMap["RegTwoLineSpaceRaise"] = std::to_string(properties->raisedTwoLineSpace);
+			dataMap["RegText"] = properties->registrationText;
 
-			dataMap["BorderVisible"] = (plateProperties.isBorderVisible) ? "1" : "0";
-			dataMap["BorderSideBadge"] = (plateProperties.isSideBadgeVisible) ? "1" : "0";
+			dataMap["BorderVisible"] = (properties->isBorderVisible) ? "1" : "0";
+			dataMap["BorderSideBadge"] = (properties->isSideBadgeVisible) ? "1" : "0";
 			
-			dataMap["BorderSize"] = std::to_string(plateProperties.borderSize);
-			dataMap["MarginSize"] = std::to_string(plateProperties.marginSize);
+			dataMap["BorderSize"] = std::to_string(properties->borderSize);
+			dataMap["MarginSize"] = std::to_string(properties->marginSize);
 			
-			dataMap["DealerText"] = plateProperties.dealerText;
-			dataMap["DealerTextVisible"] = (plateProperties.isDealerVisible) ? "1" : "0";
-			dataMap["DealerTextAbovePostcode"] = (plateProperties.isDealerAbovePostcode) ? "1" : "0";
-			dataMap["DealerTextRaise"] = std::to_string(plateProperties.raisedDealer);
-			dataMap["DealerTextNudge"] = std::to_string(plateProperties.nudgedDealer);
+			dataMap["DealerText"] = properties->dealerText;
+			dataMap["DealerTextVisible"] = (properties->isDealerVisible) ? "1" : "0";
+			dataMap["DealerTextAbovePostcode"] = (properties->isDealerAbovePostcode) ? "1" : "0";
+			dataMap["DealerTextRaise"] = std::to_string(properties->raisedDealer);
+			dataMap["DealerTextNudge"] = std::to_string(properties->nudgedDealer);
 
-			dataMap["PostcodeText"] = plateProperties.postcodeText;
-			dataMap["PostcodeTextRaise"] = std::to_string(plateProperties.raisedPostcode);
-			dataMap["PostcodeTextNudge"] = std::to_string(plateProperties.nudgedPostcode);
+			dataMap["PostcodeText"] = properties->postcodeText;
+			dataMap["PostcodeTextRaise"] = std::to_string(properties->raisedPostcode);
+			dataMap["PostcodeTextNudge"] = std::to_string(properties->nudgedPostcode);
 
-			dataMap["BSAUText"] = plateProperties.BSAUText;
-			dataMap["BSAUVisible"] = (plateProperties.isBSAUVisible) ? "1" : "0";
-			dataMap["BSAUOnBorder"] = (plateProperties.isBSAUOnBorder) ? "1" : "0";
-			dataMap["BSAUTextRaise"] = std::to_string(plateProperties.raisedBSAU);
-			dataMap["BSAUTextNudge"] = std::to_string(plateProperties.nudgedBSAU);
+			dataMap["BSAUText"] = properties->BSAUText;
+			dataMap["BSAUVisible"] = (properties->isBSAUVisible) ? "1" : "0";
+			dataMap["BSAUOnBorder"] = (properties->isBSAUOnBorder) ? "1" : "0";
+			dataMap["BSAUTextRaise"] = std::to_string(properties->raisedBSAU);
+			dataMap["BSAUTextNudge"] = std::to_string(properties->nudgedBSAU);
 
 			Utility::SaveConfigFile(filename, dataMap);
 		}
@@ -736,20 +743,20 @@ bool Design::Render()
 
 	//========================================================================================
 
-	propertiesPanel->Show();
-	auto& plateProperties = propertiesPanel->GetProperties();
+	properties->Show();
+	//auto& plateProperties = propertiesPanel->GetProperties();
 
-	if (propertiesPanel->buttonState.design)
+	if (properties->buttonState.design)
 	{
 		mode = Mode::Design;
 	}
 
-	else if (propertiesPanel->buttonState.printPreview)
+	else if (properties->buttonState.printPreview)
 	{
 		mode = Mode::PrintPreview;
 	}
 
-	else if (propertiesPanel->buttonState.view3D)
+	else if (properties->buttonState.view3D)
 	{
 		mode = Mode::View3D;
 	}
@@ -885,8 +892,12 @@ void Design::SaveToFile(const std::string& filename, int DPI, bool hasAlphaChann
 	auto maxDimension = Plate::GetMaxDimension();
 
 	auto plateDimensionNDC = glm::vec2(0.0f);
-	plateDimensionNDC.x = Utility::ConvertToNDC(plate->GetProperties().plateWidth, maxDimension.x);
-	plateDimensionNDC.y = Utility::ConvertToNDC(plate->GetProperties().plateHeight, maxDimension.y);
+	plateDimensionNDC.x = Utility::ConvertToNDC(properties->plateWidth, maxDimension.x);
+	plateDimensionNDC.y = Utility::ConvertToNDC(properties->plateHeight, maxDimension.y);
+
+	//plateDimensionNDC.x = Utility::ConvertToNDC(plate->GetProperties().plateWidth, maxDimension.x);
+	//plateDimensionNDC.y = Utility::ConvertToNDC(plate->GetProperties().plateHeight, maxDimension.y);
+
 
 	//convert plate dimension back to mm
 	//auto mm = glm::vec2(0.5f * plateDimension.x * maxDimension.x, 0.5f * plateDimension.y * maxDimension.y);
@@ -920,7 +931,7 @@ void Design::SaveToFile(const std::string& filename, int DPI, bool hasAlphaChann
 	Screen::Instance()->SetColor(1.0f, 1.0f, 1.0f, (hasAlphaChannel) ? 0.0f : 1.0f);
 	Screen::Instance()->Refresh();
 
-	Plate::Print(*plate, propertiesPanel->GetProperties(), glm::vec2(mm.x, mm.y), *mainShader, isPrinting);
+	Plate::Print(*plate, properties.get(), glm::vec2(mm.x, mm.y), *mainShader, isPrinting);
 
 	//This will render to our currently bound custom frame buffer
 	Screen::Instance()->Present();
@@ -939,7 +950,7 @@ void Design::SaveToFile(const std::string& filename, int DPI, bool hasAlphaChann
 //======================================================================================================
 void Design::ResetView()
 {
-	propertiesPanel->Reset();
+	properties->Reset();
 	fontDialog->Reset(); //we reset but we dont apply to the plate yet
 }
 //======================================================================================================

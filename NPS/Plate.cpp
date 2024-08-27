@@ -34,7 +34,7 @@ void Plate::Initialize(const std::string& filename, GLfloat maxWidth)
 }
 //================================================================================================
 void Plate::Print(const Plate& plate,
-	PropertiesPanel::Properties& properties,
+	Properties* properties,
 	const glm::vec2& maxDimension,
 	Shader& shader,
 	bool isPrinting)
@@ -69,7 +69,7 @@ void Plate::Print(const Plate& plate,
 
 	//plateData.fontNameBSAU = plate.GetPlateData().fontNameBSAU + "_print";
 
-	Plate printPlate(plate.tag, properties);
+	Plate printPlate(plate.tag);
 	printPlate.SetPlateData("Custom");
 
 	//Why do we have a 'isPrinting' flag and pass a flag to 'SetProperties'?
@@ -145,13 +145,12 @@ const Text* Plate::GetPostcodeText() const
 	return postcodeText.get();
 }
 //================================================================================================
-const PropertiesPanel::Properties& Plate::GetProperties() const
+const Properties* Plate::GetProperties() const
 {
 	return properties;
 }
 //================================================================================================
-Plate::Plate(const std::string& tag, 
-	         PropertiesPanel::Properties& properties) : properties(properties)
+Plate::Plate(const std::string& tag)
 {
 	//default plate name when creating the first plate
 	plateData = plateDataMap[tag];
@@ -167,8 +166,8 @@ Plate::Plate(const std::string& tag,
 	legalDimensionNDC.x = Utility::ConvertToNDC(legalDimension.x, maxDimension.x);
 	legalDimensionNDC.y = Utility::ConvertToNDC(legalDimension.y, maxDimension.y);
 
-	properties.plateWidth = legalDimension.x;
-	properties.plateHeight = legalDimension.y;
+	//properties->plateWidth = legalDimension.x;
+	//properties->plateHeight = legalDimension.y;
 
 	border = std::make_unique<Border>(this);
 
@@ -292,15 +291,15 @@ void Plate::SetProperties(bool isPrinting)
 	//=================================================================================
 
 	auto dimensionNDC = glm::vec2(0.0f);
-	dimensionNDC.x = Utility::ConvertToNDC(properties.plateWidth, maxDimension.x);
-	dimensionNDC.y = Utility::ConvertToNDC(properties.plateHeight, maxDimension.y);
+	dimensionNDC.x = Utility::ConvertToNDC(properties->plateWidth, maxDimension.x);
+	dimensionNDC.y = Utility::ConvertToNDC(properties->plateHeight, maxDimension.y);
 	
-	properties.plateName = tag;
+	properties->plateName = tag;
 
 	//If the dimension of the plate deviates from its 
 	//legal dimension then it becomes a 'Custom' plate
-	if (properties.plateWidth != legalDimension.x || 
-		properties.plateHeight != legalDimension.y)
+	if (properties->plateWidth != legalDimension.x || 
+		properties->plateHeight != legalDimension.y)
 	{
 		tag = "Custom"; 
 
@@ -312,12 +311,12 @@ void Plate::SetProperties(bool isPrinting)
 	//Registration
 	//=================================================================================
 
-	registration->SetString(properties.registrationText);
+	registration->SetString(properties->registrationText);
 
-	position.x += Utility::ConvertToNDC(properties.nudgedRegistration, maxDimension.x);
-	position.y += Utility::ConvertToNDC(properties.raisedRegistration, maxDimension.y);
+	position.x += Utility::ConvertToNDC(properties->nudgedRegistration, maxDimension.x);
+	position.y += Utility::ConvertToNDC(properties->raisedRegistration, maxDimension.y);
 
-	if (properties.isSideBadgeVisible)
+	if (properties->isSideBadgeVisible)
 	{
 		position.x += 0.5f * Utility::ConvertToNDC(this->sideBadgeMargin, maxDimension.x);
 	}
@@ -328,14 +327,14 @@ void Plate::SetProperties(bool isPrinting)
 	//Dealer and postcode 
 	//=================================================================================
 
-	dealerText->SetString(properties.dealerText);
-	postcodeText->SetString(properties.postcodeText);
+	dealerText->SetString(properties->dealerText);
+	postcodeText->SetString(properties->postcodeText);
 
 	position = transform.GetPosition();
 
-	if (properties.isDealerAbovePostcode)
+	if (properties->isDealerAbovePostcode)
 	{
-		if (properties.isSideBadgeVisible)
+		if (properties->isSideBadgeVisible)
 		{
 			position.x += 0.5f * Utility::ConvertToNDC(this->sideBadgeMargin, maxDimension.x);
 		}
@@ -348,23 +347,23 @@ void Plate::SetProperties(bool isPrinting)
 			+ postcodeBottomPadding);
 
 		//Dealer
-		position.x -= 0.5f * dealerText->GetMaxWidth() - Utility::ConvertToNDC(properties.nudgedDealer, maxDimension.x);
+		position.x -= 0.5f * dealerText->GetMaxWidth() - Utility::ConvertToNDC(properties->nudgedDealer, maxDimension.x);
 		position.y -= 0.5f * dimensionNDC.y - postcodeWithPaddingHeight;
-		position.y += Utility::ConvertToNDC(properties.raisedDealer, maxDimension.y);
+		position.y += Utility::ConvertToNDC(properties->raisedDealer, maxDimension.y);
 
 		dealerText->GetTransform().SetPosition(position);
 
 		//Postcode
-		position.x += Utility::ConvertToNDC(properties.nudgedPostcode, maxDimension.x);
+		position.x += Utility::ConvertToNDC(properties->nudgedPostcode, maxDimension.x);
 		position.y -= postcodeWithPaddingHeight - (postcodeBottomPadding);
-		position.y += Utility::ConvertToNDC(properties.raisedPostcode, maxDimension.y);
+		position.y += Utility::ConvertToNDC(properties->raisedPostcode, maxDimension.y);
 
 		postcodeText->GetTransform().SetPosition(position);
 	}
 
 	else
 	{
-		if (properties.isSideBadgeVisible)
+		if (properties->isSideBadgeVisible)
 		{
 			position.x += 0.5f * Utility::ConvertToNDC(this->sideBadgeMargin, maxDimension.x);
 		}
@@ -377,16 +376,16 @@ void Plate::SetProperties(bool isPrinting)
 			+ dealerPostcodePaddingX;
 
 		//Dealer
-		position.x -= 0.5f * width - Utility::ConvertToNDC(properties.nudgedDealer, maxDimension.x);
+		position.x -= 0.5f * width - Utility::ConvertToNDC(properties->nudgedDealer, maxDimension.x);
 		position.y -= 0.5f * dimensionNDC.y - dealerBottomPadding;
-		position.y += Utility::ConvertToNDC(properties.raisedDealer, maxDimension.y);
+		position.y += Utility::ConvertToNDC(properties->raisedDealer, maxDimension.y);
 
 		dealerText->GetTransform().SetPosition(position);
 
 		//Postcode
 		position.x += dealerText->GetMaxWidth() + dealerPostcodePaddingX
-			+ Utility::ConvertToNDC(properties.nudgedPostcode, maxDimension.x);
-		position.y += Utility::ConvertToNDC(properties.raisedPostcode, maxDimension.y);
+			+ Utility::ConvertToNDC(properties->nudgedPostcode, maxDimension.x);
+		position.y += Utility::ConvertToNDC(properties->raisedPostcode, maxDimension.y);
 
 		postcodeText->GetTransform().SetPosition(position);
 	}
@@ -395,42 +394,42 @@ void Plate::SetProperties(bool isPrinting)
 	//BSAU 
 	//=================================================================================
 
-	BSAUText->SetString(properties.BSAUText);
+	BSAUText->SetString(properties->BSAUText);
 
 	position = transform.GetPosition();
 
 	//Text padding for BSAU text
 	const auto BSAUPadding = Utility::ConvertToNDC(this->textPadding, maxDimension.x);
 
-	if (properties.isBSAUOnBorder)
+	if (properties->isBSAUOnBorder)
 	{
-		const auto marginX = Utility::ConvertToNDC(properties.marginSize, maxDimension.x);
-		const auto marginY = Utility::ConvertToNDC(properties.marginSize, maxDimension.y);
+		const auto marginX = Utility::ConvertToNDC(properties->marginSize, maxDimension.x);
+		const auto marginY = Utility::ConvertToNDC(properties->marginSize, maxDimension.y);
 
 		const auto sideDimension = Utility::ConvertToNDC((int)this->sideDimension.x, maxDimension.x);
 		const auto width = sideDimension + marginX + BSAUText->GetMaxWidth() + BSAUPadding;
 
-		position.x += 0.5f * dimensionNDC.x - width + Utility::ConvertToNDC(properties.nudgedBSAU, maxDimension.x);
+		position.x += 0.5f * dimensionNDC.x - width + Utility::ConvertToNDC(properties->nudgedBSAU, maxDimension.x);
 		position.y -= 0.5f * dimensionNDC.y - marginY;
-		position.y += Utility::ConvertToNDC(properties.raisedBSAU, maxDimension.y);
+		position.y += Utility::ConvertToNDC(properties->raisedBSAU, maxDimension.y);
 
 		BSAUText->GetTransform().SetPosition(position);
 	}
 
 	else
 	{
-		const auto size = Utility::ConvertToNDC(properties.borderSize, maxDimension.y);
-		const auto marginX = Utility::ConvertToNDC(properties.marginSize, maxDimension.x);
-		const auto marginY = Utility::ConvertToNDC(properties.marginSize, maxDimension.y);
+		const auto size = Utility::ConvertToNDC(properties->borderSize, maxDimension.y);
+		const auto marginX = Utility::ConvertToNDC(properties->marginSize, maxDimension.x);
+		const auto marginY = Utility::ConvertToNDC(properties->marginSize, maxDimension.y);
 
 		const auto sideDimension = Utility::ConvertToNDC((int)this->sideDimension.x, maxDimension.x);
 		const auto width = sideDimension * legalDimensionNDC.x + marginX + BSAUText->GetMaxWidth();
 
 		const auto height = marginY + size;
 
-		position.x += 0.5f * dimensionNDC.x - width + Utility::ConvertToNDC(properties.nudgedBSAU, maxDimension.x);
+		position.x += 0.5f * dimensionNDC.x - width + Utility::ConvertToNDC(properties->nudgedBSAU, maxDimension.x);
 		position.y -= 0.5f * dimensionNDC.y - height;
-		position.y += Utility::ConvertToNDC(properties.raisedBSAU, maxDimension.y);
+		position.y += Utility::ConvertToNDC(properties->raisedBSAU, maxDimension.y);
 
 		BSAUText->GetTransform().SetPosition(position);
 	}
@@ -439,12 +438,12 @@ void Plate::SetProperties(bool isPrinting)
 	//Legality checks
 	//=================================================================================
 
-	isLegal = properties.isBSAUVisible && properties.isDealerVisible;
+	isLegal = properties->isBSAUVisible && properties->isDealerVisible;
 
 	//If user has requested a side badge but this is not allowed
 	//for this particular plate then the plate becomes illegal
-	//if (properties.isSideBadgeVisible && !plateData.isSideBadgeAllowed)
-	if (properties.isSideBadgeVisible && !stoi(plateData["IsSideBadgeAllowed"]))
+	//if (properties->isSideBadgeVisible && !plateData.isSideBadgeAllowed)
+	if (properties->isSideBadgeVisible && !stoi(plateData["IsSideBadgeAllowed"]))
 	{
 		isLegal = false;
 	}
@@ -468,13 +467,19 @@ void Plate::SetPlateData(const std::string& tag)
 	dealerText->SetFont(plateData["FontNameDealerPostcode"]);
 	postcodeText->SetFont(plateData["FontNameDealerPostcode"]);
 
-	properties.plateWidth = legalDimension.x;
-	properties.plateHeight = legalDimension.y;
+	properties->plateWidth = legalDimension.x;
+	properties->plateHeight = legalDimension.y;
 
-	properties.isTwoLineRegistration = stoi(plateData["IsTwoLineRegistration"]);
+	properties->isTwoLineRegistration = stoi(plateData["IsTwoLineRegistration"]);
 
 	//Rebuild the plate
 	FillBuffers();
+}
+//================================================================================================
+void Plate::SetUserInterfaces(Properties* properties, FontDialog* fontBox)
+{
+	this->properties = properties;
+	this->fontBox = fontBox;
 }
 //================================================================================================
 void Plate::Render(Shader& shader)
@@ -504,7 +509,7 @@ void Plate::Render(Shader& shader)
 
 	//================================================================
 
-	if (properties.isBorderVisible)
+	if (properties->isBorderVisible)
 	{
 		border->Render(shader);
 	}
@@ -531,12 +536,12 @@ void Plate::Render(Shader& shader)
 		registration->Render(shader);
 	}
 
-	if (properties.isBSAUVisible)
+	if (properties->isBSAUVisible)
 	{
 		BSAUText->Render(shader);
 	}
 
-	if (properties.isDealerVisible)
+	if (properties->isDealerVisible)
 	{
 		dealerText->Render(shader);
 		postcodeText->Render(shader);
@@ -693,8 +698,21 @@ void Plate::FillBuffers()
 	const auto sideDimension = 2.0f * (this->sideDimension / maxDimension);
 
 	auto dimensionNDC = glm::vec2(0.0f);
-	dimensionNDC.x = Utility::ConvertToNDC(properties.plateWidth, maxDimension.x);
-	dimensionNDC.y = Utility::ConvertToNDC(properties.plateHeight, maxDimension.y);
+
+	//If the properties pointer is valid it means the UI 
+	//has been hooked up, then use the regular dimensions
+	if (properties)
+	{
+		dimensionNDC.x = Utility::ConvertToNDC(properties->plateWidth, maxDimension.x);
+		dimensionNDC.y = Utility::ConvertToNDC(properties->plateHeight, maxDimension.y);
+	}
+
+	//Otherwise it means the UI has not been hooked up and this is 
+	//the first run of FillBuffers, so use the legalDimension instead
+	else
+	{
+		dimensionNDC = legalDimensionNDC;
+	}
 
 	auto halfDimension = 0.5f * dimensionNDC;
 	auto middleDimension = halfDimension - sideDimension;

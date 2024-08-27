@@ -1,25 +1,25 @@
-#include "PropertiesPanel.h"
+#include "Properties.h"
 #include "Screen.h"
 
 //======================================================================================================
-PropertiesPanel::Properties& PropertiesPanel::GetProperties()
-{
-	return properties;
-}
+//Properties::Properties& Properties::GetProperties()
+//{
+//	return properties;
+//}
 //======================================================================================================
-void PropertiesPanel::Show()
+void Properties::Show()
 {
 	ImGui::GetStyle().WindowRounding = 0.0f;
 
-	ImGui::Begin("PropertiesPanel", nullptr,
+	ImGui::Begin("Properties", nullptr,
 		ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_::ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar |
 		ImGuiWindowFlags_::ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 
-	ImGui::SetWindowPos("PropertiesPanel", ImVec2(position.x, position.y));
-	ImGui::SetWindowSize("PropertiesPanel", ImVec2(dimension.x, dimension.y));
+	ImGui::SetWindowPos("Properties", ImVec2(position.x, position.y));
+	ImGui::SetWindowSize("Properties", ImVec2(dimension.x, dimension.y));
 
 	//===================================================================================
 
@@ -31,19 +31,19 @@ void PropertiesPanel::Show()
 	ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
 
 	char regText[20];
-	strcpy_s(regText, properties.registrationText.c_str());
+	strcpy_s(regText, registrationText.c_str());
 	ImGui::InputText("Enter Reg", regText, 20, ImGuiInputTextFlags_::ImGuiInputTextFlags_CharsUppercase);
-	properties.registrationText = regText;
+	registrationText = regText;
 
-	ImGui::SliderInt("Raise text", &properties.raisedRegistration, -10, 10);
-	ImGui::SliderInt("Nudge text", &properties.nudgedRegistration, -10, 10);
+	ImGui::SliderInt("Raise text", &raisedRegistration, -10, 10);
+	ImGui::SliderInt("Nudge text", &nudgedRegistration, -10, 10);
 
-	ImGui::BeginDisabled(!properties.isTwoLineRegistration);
-	ImGui::SliderInt("Raise space", &properties.raisedTwoLineSpace, -13, 13);
+	ImGui::BeginDisabled(!isTwoLineRegistration);
+	ImGui::SliderInt("Raise space", &raisedTwoLineSpace, -13, 13);
 	ImGui::EndDisabled();
 
 	ImGui::PushFont(fonts["MyriadPro_Regular_14"]);
-	ImGui::Checkbox("Two-line registration", &properties.isTwoLineRegistration);
+	ImGui::Checkbox("Two-line registration", &isTwoLineRegistration);
 
 	ImGui::PopFont();
 
@@ -55,10 +55,10 @@ void PropertiesPanel::Show()
 
 	ImGui::PushFont(fonts["MyriadPro_Regular_14"]);
 
-	ImGui::Text(("Name: " + properties.plateName).c_str());
+	ImGui::Text(("Name: " + plateName).c_str());
 
-	ImGui::SliderInt("Width", &properties.plateWidth, 2, 650);
-	ImGui::SliderInt("Height", &properties.plateHeight, 2, 250);
+	ImGui::SliderInt("Width", &plateWidth, 2, 650);
+	ImGui::SliderInt("Height", &plateHeight, 2, 250);
 
 	ImGui::PopFont();
 
@@ -69,12 +69,12 @@ void PropertiesPanel::Show()
 	ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
 
 	ImGui::PushFont(fonts["MyriadPro_Regular_14"]);
-	ImGui::Checkbox("Display border", &properties.isBorderVisible);
+	ImGui::Checkbox("Display border", &isBorderVisible);
 	
-	ImGui::BeginDisabled(!properties.isBorderVisible);
-	ImGui::Checkbox("Add side badge", &properties.isSideBadgeVisible);
-	ImGui::SliderInt("Border size", &properties.borderSize, 1, 6);
-	ImGui::SliderInt("Margin size", &properties.marginSize, 0, 9);
+	ImGui::BeginDisabled(!isBorderVisible);
+	ImGui::Checkbox("Add side badge", &isSideBadgeVisible);
+	ImGui::SliderInt("Border size", &borderSize, 1, 6);
+	ImGui::SliderInt("Margin size", &marginSize, 0, 9);
 	ImGui::EndDisabled();
 
 	ImGui::PopFont();
@@ -86,24 +86,24 @@ void PropertiesPanel::Show()
 	ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
 
 	ImGui::PushFont(fonts["MyriadPro_Regular_14"]);
-	ImGui::Checkbox("Display dealer", &properties.isDealerVisible);
+	ImGui::Checkbox("Display dealer", &isDealerVisible);
 
-	ImGui::BeginDisabled(!properties.isDealerVisible);
-	ImGui::Checkbox("Dealer above postcode", &properties.isDealerAbovePostcode);
-	ImGui::SliderInt("Raise dealer", &properties.raisedDealer, -10, 10);
-	ImGui::SliderInt("Nudge dealer", &properties.nudgedDealer, -10, 10);
-	ImGui::SliderInt("Raise postcode", &properties.raisedPostcode, -10, 10);
-	ImGui::SliderInt("Nudge postcode", &properties.nudgedPostcode, -10, 10);
+	ImGui::BeginDisabled(!isDealerVisible);
+	ImGui::Checkbox("Dealer above postcode", &isDealerAbovePostcode);
+	ImGui::SliderInt("Raise dealer", &raisedDealer, -10, 10);
+	ImGui::SliderInt("Nudge dealer", &nudgedDealer, -10, 10);
+	ImGui::SliderInt("Raise postcode", &raisedPostcode, -10, 10);
+	ImGui::SliderInt("Nudge postcode", &nudgedPostcode, -10, 10);
 
 	char dealerText[20];
-	strcpy_s(dealerText, properties.dealerText.c_str());
+	strcpy_s(dealerText, this->dealerText.c_str());
 	ImGui::InputText("Enter dealer", dealerText, 20);
-	properties.dealerText = dealerText;
+	this->dealerText = dealerText;
 
 	char postcodeText[20];
-	strcpy_s(postcodeText, properties.postcodeText.c_str());
+	strcpy_s(postcodeText, this->postcodeText.c_str());
 	ImGui::InputText("Enter postcode", postcodeText, 20, ImGuiInputTextFlags_::ImGuiInputTextFlags_CharsUppercase);
-	properties.postcodeText = postcodeText;
+	this->postcodeText = postcodeText;
 
 	ImGui::EndDisabled();
 	ImGui::PopFont();
@@ -116,12 +116,12 @@ void PropertiesPanel::Show()
 	ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
 
 	ImGui::PushFont(fonts["MyriadPro_Regular_14"]);
-	ImGui::Checkbox("Display BSAU", &properties.isBSAUVisible);
+	ImGui::Checkbox("Display BSAU", &isBSAUVisible);
 
-	ImGui::BeginDisabled(!properties.isBSAUVisible);
-	ImGui::Checkbox("BSAU on border", &properties.isBSAUOnBorder);
-	ImGui::SliderInt("Raise BSAU", &properties.raisedBSAU, -10, 10);
-	ImGui::SliderInt("Nudge BSAU", &properties.nudgedBSAU, -10, 10);
+	ImGui::BeginDisabled(!isBSAUVisible);
+	ImGui::Checkbox("BSAU on border", &isBSAUOnBorder);
+	ImGui::SliderInt("Raise BSAU", &raisedBSAU, -10, 10);
+	ImGui::SliderInt("Nudge BSAU", &nudgedBSAU, -10, 10);
 
 	ImGui::EndDisabled();
 	ImGui::PopFont();
@@ -202,41 +202,41 @@ void PropertiesPanel::Show()
 	//ImGui::EndDisabled();
 }
 //======================================================================================================
-void PropertiesPanel::Reset()
+void Properties::Reset()
 {
-	properties.plateWidth = 520;
-	properties.plateHeight = 111;
+	plateWidth = 520;
+	plateHeight = 111;
 
-	properties.isTwoLineRegistration = false;
+	isTwoLineRegistration = false;
 
-	properties.raisedRegistration = 0;
-	properties.nudgedRegistration = 0;
-	properties.raisedTwoLineSpace = 0;
+	raisedRegistration = 0;
+	nudgedRegistration = 0;
+	raisedTwoLineSpace = 0;
 
-	properties.registrationText = "REG 123";
+	registrationText = "REG 123";
 
-	properties.borderSize = 2;
-	properties.marginSize = 2;
+	borderSize = 2;
+	marginSize = 2;
 
-	properties.isBorderVisible = true;
-	properties.isSideBadgeVisible = false;
+	isBorderVisible = true;
+	isSideBadgeVisible = false;
 
-	properties.raisedDealer = 0;
-	properties.nudgedDealer = 0;
-	properties.raisedPostcode = 0;
-	properties.nudgedPostcode = 0;
+	raisedDealer = 0;
+	nudgedDealer = 0;
+	raisedPostcode = 0;
+	nudgedPostcode = 0;
 
-	properties.isDealerVisible = true;
-	properties.isDealerAbovePostcode = false;
+	isDealerVisible = true;
+	isDealerAbovePostcode = false;
 
-	properties.postcodeText = "B6 7SJ";
-	properties.dealerText = "Plate factory";
+	postcodeText = "B6 7SJ";
+	dealerText = "Plate factory";
 
-	properties.raisedBSAU = 0;
-	properties.nudgedBSAU = 0;
+	raisedBSAU = 0;
+	nudgedBSAU = 0;
 
-	properties.isBSAUVisible = true;
-	properties.isBSAUOnBorder = true;
+	isBSAUVisible = true;
+	isBSAUOnBorder = true;
 
-	properties.BSAUText = "NPM BS AU 145e";
+	BSAUText = "NPM BS AU 145e";
 }

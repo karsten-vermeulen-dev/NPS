@@ -136,7 +136,7 @@ void Registration::Render(Shader& shader)
 		auto index = string.find(' ');
 
 		//Needs to be in NDC
-		const auto twoLineSpacing = 2.0f * ((this->twoLineSpacing + parent->GetProperties().raisedTwoLineSpace) / parent->GetMaxDimension().x);
+		const auto twoLineSpacing = 2.0f * ((this->twoLineSpacing + parent->GetProperties()->raisedTwoLineSpace) / parent->GetMaxDimension().x);
 
 		//Split the text into two parts exactly where a ' ' is found
 		//The top text portion will move up and the bottom segment downwards
