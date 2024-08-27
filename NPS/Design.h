@@ -16,7 +16,7 @@
 #include "Image.h"
 #include "LicenseDialog.h"
 #include "MainMenu.h"
-#include "MessageDialog.h"
+#include "MsgBox.h"
 #include "ModePanel.h"
 #include "Plate.h"
 #include "PropertiesPanel.h"
@@ -67,7 +67,8 @@ private:
 	
 	//make this a container of dialogs - easier to render/show using a loop
 	
-	std::unique_ptr<MessageDialog> messageDialog;
+	std::unique_ptr<MsgBox> msgBox;
+
 	std::unique_ptr<ActivateDialog> activateDialog;
 	std::unique_ptr<CustomerDialog> customerDialog;
 	std::unique_ptr<LicenseDialog> licenseDialog;

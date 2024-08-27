@@ -1,27 +1,27 @@
-#include "MessageDialog.h"
+#include "MsgBox.h"
 
 //======================================================================================================
-const MessageDialog::ButtonState& MessageDialog::GetButtonState()
+const MsgBox::ButtonState& MsgBox::GetButtonState()
 {
 	return buttonState;
 }
 //======================================================================================================
-void MessageDialog::SetTitle(const std::string& title)
+void MsgBox::SetTitle(const std::string& title)
 {
 	this->title = title;
 }
 //======================================================================================================
-void MessageDialog::SetMessage(const std::string& message)
+void MsgBox::SetMessage(const std::string& message)
 {
 	this->message = message;
 }
 //======================================================================================================
-void MessageDialog::SetButtonType(ButtonType buttonType)
+void MsgBox::SetButtonType(ButtonType buttonType)
 {
 	this->buttonType = buttonType;
 }
 //======================================================================================================
-void MessageDialog::Show()
+void MsgBox::Show()
 {
 	ImGui::GetStyle().WindowRounding = 10.0f;
 

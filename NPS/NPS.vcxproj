@@ -171,7 +171,7 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MessageDialog.cpp" />
+    <ClCompile Include="MsgBox.cpp" />
     <ClCompile Include="Plate.cpp" />
     <ClCompile Include="Registration.cpp" />
     <ClCompile Include="Screen.cpp" />
@@ -209,7 +209,7 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Input.h" />
-    <ClInclude Include="MessageDialog.h" />
+    <ClInclude Include="MsgBox.h" />
     <ClInclude Include="Plate.h" />
     <ClInclude Include="Registration.h" />
     <ClInclude Include="Screen.h" />

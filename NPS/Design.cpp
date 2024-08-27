@@ -188,10 +188,10 @@ bool Design::OnEnter()
 	fontDialog->SetDimension(glm::uvec2(325, 580));
 	fontDialog->SetButtonDimension(buttonDimension);
 
-	messageDialog = std::make_unique<MessageDialog>();
-	messageDialog->IsVisible(false);
-	messageDialog->SetDimension(glm::uvec2(300, 150));
-	messageDialog->SetButtonDimension(buttonDimension);
+	msgBox = std::make_unique<MsgBox>();
+	msgBox->IsVisible(false);
+	msgBox->SetDimension(glm::uvec2(300, 150));
+	msgBox->SetButtonDimension(buttonDimension);
 
 	activateDialog = std::make_unique<ActivateDialog>();
 	activateDialog->IsVisible(false);
@@ -452,11 +452,11 @@ bool Design::Render()
 
 	if (menuItems.isNewSelected)
 	{
-		messageDialog->SetTag("New");
-		messageDialog->SetButtonType(MessageDialog::ButtonType::YesNo);
-		messageDialog->SetTitle("New plate");
-		messageDialog->SetMessage("Are you sure you want to create a new design?");
-		messageDialog->IsVisible(true);
+		msgBox->SetTag("New");
+		msgBox->SetButtonType(MsgBox::ButtonType::YesNo);
+		msgBox->SetTitle("New plate");
+		msgBox->SetMessage("Are you sure you want to create a new design?");
+		msgBox->IsVisible(true);
 	}
 
 	else if (menuItems.isLoadSelected)
@@ -626,11 +626,11 @@ bool Design::Render()
 
 	else if (menuItems.isExitSelected)
 	{
-		messageDialog->SetTag("Exit");
-		messageDialog->SetButtonType(MessageDialog::ButtonType::YesNo);
-		messageDialog->SetTitle("Exit application");
-		messageDialog->SetMessage("Are you sure you want to exit?");
-		messageDialog->IsVisible(true);
+		msgBox->SetTag("Exit");
+		msgBox->SetButtonType(MsgBox::ButtonType::YesNo);
+		msgBox->SetTitle("Exit application");
+		msgBox->SetMessage("Are you sure you want to exit?");
+		msgBox->IsVisible(true);
 	}
 
 	else if (menuItems.isStandardOblongSelected)
@@ -730,13 +730,11 @@ bool Design::Render()
 
 	else if (menuItems.isAboutSelected)
 	{
-		//aboutDialog->IsVisible(true);
-		
-		messageDialog->SetTag("About");
-		messageDialog->SetButtonType(MessageDialog::ButtonType::Okay);
-		messageDialog->SetTitle("About application");
-		messageDialog->SetMessage("Number plate software. Copyright 2024.");
-		messageDialog->IsVisible(true);
+		msgBox->SetTag("About");
+		msgBox->SetButtonType(MsgBox::ButtonType::Okay);
+		msgBox->SetTitle("About application");
+		msgBox->SetMessage("Number plate software. Copyright 2024.");
+		msgBox->IsVisible(true);
 	}
 
 	else if (menuItems.isActivateProgramSelected)
@@ -814,30 +812,30 @@ bool Design::Render()
 		}
 	}
 
-	else if (messageDialog->IsVisible())
+	else if (msgBox->IsVisible())
 	{
 		//At this stage we want to grey out the background 
 		//and only display/activate the message box
-		messageDialog->Show();
+		msgBox->Show();
 
 		//Internal class code?
 		//--------------------------------------------------
-		if (messageDialog->GetTag() == "New" && messageDialog->GetButtonState().yes)
+		if (msgBox->GetTag() == "New" && msgBox->GetButtonState().yes)
 		{
 			ResetView();
-			messageDialog->IsVisible(false);
+			msgBox->IsVisible(false);
 		}
 
-		else if (messageDialog->GetTag() == "Exit" && messageDialog->GetButtonState().yes)
+		else if (msgBox->GetTag() == "Exit" && msgBox->GetButtonState().yes)
 		{
 			isStateComplete = true;
 		}
 
-		else if (messageDialog->GetButtonState().no
-			|| messageDialog->GetButtonState().ok
-			|| messageDialog->GetButtonState().cancel)
+		else if (msgBox->GetButtonState().no
+			|| msgBox->GetButtonState().ok
+			|| msgBox->GetButtonState().cancel)
 		{
-			messageDialog->IsVisible(false);
+			msgBox->IsVisible(false);
 		}
 		//--------------------------------------------------
 	}
@@ -985,10 +983,10 @@ void Design::PrintPlate()
 	{
 		if (!printDialog.hDC)
 		{
-			messageDialog->SetButtonType(MessageDialog::ButtonType::OkCancel);
-			messageDialog->SetTitle("Printer error");
-			messageDialog->SetMessage("No printer found.");
-			messageDialog->IsVisible(true);
+			msgBox->SetButtonType(MsgBox::ButtonType::OkCancel);
+			msgBox->SetTitle("Printer error");
+			msgBox->SetMessage("No printer found.");
+			msgBox->IsVisible(true);
 		}
 
 		else
@@ -997,10 +995,10 @@ void Design::PrintPlate()
 
 			if (!deviceContext.Attach(printDialog.hDC))
 			{
-				messageDialog->SetButtonType(MessageDialog::ButtonType::OkCancel);
-				messageDialog->SetTitle("Printer error");
-				messageDialog->SetMessage("No printer found.");
-				messageDialog->IsVisible(true);
+				msgBox->SetButtonType(MsgBox::ButtonType::OkCancel);
+				msgBox->SetTitle("Printer error");
+				msgBox->SetMessage("No printer found.");
+				msgBox->IsVisible(true);
 			}
 
 			//Get the DPI value of the current printer we are using
@@ -1037,18 +1035,18 @@ void Design::PrintPlate()
 
 				if (!image)
 				{
-					messageDialog->SetButtonType(MessageDialog::ButtonType::OkCancel);
-					messageDialog->SetTitle("Image error");
-					messageDialog->SetMessage("Error loading image.");
-					messageDialog->IsVisible(true);
+					msgBox->SetButtonType(MsgBox::ButtonType::OkCancel);
+					msgBox->SetTitle("Image error");
+					msgBox->SetMessage("Error loading image.");
+					msgBox->IsVisible(true);
 				}
 
 				else if (!bitmap.Attach(image))
 				{
-					messageDialog->SetButtonType(MessageDialog::ButtonType::OkCancel);
-					messageDialog->SetTitle("Image error");
-					messageDialog->SetMessage("Error processing image.");
-					messageDialog->IsVisible(true);
+					msgBox->SetButtonType(MsgBox::ButtonType::OkCancel);
+					msgBox->SetTitle("Image error");
+					msgBox->SetMessage("Error processing image.");
+					msgBox->IsVisible(true);
 				}
 
 				else
@@ -1098,10 +1096,10 @@ void Design::PrintPlate()
 
 					else
 					{
-						messageDialog->SetButtonType(MessageDialog::ButtonType::OkCancel);
-						messageDialog->SetTitle("Printing error");
-						messageDialog->SetMessage("Error printing the image.");
-						messageDialog->IsVisible(true);
+						msgBox->SetButtonType(MsgBox::ButtonType::OkCancel);
+						msgBox->SetTitle("Printing error");
+						msgBox->SetMessage("Error printing the image.");
+						msgBox->IsVisible(true);
 						deviceContext.AbortDoc();
 					}
 				}
