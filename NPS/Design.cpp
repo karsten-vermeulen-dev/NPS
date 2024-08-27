@@ -223,11 +223,6 @@ bool Design::OnEnter()
 	propertiesPanel->SetPosition(glm::uvec2(0, menuBarHeight));
 	propertiesPanel->SetDimension(glm::uvec2(minorWidth * mainResolution.x, mainResolution.y - menuBarHeight));
 
-	/*feedbackPanel = std::make_unique<FeedbackPanel>();
-	feedbackPanel->IsVisible(true);
-	feedbackPanel->SetPosition(glm::uvec2(minorWidth * mainResolution.x - UIPadding, majorHeight * mainResolution.y));
-	feedbackPanel->SetDimension(glm::uvec2(majorWidth * mainResolution.x - (minorWidth * mainResolution.x) + (UIPadding * 2), minorHeight * mainResolution.y + UIPadding));*/
-
 	printPanel = std::make_unique<PrintPanel>();
 	printPanel->IsVisible(true);
 	printPanel->SetButtonDimension(buttonDimension);
@@ -757,10 +752,6 @@ bool Design::Render()
 	propertiesPanel->Show();
 	auto& plateProperties = propertiesPanel->GetProperties();
 
-	//feedbackPanel->SetLegality(plate->IsLegal());
-	//feedbackPanel->SetPlateData(plate->GetPlateData());
-	//feedbackPanel->Show();
-
 	modePanel->Show();
 
 	printPanel->Show();
@@ -1127,3 +1118,41 @@ void Design::PrintPlate()
 
 	}
 }
+
+//TODO - This text should move to global text message on main screen
+//if (plateData.isLegal)
+//	{
+//		ImGui::Text("- This plate is legal, as long as the correct dimensions are adhered to.");
+//	}
+//
+//	else
+//	{
+//		ImGui::Text("- This is not a legal plate, but may be used as signage.");
+//	}
+
+//Max characters is mentioned but what about spaces?
+//	ImGui::Text(("- This is a " + vehicle + " plate and is allowed a maximum of " + std::to_string(plateData.maxAllowedCharacters) + " characters.").c_str());
+
+//std::string sidebadgeAllowed = plateData.isSideBadgeAllowed ? "is" : "is not";
+//	ImGui::Text(("- A side badge " + sidebadgeAllowed + " allowed on this plate.").c_str());
+//
+//	std::string maxLine = plateData.isTwoLineRegistration ? "two-line" : "one-line";
+//	ImGui::Text(("- This is a " + maxLine + " registration plate.").c_str());
+
+//Code to be used when clicking INFO button and displaying the MsgBox with the following info:
+//We have to make this panel higher so that all of the text below can be displayed
+//	ImGui::Text("- Character height: 79mm");
+//	ImGui::Text("- Wide character width: 50mm");
+//	ImGui::Text("- Narrow character width: 14mm");
+
+//	//We have to hook in the numerical values here
+//	ImGui::Text("- Padding between registration characters: 11mm");
+//	ImGui::Text("- Padding between registration and top of plate: ");
+//	ImGui::Text("- Padding between registration and bottom of plate: ");
+//	ImGui::Text("- Padding between dealer and border: ");
+//	ImGui::Text("- Padding between postcode and border: ");
+//	ImGui::Text("- Padding between dealer and postcode: ");
+//	ImGui::Text("- Padding between BSAU and border: ");
+
+//Warnings:
+//ImGui::Text("This plate is currently not legal. Please check specifications. Refer to [Help] for more information.");
