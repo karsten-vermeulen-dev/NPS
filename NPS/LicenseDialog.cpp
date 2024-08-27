@@ -21,7 +21,6 @@ void LicenseDialog::Show()
 
 	buttonState = { false };
 
-	const auto buttonIndent = 100;
 	const auto spacingToButton = 5;
 	const auto spacingFromTitle = 5;
 	const auto spacingBetweenSections = 2;

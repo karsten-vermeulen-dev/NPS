@@ -46,6 +46,12 @@ public:
 	virtual void Show() = 0;
 	virtual void Reset() = 0;
 
+private:
+
+	//For the moment, this is for internal updates only, no need to call from anywhere
+	//Not sure if this is neccessary to override later?
+	void Update();
+
 protected:
 
 	static std::map<std::string, ImFont*> fonts;
@@ -55,6 +61,7 @@ protected:
 
 	std::string tag;
 
+	float buttonIndent{ 0.0f };
 	glm::vec2 position{ 0.0f };
 	glm::vec2 dimension{ 0.0f };
 	glm::vec2 buttonDimension{ 0.0f };

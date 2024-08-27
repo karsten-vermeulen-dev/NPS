@@ -41,12 +41,6 @@ void FontDialog::Show()
 
 	font = fontNames[fontList[comboBoxFontID]];
 
-	//For all buttons we indent using a formula and we must subtract 
-	//the window padding because that will have been included by ImGUI
-	const auto buttonIndent = (dimension.x * 0.5f) - 
-		                      (buttonDimension.x * 0.5f) - 
-		                      ImGui::GetStyle().WindowPadding.x;
-
 	const auto spacingToButton = 7;
 	const auto spacingFromTitle = 5;
 	const auto spacingBetweenSections = 2;

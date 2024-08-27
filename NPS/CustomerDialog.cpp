@@ -64,7 +64,6 @@ void CustomerDialog::Show()
 	const auto totalCustomers = 6;
 	const char* customersTemp[totalCustomers];
 	
-	const auto buttonIndent = 138;
 	const auto spacingToButton = 5;
 	const auto spacingFromTitle = 5;
 	const auto spacingBetweenSections = 2;
