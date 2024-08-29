@@ -34,9 +34,6 @@ public:
 		bool view3D{ false };
 	};
 
-	//struct Properties
-	//{
-
 	//We set the initial values here so that the Properties 
 	//panel starts up with the correct startup information
 	std::string plateName{ "Standard Oblong" };
@@ -76,21 +73,14 @@ public:
 	bool isBSAUOnBorder{ true };
 
 	std::string BSAUText{ "NPM BS AU 145e" };
-	//};
 
-	//Properties& GetProperties();
-
+	ButtonState buttonState;
+	
 	virtual void Show() override;
 	virtual void Reset() override;
 
-	//Make private later with a getter?
-	ButtonState buttonState;
-
 private:
-
-	//Properties properties;
 
 	//Use these when in 'Print' mode
 	//Metrics metrics;
-	//ButtonState buttonState;
 };

@@ -13,7 +13,7 @@
 #include "Shader.h"
 #include "Text.h"
 #include "Transform.h"
-#include "FontDialog.h"
+#include "FontSettings.h"
 
 class Plate
 {
@@ -91,13 +91,13 @@ public:
 
 	void SetPlateData(const std::string& tag);
 
-	void SetUserInterfaces(Properties* properties, FontDialog* fontBox);
+	void SetUserInterfaces(Properties* properties, FontSettings* fontSettings);
 
 	void Render(Shader& shader);
 
 	bool LoadCustomFont(FontToChange fontToChange, const std::string& filename, GLfloat fontSize);
 
-	void LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle fontStyle);
+	void LoadDefaultFont(const FontSettings& fontSettings, FontSettings::FontStyle fontStyle);
 
 private:
 
@@ -148,6 +148,6 @@ private:
 	//PropertiesPanel::Properties& properties;
 	Properties* properties;
 
-	FontDialog* fontBox;
+	FontSettings* fontSettings;
 
 };

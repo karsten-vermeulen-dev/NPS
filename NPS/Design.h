@@ -9,7 +9,7 @@
 #include <SDL.h>
 
 #include "ActivateDialog.h"
-#include "FontDialog.h"
+#include "FontSettings.h"
 
 #include "CustomerDialog.h"
 
@@ -71,7 +71,7 @@ private:
 
 	std::unique_ptr<MainMenu> mainMenu;
 
-	std::unique_ptr<FontDialog> fontDialog;
+	std::unique_ptr<FontSettings> fontSettings;
 	
 	//make this a container of dialogs - easier to render/show using a loop
 	

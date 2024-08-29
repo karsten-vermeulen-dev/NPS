@@ -2,11 +2,6 @@
 #include "Screen.h"
 
 //======================================================================================================
-//Properties::Properties& Properties::GetProperties()
-//{
-//	return properties;
-//}
-//======================================================================================================
 void Properties::Show()
 {
 	ImGui::GetStyle().WindowRounding = 0.0f;
@@ -42,10 +37,10 @@ void Properties::Show()
 	ImGui::SliderInt("Raise space", &raisedTwoLineSpace, -13, 13);
 	ImGui::EndDisabled();
 
-	ImGui::PushFont(fonts["MyriadPro_Regular_14"]);
+	/*ImGui::PushFont(fonts["MyriadPro_Regular_14"]);
 	ImGui::Checkbox("Two-line registration", &isTwoLineRegistration);
 
-	ImGui::PopFont();
+	ImGui::PopFont();*/
 
 	//===================================================================================
 

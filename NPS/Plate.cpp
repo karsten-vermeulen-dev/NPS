@@ -470,10 +470,10 @@ void Plate::SetPlateData(const std::string& tag)
 	FillBuffers();
 }
 //================================================================================================
-void Plate::SetUserInterfaces(Properties* properties, FontDialog* fontBox)
+void Plate::SetUserInterfaces(Properties* properties, FontSettings* fontSettings)
 {
 	this->properties = properties;
-	this->fontBox = fontBox;
+	this->fontSettings = fontSettings;
 }
 //================================================================================================
 void Plate::Render(Shader& shader)
@@ -596,11 +596,11 @@ bool Plate::LoadCustomFont(FontToChange fontToChange, const std::string& filenam
 	return true;
 }
 //================================================================================================
-void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle fontStyle)
+void Plate::LoadDefaultFont(const FontSettings& fontSettings, FontSettings::FontStyle fontStyle)
 {
-	if (fontType.isCar)
+	if (fontSettings.isCar)
 	{
-		if (fontStyle == FontDialog::FontStyle::Regular2D)
+		if (fontStyle == FontSettings::FontStyle::Regular2D)
 		{
 			if (isPrinting)
 			{
@@ -613,7 +613,7 @@ void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle
 			}
 		}
 
-		else if (fontStyle == FontDialog::FontStyle::GelResin3D)
+		else if (fontStyle == FontSettings::FontStyle::GelResin3D)
 		{
 			if (isPrinting)
 			{
@@ -626,7 +626,7 @@ void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle
 			}
 		}
 
-		else if (fontStyle == FontDialog::FontStyle::Lasercut4D)
+		else if (fontStyle == FontSettings::FontStyle::Lasercut4D)
 		{
 			if (isPrinting)
 			{
@@ -642,7 +642,7 @@ void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle
 
 	else
 	{
-		if (fontStyle == FontDialog::FontStyle::Regular2D)
+		if (fontStyle == FontSettings::FontStyle::Regular2D)
 		{
 			if (isPrinting)
 			{
@@ -655,7 +655,7 @@ void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle
 			}
 		}
 
-		else if (fontStyle == FontDialog::FontStyle::GelResin3D)
+		else if (fontStyle == FontSettings::FontStyle::GelResin3D)
 		{
 			if (isPrinting)
 			{
@@ -668,7 +668,7 @@ void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle
 			}
 		}
 
-		else if (fontStyle == FontDialog::FontStyle::Lasercut4D)
+		else if (fontStyle == FontSettings::FontStyle::Lasercut4D)
 		{
 			if (isPrinting)
 			{

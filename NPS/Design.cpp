@@ -191,10 +191,10 @@ bool Design::OnEnter()
 	mainMenu = std::make_unique<MainMenu>();
 	mainMenu->IsVisible(true);
 
-	fontDialog = std::make_unique<FontDialog>("Data/Fonts.ini");
-	fontDialog->IsVisible(false);
-	fontDialog->SetDimension(glm::uvec2(325, 580));
-	fontDialog->SetButtonDimension(buttonDimension);
+	fontSettings = std::make_unique<FontSettings>("Data/Fonts.ini");
+	fontSettings->IsVisible(false);
+	fontSettings->SetDimension(glm::uvec2(325, 580));
+	fontSettings->SetButtonDimension(buttonDimension);
 
 	msgBox = std::make_unique<MsgBox>();
 	msgBox->IsVisible(false);
@@ -228,7 +228,7 @@ bool Design::OnEnter()
 
 	//===================================================================
 	
-	plate->SetUserInterfaces(properties.get(), fontDialog.get());
+	plate->SetUserInterfaces(properties.get(), fontSettings.get());
 
 	//===================================================================
 
@@ -463,8 +463,6 @@ bool Design::Render()
 			std::map<std::string, std::string> dataMap;
 
 			Utility::LoadConfigFile(filename, dataMap);
-
-			//auto& properties = propertiesPanel->GetProperties();
 			
 			plate->SetPlateData(dataMap["Plate"]);
 
@@ -473,38 +471,38 @@ bool Design::Render()
 
 			if (dataMap["FontType"] == "Car")
 			{
-				fontDialog->fontType.isCar = true;
-				fontDialog->fontType.isMotorCycle = false;
-				fontDialog->fontType.isCustom = false;
+				fontSettings->isCar = true;
+				fontSettings->isMotorCycle = false;
+				fontSettings->isCustom = false;
 			}
 
 			else if (dataMap["FontType"] == "Motorcycle")
 			{
-				fontDialog->fontType.isMotorCycle = true;
-				fontDialog->fontType.isCar = false;
-				fontDialog->fontType.isCustom = false;
+				fontSettings->isMotorCycle = true;
+				fontSettings->isCar = false;
+				fontSettings->isCustom = false;
 			}
 
 			else if (dataMap["FontType"] == "Custom")
 			{
-				fontDialog->fontType.isCustom = true;
-				fontDialog->fontType.isCar = false;
-				fontDialog->fontType.isMotorCycle = false;
+				fontSettings->isCustom = true;
+				fontSettings->isCar = false;
+				fontSettings->isMotorCycle = false;
 			}
 
 			if (dataMap["FontStyle"] == "2DRegular")
 			{
-				fontDialog->fontStyle = FontDialog::FontStyle::Regular2D;
+				fontSettings->fontStyle = FontSettings::FontStyle::Regular2D;
 			}
 			
 			else if (dataMap["FontStyle"] == "3DGelResin")
 			{
-				fontDialog->fontStyle = FontDialog::FontStyle::GelResin3D;
+				fontSettings->fontStyle = FontSettings::FontStyle::GelResin3D;
 			}
 			
 			else if (dataMap["FontStyle"] == "4DLaserCut")
 			{
-				fontDialog->fontStyle = FontDialog::FontStyle::Lasercut4D;
+				fontSettings->fontStyle = FontSettings::FontStyle::Lasercut4D;
 			}
 
 			properties->raisedRegistration = std::stoi(dataMap["RegTextRaise"]);
@@ -547,40 +545,38 @@ bool Design::Render()
 		{
 			std::map<std::string, std::string> dataMap;
 
-			//auto plateProperties = propertiesPanel->GetProperties();
-
 			dataMap["Plate"] = properties->plateName;
 			dataMap["PlateWidth"] = std::to_string(properties->plateWidth);
 			dataMap["PlateHeight"] = std::to_string(properties->plateHeight);
 
-			if (fontDialog->fontType.isCar)
+			if (fontSettings->isCar)
 			{
 				dataMap["FontType"] = "Car";
 			}
 
-			else if(fontDialog->fontType.isMotorCycle)
+			else if(fontSettings->isMotorCycle)
 			{
 				dataMap["FontType"] = "Motorcycle";
 			}
 
-			else if (fontDialog->fontType.isCustom)
+			else if (fontSettings->isCustom)
 			{
 				dataMap["FontType"] = "Custom";
 			}
 
 			//-------------------------------------------------------
 
-			if (fontDialog->fontStyle == FontDialog::FontStyle::Regular2D)
+			if (fontSettings->fontStyle == FontSettings::FontStyle::Regular2D)
 			{
 				dataMap["FontStyle"] = "2DRegular";
 			}
 
-			else if (fontDialog->fontStyle == FontDialog::FontStyle::GelResin3D)
+			else if (fontSettings->fontStyle == FontSettings::FontStyle::GelResin3D)
 			{
 				dataMap["FontStyle"] = "3DGelResin";
 			}
 
-			else if (fontDialog->fontStyle == FontDialog::FontStyle::Lasercut4D)
+			else if (fontSettings->fontStyle == FontSettings::FontStyle::Lasercut4D)
 			{
 				dataMap["FontStyle"] = "4DLaserCut";
 			}
@@ -714,7 +710,7 @@ bool Design::Render()
 
 	else if (menuItems.isFontSettingsSelected)
 	{
-		fontDialog->IsVisible(true);
+		fontSettings->IsVisible(true);
 	}
 
 	else if (menuItems.isTutorialSelected)
@@ -749,7 +745,6 @@ bool Design::Render()
 	//========================================================================================
 
 	properties->Show();
-	//auto& plateProperties = propertiesPanel->GetProperties();
 
 	if (properties->buttonState.design)
 	{
@@ -766,41 +761,41 @@ bool Design::Render()
 		mode = Mode::View3D;
 	}
 
-	if (fontDialog->IsVisible())
+	if (fontSettings->IsVisible())
 	{
-		fontDialog->Show();
+		fontSettings->Show();
 
 		//Load default fonts for car and motorcycle registration (2D/3D/4D)
-		if (fontDialog->fontToChange.isRegistration && 
-			(fontDialog->fontType.isCar || fontDialog->fontType.isMotorCycle))
+		if (fontSettings->isRegistration && 
+			(fontSettings->isCar || fontSettings->isMotorCycle))
 		{
-			plate->LoadDefaultFont(fontDialog->fontType, fontDialog->fontStyle);
+			plate->LoadDefaultFont(*fontSettings, fontSettings->fontStyle);
 		}
 
 		//Load custom font for registration, dealer, postcode or BSAU
 		else
 		{
 			//Path and filename of requested font
-			auto customFont = fontDialog->GetFont();
+			auto customFont = fontSettings->font;
 
 			if (!customFont.empty())
 			{
-				if (fontDialog->fontToChange.isRegistration)
+				if (fontSettings->isRegistration)
 				{
 					plate->LoadCustomFont(Plate::FontToChange::Registration, customFont, 100);
 				}
 
-				else if (fontDialog->fontToChange.isDealer)
+				else if (fontSettings->isDealer)
 				{
 					plate->LoadCustomFont(Plate::FontToChange::Dealer, customFont, 10);
 				}
 
-				else if (fontDialog->fontToChange.isPostcode)
+				else if (fontSettings->isPostcode)
 				{
 					plate->LoadCustomFont(Plate::FontToChange::Postcode, customFont, 10);
 				}
 
-				else if (fontDialog->fontToChange.isBSAU)
+				else if (fontSettings->isBSAU)
 				{
 					plate->LoadCustomFont(Plate::FontToChange::BSAU, customFont, 8);
 				}
@@ -956,7 +951,7 @@ void Design::SaveToFile(const std::string& filename, int DPI, bool hasAlphaChann
 void Design::ResetView()
 {
 	properties->Reset();
-	fontDialog->Reset(); //we reset but we dont apply to the plate yet
+	fontSettings->Reset(); //we reset but we dont apply to the plate yet
 }
 //======================================================================================================
 void Design::PrintPlate()
