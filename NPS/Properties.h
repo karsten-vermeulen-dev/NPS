@@ -36,10 +36,13 @@ public:
 
 	//struct Properties
 	//{
-	std::string plateName;
 
-	int plateWidth{ 0 };
-	int plateHeight{ 0 };
+	//We set the initial values here so that the Properties 
+	//panel starts up with the correct startup information
+	std::string plateName{ "Standard Oblong" };
+
+	int plateWidth{ 520 };
+	int plateHeight{ 111 };
 
 	bool isTwoLineRegistration{ false };
 		
