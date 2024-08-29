@@ -56,7 +56,7 @@ public:
 		DealerPostcodeBSAU
 	};
 
-	static void Initialize(const std::string& filename, GLfloat maxWidth);
+	static void Initialize(GLfloat maxWidth);
 
 	static void Print(const Plate& plate,
 		Properties* properties,
@@ -64,7 +64,7 @@ public:
 		Shader& shader,
 		bool isPrinting);
 
-	Plate(const std::string& tag);
+	Plate(const std::string& tag, const std::string& filename = "");
 
 	bool IsLegal() const;
 	void IsLegal(bool flag);

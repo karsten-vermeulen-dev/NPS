@@ -8,29 +8,11 @@ bool Plate::isPrinting{ false };
 glm::vec2 Plate::maxDimension{ 0.0f };
 std::map<std::string, std::map<std::string, std::string>> Plate::plateDataMap;
 //================================================================================================
-void Plate::Initialize(const std::string& filename, GLfloat maxWidth)
+void Plate::Initialize(GLfloat maxWidth)
 {
 	auto viewport = Screen::Instance()->GetViewport();
-	auto aspectRatio = viewport.w / static_cast<float>(viewport.h);
-
 	maxDimension.x = maxWidth;
-	maxDimension.y = maxDimension.x / aspectRatio;
-
-	if (!Utility::LoadDataFile(filename, plateDataMap))
-	{
-		//assert if failed to load?
-	}
-
-
-	//========================================================================================
-	//TODO - Add this info to the 'info dialog box'
-	//Two-line plates
-	//Line gap should be 13mm and can be increased as long as padding
-	//from border is 7mm and padding from plate edge is 11mm 
-	//For 4 or less characters user has option to use one line (centered) or two lines
-	//========================================================================================
-
-
+	maxDimension.y = maxDimension.x / (viewport.w / static_cast<float>(viewport.h));
 }
 //================================================================================================
 void Plate::Print(const Plate& plate,
@@ -51,21 +33,21 @@ void Plate::Print(const Plate& plate,
 	//There is a bug when loading a preset .nps 
 	//file and then changing to Print/3D view mode after
 	//Because the folder system is reset we have to put '../Assets' to get out of the Data folder
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 10.0f * scale, "Arial_bold_10mm_print");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 8.0f * scale, "Arial_bold_8mm_print");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 7.0f * scale, "Arial_bold_7mm_print");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 6.0f * scale, "Arial_bold_6mm_print");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 5.0f * scale, "Arial_bold_5mm_print");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 4.0f * scale, "Arial_bold_4mm_print");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 3.0f * scale, "Arial_bold_3mm_print");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 10.0f * scale, maxDimension, "Arial_bold_10mm_print");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 8.0f * scale, maxDimension, "Arial_bold_8mm_print");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 7.0f * scale, maxDimension, "Arial_bold_7mm_print");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 6.0f * scale, maxDimension, "Arial_bold_6mm_print");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 5.0f * scale, maxDimension, "Arial_bold_5mm_print");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 4.0f * scale, maxDimension, "Arial_bold_4mm_print");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 3.0f * scale, maxDimension, "Arial_bold_3mm_print");
 
-	Registration::Load("Assets/Images/Fonts/2D_car", "Car_2D_print");
-	Registration::Load("Assets/Images/Fonts/3D_car_under", "Car_3D_print");
-	Registration::Load("Assets/Images/Fonts/4D_car_under", "Car_4D_print");
+	Registration::Load("Assets/Images/Fonts/2D_car", maxDimension, "Car_2D_print");
+	Registration::Load("Assets/Images/Fonts/3D_car_under", maxDimension, "Car_3D_print");
+	Registration::Load("Assets/Images/Fonts/4D_car_under", maxDimension, "Car_4D_print");
 
-	Registration::Load("Assets/Images/Fonts/2D_motorcycle", "Bike_2D_print");
-	Registration::Load("Assets/Images/Fonts/3D_motorcycle_under", "Bike_3D_print");
-	Registration::Load("Assets/Images/Fonts/4D_motorcycle_under", "Bike_4D_print");
+	Registration::Load("Assets/Images/Fonts/2D_motorcycle", maxDimension, "Bike_2D_print");
+	Registration::Load("Assets/Images/Fonts/3D_motorcycle_under", maxDimension, "Bike_3D_print");
+	Registration::Load("Assets/Images/Fonts/4D_motorcycle_under", maxDimension, "Bike_4D_print");
 
 	//plateData.fontNameBSAU = plate.GetPlateData().fontNameBSAU + "_print";
 
@@ -150,8 +132,20 @@ const Properties* Plate::GetProperties() const
 	return properties;
 }
 //================================================================================================
-Plate::Plate(const std::string& tag)
+Plate::Plate(const std::string& tag, const std::string& filename)
 {
+	static bool isDataFileLoaded = false;
+
+	if (!isDataFileLoaded && !filename.empty())
+	{
+		if (!Utility::LoadDataFile(filename, plateDataMap))
+		{
+			//assert if failed to load?
+		}
+
+		isDataFileLoaded = true;
+	}
+
 	//default plate name when creating the first plate
 	plateData = plateDataMap[tag];
 
@@ -556,7 +550,7 @@ bool Plate::LoadCustomFont(FontToChange fontToChange, const std::string& filenam
 		Text::Unload("CustomFontRegistration");
 
 		//Load the new font and use the same tag since we only ever need one at a time
-		Text::Load(filename, fontSize, "CustomFontRegistration");
+		Text::Load(filename, fontSize, maxDimension, "CustomFontRegistration");
 
 		customFontRegistration.reset();
 		customFontRegistration = std::make_unique<Text>(this, "CustomFontRegistration");
@@ -566,7 +560,7 @@ bool Plate::LoadCustomFont(FontToChange fontToChange, const std::string& filenam
 	else if (fontToChange == FontToChange::Dealer)
 	{
 		Text::Unload("CustomFontDealer");
-		Text::Load(filename, fontSize, "CustomFontDealer");
+		Text::Load(filename, fontSize, maxDimension, "CustomFontDealer");
 
 		auto text = dealerText->GetString();
 		
@@ -578,7 +572,7 @@ bool Plate::LoadCustomFont(FontToChange fontToChange, const std::string& filenam
 	else if (fontToChange == FontToChange::Postcode)
 	{
 		Text::Unload("CustomFontPostcode");
-		Text::Load(filename, fontSize, "CustomFontPostcode");
+		Text::Load(filename, fontSize, maxDimension, "CustomFontPostcode");
 
 		auto text = postcodeText->GetString();
 
@@ -590,7 +584,7 @@ bool Plate::LoadCustomFont(FontToChange fontToChange, const std::string& filenam
 	else if (fontToChange == FontToChange::BSAU)
 	{
 		Text::Unload("CustomFontBSAU");
-		Text::Load(filename, fontSize, "CustomFontBSAU");
+		Text::Load(filename, fontSize, maxDimension, "CustomFontBSAU");
 
 		auto text = BSAUText->GetString();
 

@@ -90,29 +90,38 @@ bool Design::OnEnter()
 	backdrop = std::make_unique<Image>("Assets/Images/Backdrop.png");
 
 	//===================================================================
+	
+	//The maximum width of the viewport is 650mm, 
+	//The height will adjust based on aspect ratio
+	//We must initialize the plate BEFORE loading 
+	//all the text and registration fonts below
+	Plate::Initialize(650.0f);
+	auto maxPlateDimension = Plate::GetMaxDimension();
+
+	//===================================================================
 
 	//The height of the text is multiplied by 1.37 because 
 	//the resulting pixel size is not always as we expect
 	const auto scale = 1.37f;
 
 	//Text sizes are between 3mm and 10mm
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 10.0f * scale, "Arial_bold_10mm");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 8.0f * scale, "Arial_bold_8mm");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 7.0f * scale, "Arial_bold_7mm");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 6.0f * scale, "Arial_bold_6mm");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 5.0f * scale, "Arial_bold_5mm");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 4.0f * scale, "Arial_bold_4mm");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 3.0f * scale, "Arial_bold_3mm");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 10.0f * scale, maxPlateDimension, "Arial_bold_10mm");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 8.0f * scale, maxPlateDimension, "Arial_bold_8mm");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 7.0f * scale, maxPlateDimension,"Arial_bold_7mm");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 6.0f * scale, maxPlateDimension, "Arial_bold_6mm");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 5.0f * scale, maxPlateDimension, "Arial_bold_5mm");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 4.0f * scale, maxPlateDimension, "Arial_bold_4mm");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 3.0f * scale, maxPlateDimension, "Arial_bold_3mm");
 
 	//===================================================================
 
-	Registration::Load("Assets/Images/Fonts/2D_car", "Car_2D");
-	Registration::Load("Assets/Images/Fonts/3D_car_under", "Car_3D");
-	Registration::Load("Assets/Images/Fonts/4D_car_under", "Car_4D");
+	Registration::Load("Assets/Images/Fonts/2D_car", maxPlateDimension, "Car_2D");
+	Registration::Load("Assets/Images/Fonts/3D_car_under", maxPlateDimension, "Car_3D");
+	Registration::Load("Assets/Images/Fonts/4D_car_under", maxPlateDimension, "Car_4D");
 
-	Registration::Load("Assets/Images/Fonts/2D_motorcycle", "Bike_2D");
-	Registration::Load("Assets/Images/Fonts/3D_motorcycle_under", "Bike_3D");
-	Registration::Load("Assets/Images/Fonts/4D_motorcycle_under", "Bike_4D");
+	Registration::Load("Assets/Images/Fonts/2D_motorcycle", maxPlateDimension, "Bike_2D");
+	Registration::Load("Assets/Images/Fonts/3D_motorcycle_under", maxPlateDimension, "Bike_3D");
+	Registration::Load("Assets/Images/Fonts/4D_motorcycle_under", maxPlateDimension, "Bike_4D");
 
 	//===================================================================
 
@@ -170,12 +179,8 @@ bool Design::OnEnter()
 
 	//===================================================================
 
-	//The maximum width of the viewport is 650mm, 
-	//The height will adjust based on aspect ratio
-	Plate::Initialize("Data/Plates.inf", 650.0f);
-
 	//Hook up the properties and other UI later on, after plate and UI has been created
-	plate = std::make_unique<Plate>("Standard Oblong");
+	plate = std::make_unique<Plate>("Standard Oblong", "Data/Plates.inf");
 
 	//===================================================================
 
@@ -1123,6 +1128,14 @@ void Design::PrintPlate()
 
 	}
 }
+
+//========================================================================================
+//TODO - Add this info to the 'info dialog box'
+//Two-line plates
+//Line gap should be 13mm and can be increased as long as padding
+//from border is 7mm and padding from plate edge is 11mm 
+//For 4 or less characters user has option to use one line (centered) or two lines
+//========================================================================================
 
 //TODO - This text should move to global text message on main screen
 //if (plateData.isLegal)
