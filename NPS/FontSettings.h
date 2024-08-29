@@ -11,31 +11,10 @@
 //instead of scattered font settings in the Properties panel. This avoids 
 //having multiple custom font combo boxes and condenses the Properties panel
 
-class FontDialog : public UserInterface
+class FontSettings : public UserInterface
 {
 
 public:
-
-	struct ButtonState
-	{
-		bool ok{ false };
-		bool cancel{ false };
-	};
-
-	struct FontToChange
-	{
-		bool isRegistration{ true };
-		bool isDealer{ false };
-		bool isPostcode{ false };
-		bool isBSAU{ false };
-	};
-
-	struct FontType
-	{
-		bool isCar{ true };
-		bool isMotorCycle{ false };
-		bool isCustom{ false };
-	};
 
 	//Enums work best with the index values of combo boxes
 	enum class FontStyle
@@ -45,25 +24,35 @@ public:
 		Lasercut4D 
 	};
 
-	FontDialog(const std::string& filename);
+	struct ButtonState
+	{
+		bool ok{ false };
+		bool cancel{ false };
+	};
 
-	const std::string& GetFont() const;
-
-	virtual void Show() override;
-	virtual void Reset() override;
-
-	//Make these public for easy access and ability to change when required
-	//This public access also makes code more readable in main codebase
-	FontType fontType;
-	ButtonState buttonState;
-	FontToChange fontToChange;
-	FontStyle fontStyle{ FontStyle::Regular2D };
-
-private:
+	bool isRegistration{ true };
+	bool isDealer{ false };
+	bool isPostcode{ false };
+	bool isBSAU{ false };
+	
+	bool isCar{ true };
+	bool isMotorCycle{ false };
+	bool isCustom{ false };
 
 	//We need a font string for all font types - reg, dealer, postcode, bsau
 	//This string will be the filename and path of the custom font file (.ttf/.otf) 
 	std::string font;
+
+	FontStyle fontStyle{ FontStyle::Regular2D };
+	
+	ButtonState buttonState;
+
+	FontSettings(const std::string& filename);
+
+	virtual void Show() override;
+	virtual void Reset() override;
+
+private:
 
 	//We store all font names and their respective file locations
 	//The names are used by the combo box as the font index list

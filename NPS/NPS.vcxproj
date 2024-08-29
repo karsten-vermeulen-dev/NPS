@@ -148,7 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ActivateDialog.cpp" />
-    <ClCompile Include="FontDialog.cpp" />
+    <ClCompile Include="FontSettings.cpp" />
     <ClCompile Include="LicenseDialog.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="App.cpp" />
@@ -182,7 +182,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActivateDialog.h" />
-    <ClInclude Include="FontDialog.h" />
+    <ClInclude Include="FontSettings.h" />
     <ClInclude Include="LicenseDialog.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="App.h" />

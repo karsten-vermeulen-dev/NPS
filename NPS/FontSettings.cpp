@@ -1,8 +1,8 @@
-#include "FontDialog.h"
+#include "FontSettings.h"
 #include "Utility.h"
 
 //======================================================================================================
-FontDialog::FontDialog(const std::string& filename)
+FontSettings::FontSettings(const std::string& filename)
 {
 	if (!Utility::LoadConfigFile(filename, fontNames))
 	{
@@ -10,12 +10,7 @@ FontDialog::FontDialog(const std::string& filename)
 	}
 }
 //======================================================================================================
-const std::string& FontDialog::GetFont() const
-{
-	return font;
-}
-//======================================================================================================
-void FontDialog::Show()
+void FontSettings::Show()
 {
 	ImGui::GetStyle().WindowRounding = 10.0f;
 	
@@ -61,43 +56,43 @@ void FontDialog::Show()
 	ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
 	ImGui::PushFont(fonts["MyriadPro_Regular"]);
 
-	if (ImGui::RadioButton("Registration", fontToChange.isRegistration))
+	if (ImGui::RadioButton("Registration", isRegistration))
 	{
-		fontToChange.isRegistration = true;
-		fontToChange.isDealer = false;
-		fontToChange.isPostcode = false;
-		fontToChange.isBSAU = false;
+		isRegistration = true;
+		isDealer = false;
+		isPostcode = false;
+		isBSAU = false;
 	}
 
-	if (ImGui::RadioButton("Dealer", fontToChange.isDealer))
+	if (ImGui::RadioButton("Dealer", isDealer))
 	{
-		fontToChange.isRegistration = false;
-		fontToChange.isDealer = true;
-		fontToChange.isPostcode = false;
-		fontToChange.isBSAU = false;
+		isRegistration = false;
+		isDealer = true;
+		isPostcode = false;
+		isBSAU = false;
 	}
 
-	if (ImGui::RadioButton("Postcode", fontToChange.isPostcode))
+	if (ImGui::RadioButton("Postcode", isPostcode))
 	{
-		fontToChange.isRegistration = false;
-		fontToChange.isDealer = false;
-		fontToChange.isPostcode = true;
-		fontToChange.isBSAU = false;
+		isRegistration = false;
+		isDealer = false;
+		isPostcode = true;
+		isBSAU = false;
 	}
 
-	if (ImGui::RadioButton("BSAU", fontToChange.isBSAU))
+	if (ImGui::RadioButton("BSAU", isBSAU))
 	{
-		fontToChange.isRegistration = false;
-		fontToChange.isDealer = false;
-		fontToChange.isPostcode = false;
-		fontToChange.isBSAU = true;
+		isRegistration = false;
+		isDealer = false;
+		isPostcode = false;
+		isBSAU = true;
 	}
 
 	ImGui::PopFont();
 
 	//===================================================================================
 	
-	if (fontToChange.isRegistration)
+	if (isRegistration)
 	{
 		Spacing(spacingFromTitle);
 
@@ -106,25 +101,25 @@ void FontDialog::Show()
 		ImGui::GetStyle().Colors[ImGuiCol_Text] = white;
 		ImGui::PushFont(fonts["MyriadPro_Regular"]);
 
-		if (ImGui::RadioButton("Car", fontType.isCar))
+		if (ImGui::RadioButton("Car", isCar))
 		{
-			fontType.isCar = true;
-			fontType.isMotorCycle = false;
-			fontType.isCustom = false;
+			isCar = true;
+			isMotorCycle = false;
+			isCustom = false;
 		}
 
-		if (ImGui::RadioButton("Motorcycle", fontType.isMotorCycle))
+		if (ImGui::RadioButton("Motorcycle", isMotorCycle))
 		{
-			fontType.isCar = false;
-			fontType.isMotorCycle = true;
-			fontType.isCustom = false;
+			isCar = false;
+			isMotorCycle = true;
+			isCustom = false;
 		}
 
-		if (ImGui::RadioButton("Custom", fontType.isCustom))
+		if (ImGui::RadioButton("Custom", isCustom))
 		{
-			fontType.isCar = false;
-			fontType.isMotorCycle = false;
-			fontType.isCustom = true;
+			isCar = false;
+			isMotorCycle = false;
+			isCustom = true;
 		}
 
 		ImGui::PopFont();
@@ -134,7 +129,7 @@ void FontDialog::Show()
 	
 	//We only display the 2D/3D/4D combo box list if 
 	//the 'Car' or 'Motorcycle' font has been selected
-	if (fontToChange.isRegistration && (fontType.isCar || fontType.isMotorCycle))
+	if (isRegistration && (isCar || isMotorCycle))
 	{
 		Spacing(spacingFromTitle);
 
@@ -154,7 +149,7 @@ void FontDialog::Show()
 	
 	//We only display the font selection combo box if we want to change the 
 	//dealer/postcode/BSAU sections or if the registration requires a custom font
-	if (!fontToChange.isRegistration || (fontToChange.isRegistration && fontType.isCustom))
+	if (!isRegistration || (isRegistration && isCustom))
 	{
 		Spacing(spacingFromTitle);
 		Partition("MyriadPro_Bold_16", "Font name", yellow);
@@ -204,23 +199,23 @@ void FontDialog::Show()
 
 }
 //======================================================================================================
-void FontDialog::Reset()
+void FontSettings::Reset()
 {
 	font.clear();
 	comboBoxFontID = 0;
 	comboBoxFontStyleID = 0;
 
-	fontType.isCar = true;
-	fontType.isMotorCycle = false;
-	fontType.isCustom = false;
+	isCar = true;
+	isMotorCycle = false;
+	isCustom = false;
 
 	buttonState.ok = false;
 	buttonState.cancel = false;
 
-	fontToChange.isRegistration = true;
-	fontToChange.isDealer = false;
-	fontToChange.isPostcode = false;
-	fontToChange.isBSAU = false;
-	
+	isRegistration = true;
+	isDealer = false;
+	isPostcode = false;
+	isBSAU = false;
+
 	fontStyle = FontStyle::Regular2D;
 }
