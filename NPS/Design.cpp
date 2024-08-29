@@ -201,20 +201,20 @@ bool Design::OnEnter()
 	msgBox->SetDimension(glm::uvec2(300, 150));
 	msgBox->SetButtonDimension(buttonDimension);
 
-	activateDialog = std::make_unique<ActivateDialog>();
-	activateDialog->IsVisible(false);
-	activateDialog->SetDimension(glm::uvec2(325, 410));
-	activateDialog->SetButtonDimension(buttonDimension);
+	activateProgram = std::make_unique<ActivateProgram>();
+	activateProgram->IsVisible(false);
+	activateProgram->SetDimension(glm::uvec2(325, 410));
+	activateProgram->SetButtonDimension(buttonDimension);
 
-	customerDialog = std::make_unique<CustomerDialog>();
-	customerDialog->IsVisible(false);
-	customerDialog->SetDimension(glm::uvec2(400, 660));
-	customerDialog->SetButtonDimension(buttonDimension);
+	customerInfo = std::make_unique<CustomerInfo>();
+	customerInfo->IsVisible(false);
+	customerInfo->SetDimension(glm::uvec2(400, 660));
+	customerInfo->SetButtonDimension(buttonDimension);
 
-	licenseDialog = std::make_unique<LicenseDialog>();
-	licenseDialog->IsVisible(false);
-	licenseDialog->SetDimension(glm::uvec2(325, 410));
-	licenseDialog->SetButtonDimension(buttonDimension);
+	checkLicense = std::make_unique<CheckLicense>();
+	checkLicense->IsVisible(false);
+	checkLicense->SetDimension(glm::uvec2(325, 410));
+	checkLicense->SetButtonDimension(buttonDimension);
 
 	//===================================================================
 
@@ -729,17 +729,17 @@ bool Design::Render()
 
 	else if (menuItems.isActivateProgramSelected)
 	{
-		activateDialog->IsVisible(true);
+		activateProgram->IsVisible(true);
 	}
 
 	else if (menuItems.isCustomerInformationSelected)
 	{
-		customerDialog->IsVisible(true);
+		customerInfo->IsVisible(true);
 	}
 
 	else if (menuItems.isCheckLicenseSelected)
 	{
-		licenseDialog->IsVisible(true);
+		checkLicense->IsVisible(true);
 	}
 
 	//========================================================================================
@@ -831,19 +831,19 @@ bool Design::Render()
 		//--------------------------------------------------
 	}
 
-	else if (activateDialog->IsVisible())
+	else if (activateProgram->IsVisible())
 	{
-		activateDialog->Show();
+		activateProgram->Show();
 	}
 
-	else if (customerDialog->IsVisible())
+	else if (customerInfo->IsVisible())
 	{
-		customerDialog->Show();
+		customerInfo->Show();
 	}
 
-	else if (licenseDialog->IsVisible())
+	else if (checkLicense->IsVisible())
 	{
-		licenseDialog->Show();
+		checkLicense->Show();
 	}
 
 	plate->SetProperties();

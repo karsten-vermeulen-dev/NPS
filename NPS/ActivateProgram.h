@@ -1,7 +1,7 @@
 #pragma once
 #include "UserInterface.h"
 
-class ActivateDialog : public UserInterface
+class ActivateProgram : public UserInterface
 {
 
 public:

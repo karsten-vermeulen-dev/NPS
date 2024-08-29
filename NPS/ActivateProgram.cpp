@@ -1,12 +1,12 @@
-#include "ActivateDialog.h"
+#include "ActivateProgram.h"
 
 //======================================================================================================
-const ActivateDialog::ButtonState& ActivateDialog::GetButtonState()
+const ActivateProgram::ButtonState& ActivateProgram::GetButtonState()
 {
 	return buttonState;
 }
 //======================================================================================================
-void ActivateDialog::Show()
+void ActivateProgram::Show()
 {
 	ImGui::GetStyle().WindowRounding = 10.0f;
 	

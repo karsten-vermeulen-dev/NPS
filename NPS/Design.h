@@ -8,13 +8,13 @@
 #include <glm.hpp>
 #include <SDL.h>
 
-#include "ActivateDialog.h"
+#include "ActivateProgram.h"
 #include "FontSettings.h"
 
-#include "CustomerDialog.h"
+#include "CustomerInfo.h"
 
 #include "Image.h"
-#include "LicenseDialog.h"
+#include "CheckLicense.h"
 #include "MainMenu.h"
 #include "MsgBox.h"
 #include "Plate.h"
@@ -77,9 +77,9 @@ private:
 	
 	std::unique_ptr<MsgBox> msgBox;
 
-	std::unique_ptr<ActivateDialog> activateDialog;
-	std::unique_ptr<CustomerDialog> customerDialog;
-	std::unique_ptr<LicenseDialog> licenseDialog;
+	std::unique_ptr<ActivateProgram> activateProgram;
+	std::unique_ptr<CustomerInfo> customerInfo;
+	std::unique_ptr<CheckLicense> checkLicense;
 
 	std::unique_ptr<Properties> properties;
 

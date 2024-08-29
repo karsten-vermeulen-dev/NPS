@@ -3,7 +3,7 @@
 #include <vector>
 #include "UserInterface.h"
 
-class CustomerDialog : public UserInterface
+class CustomerInfo : public UserInterface
 {
 
 public:
@@ -18,7 +18,7 @@ public:
 		std::string expiryDate;
 	};
 
-	CustomerDialog();
+	CustomerInfo();
 	
 	virtual void Show() override;
 	virtual void Reset() override {}

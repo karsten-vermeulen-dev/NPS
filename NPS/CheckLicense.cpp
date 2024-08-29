@@ -1,11 +1,12 @@
-#include "LicenseDialog.h"
+#include "CheckLicense.h"
 
-const LicenseDialog::ButtonState& LicenseDialog::GetButtonState()
+//======================================================================================================
+const CheckLicense::ButtonState& CheckLicense::GetButtonState()
 {
 	return buttonState;
 }
-
-void LicenseDialog::Show()
+//======================================================================================================
+void CheckLicense::Show()
 {
 	ImGui::GetStyle().WindowRounding = 10.0f;
 

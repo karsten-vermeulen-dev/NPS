@@ -1,7 +1,7 @@
 #pragma once
 #include "UserInterface.h"
 
-class LicenseDialog : public UserInterface
+class CheckLicense : public UserInterface
 {
 
 public:

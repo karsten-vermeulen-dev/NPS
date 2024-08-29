@@ -147,14 +147,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ActivateDialog.cpp" />
+    <ClCompile Include="ActivateProgram.cpp" />
     <ClCompile Include="FontSettings.cpp" />
-    <ClCompile Include="LicenseDialog.cpp" />
+    <ClCompile Include="CheckLicense.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Border.cpp" />
     <ClCompile Include="Buffer.cpp" />
-    <ClCompile Include="CustomerDialog.cpp" />
+    <ClCompile Include="CustomerInfo.cpp" />
     <ClCompile Include="Design.cpp" />
     <ClCompile Include="Properties.cpp" />
     <ClCompile Include="UserInterface.cpp" />
@@ -181,14 +181,14 @@
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ActivateDialog.h" />
+    <ClInclude Include="ActivateProgram.h" />
     <ClInclude Include="FontSettings.h" />
-    <ClInclude Include="LicenseDialog.h" />
+    <ClInclude Include="CheckLicense.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="Border.h" />
     <ClInclude Include="Buffer.h" />
-    <ClInclude Include="CustomerDialog.h" />
+    <ClInclude Include="CustomerInfo.h" />
     <ClInclude Include="Design.h" />
     <ClInclude Include="Properties.h" />
     <ClInclude Include="UserInterface.h" />
