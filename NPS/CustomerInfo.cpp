@@ -1,7 +1,7 @@
-#include "CustomerDialog.h"
+#include "CustomerInfo.h"
 
 //======================================================================================================
-CustomerDialog::CustomerDialog()
+CustomerInfo::CustomerInfo()
 {
 	customers.push_back({ "John Smith",
 							"John's Amazing Plates",
@@ -46,17 +46,17 @@ CustomerDialog::CustomerDialog()
 							"10 January 2025" });
 }
 //======================================================================================================
-void CustomerDialog::Show()
+void CustomerInfo::Show()
 {
 	ImGui::GetStyle().WindowRounding = 10.0f;
 	
-	ImGui::Begin("CustomerDialog information",
+	ImGui::Begin("Customer information",
 		nullptr,
 		ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse |
 		ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
 
-	ImGui::SetWindowSize("CustomerDialog information", ImVec2(dimension.x, dimension.y));
+	ImGui::SetWindowSize("Customer information", ImVec2(dimension.x, dimension.y));
 
 	//===================================================================================
 
@@ -64,7 +64,6 @@ void CustomerDialog::Show()
 	const auto totalCustomers = 6;
 	const char* customersTemp[totalCustomers];
 	
-	const auto buttonIndent = 138;
 	const auto spacingToButton = 5;
 	const auto spacingFromTitle = 5;
 	const auto spacingBetweenSections = 2;

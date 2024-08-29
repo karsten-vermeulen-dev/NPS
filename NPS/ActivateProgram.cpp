@@ -1,12 +1,12 @@
-#include "ActivateDialog.h"
+#include "ActivateProgram.h"
 
 //======================================================================================================
-const ActivateDialog::ButtonState& ActivateDialog::GetButtonState()
+const ActivateProgram::ButtonState& ActivateProgram::GetButtonState()
 {
 	return buttonState;
 }
 //======================================================================================================
-void ActivateDialog::Show()
+void ActivateProgram::Show()
 {
 	ImGui::GetStyle().WindowRounding = 10.0f;
 	
@@ -22,7 +22,6 @@ void ActivateDialog::Show()
 
 	buttonState = { false };
 
-	const auto buttonIndent = 100;
 	const auto spacingToButton = 5;
 	const auto spacingFromTitle = 5;
 	const auto spacingBetweenSections = 2;

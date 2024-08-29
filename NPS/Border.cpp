@@ -60,7 +60,7 @@ void Border::FillBuffers()
 	auto sideBadgeMargin = 0.0f;
 	const auto maxPlateDimension = parent->GetMaxDimension();
 
-	if (parent->GetProperties().isSideBadgeVisible)
+	if (parent->GetProperties()->isSideBadgeVisible)
 	{
 		sideBadgeMargin = 2.0f * (parent->sideBadgeMargin / maxPlateDimension.x);
 	}
@@ -68,19 +68,19 @@ void Border::FillBuffers()
 	const auto sideDimension = 2.0f * (parent->sideDimension / maxPlateDimension);
 	
 	auto dimensionNDC = glm::vec2(0.0f);
-	dimensionNDC.x = Utility::ConvertToNDC(parent->GetProperties().plateWidth, maxPlateDimension.x);
-	dimensionNDC.y = Utility::ConvertToNDC(parent->GetProperties().plateHeight, maxPlateDimension.y);
+	dimensionNDC.x = Utility::ConvertToNDC(parent->GetProperties()->plateWidth, maxPlateDimension.x);
+	dimensionNDC.y = Utility::ConvertToNDC(parent->GetProperties()->plateHeight, maxPlateDimension.y);
 
 	const auto halfDimension = 0.5f * dimensionNDC;
 	const auto middleDimension = halfDimension - sideDimension;
 
-	const auto marginSize = parent->GetProperties().marginSize;
+	const auto marginSize = parent->GetProperties()->marginSize;
 	const auto delta = 2.0f * glm::vec2(1.0f / maxPlateDimension.x, 1.0f / maxPlateDimension.y);
 	const auto marginNDC = glm::vec2(2.0f * (marginSize / maxPlateDimension.x), 2.0f * (marginSize / maxPlateDimension.y));
 
 	//Loop through each mm/px of width of the border to repeat creation of the border
 	//With each iteration we move one layer deeper into the border thereby shrinking it
-	for (auto j = 0; j < parent->GetProperties().borderSize; j++)
+	for (auto j = 0; j < parent->GetProperties()->borderSize; j++)
 	{
 		//Make sure to add color for all side lines and each corner
 		for (GLuint k = 0; k < (4 * ((parent->maxCornerPoints - 1) * 2)) + 10; k++)
@@ -118,11 +118,11 @@ void Border::FillBuffers()
 		//If the dealer name is visible then the bottom line has to leave a gap so we move 
 		//the end of bottom line #1 to the left and the start of bottom line #2 to the right
 		//We divide EU logo margin and dealer text size in half because dealer text is centered
-		if (parent->GetProperties().isDealerVisible)
+		if (parent->GetProperties()->isDealerVisible)
 		{
 			auto dealerPostcodeWidth = 0.0f;
 
-			if (parent->GetProperties().isDealerAbovePostcode)
+			if (parent->GetProperties()->isDealerAbovePostcode)
 			{
 				dealerPostcodeWidth = std::max(parent->GetDealerText()->GetMaxWidth(),
 					parent->GetDealerText()->GetMaxWidth());
@@ -158,7 +158,7 @@ void Border::FillBuffers()
 			verticesBorder.push_back(0.0f);
 		}
 
-		if (parent->GetProperties().isBSAUVisible && parent->GetProperties().isBSAUOnBorder)
+		if (parent->GetProperties()->isBSAUVisible && parent->GetProperties()->isBSAUOnBorder)
 		{
 			//Right line point #2
 			verticesBorder.push_back(middleDimension.x - parent->GetBSAUText()->GetMaxWidth() - (2.0f * textPadding) - marginNDC.x);

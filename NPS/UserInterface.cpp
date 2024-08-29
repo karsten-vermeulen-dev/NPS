@@ -49,6 +49,15 @@ void UserInterface::Partition(const std::string& fontTag, const std::string& tit
 	Spacing(1);
 }
 //======================================================================================================
+void UserInterface::Update()
+{
+	//For all buttons we indent using a formula and we must subtract 
+	//the window padding because that will have been included by ImGUI
+	buttonIndent = (dimension.x * 0.5f) -
+				   (buttonDimension.x * 0.5f) -
+				   ImGui::GetStyle().WindowPadding.x;
+}
+//======================================================================================================
 bool UserInterface::IsVisible() const
 {
 	return isVisible;
@@ -82,9 +91,11 @@ void UserInterface::SetPosition(const glm::uvec2& position)
 void UserInterface::SetDimension(const glm::uvec2& dimension)
 {
 	this->dimension = dimension;
+	Update();
 }
 //======================================================================================================
 void UserInterface::SetButtonDimension(const glm::uvec2& dimension)
 {
 	buttonDimension = dimension;
+	Update();
 }

@@ -8,19 +8,17 @@
 #include <glm.hpp>
 #include <SDL.h>
 
-#include "AboutDialog.h"
-#include "ActivateDialog.h"
-#include "FontDialog.h"
-#include "PrintPanel.h"
-#include "CustomerDialog.h"
-//#include "FeedbackPanel.h"
+#include "ActivateProgram.h"
+#include "FontSettings.h"
+
+#include "CustomerInfo.h"
+
 #include "Image.h"
-#include "LicenseDialog.h"
+#include "CheckLicense.h"
 #include "MainMenu.h"
-#include "MessageDialog.h"
-#include "ModePanel.h"
+#include "MsgBox.h"
 #include "Plate.h"
-#include "PropertiesPanel.h"
+#include "Properties.h"
 #include "Screen.h"
 #include "Shader.h"
 #include "State.h"
@@ -31,6 +29,13 @@ class Design : public State
 
 public:
 
+	enum class Mode
+	{
+		Design, 
+		PrintPreview, 
+		View3D
+	};
+
 	virtual ~Design() {}
 	virtual bool OnEnter();
 	virtual State* Update();
@@ -38,6 +43,8 @@ public:
 	virtual void OnExit();
 
 private:
+
+	Mode mode{ Mode::Design };
 
 	//void View3D();
 	void PrintPlate();
@@ -64,18 +71,16 @@ private:
 
 	std::unique_ptr<MainMenu> mainMenu;
 
-	std::unique_ptr<FontDialog> fontDialog;
+	std::unique_ptr<FontSettings> fontSettings;
 	
 	//make this a container of dialogs - easier to render/show using a loop
-	std::unique_ptr<AboutDialog> aboutDialog;
-	std::unique_ptr<MessageDialog> messageDialog;
-	std::unique_ptr<ActivateDialog> activateDialog;
-	std::unique_ptr<CustomerDialog> customerDialog;
-	std::unique_ptr<LicenseDialog> licenseDialog;
+	
+	std::unique_ptr<MsgBox> msgBox;
 
-	std::unique_ptr<ModePanel> modePanel;
-	std::unique_ptr<PrintPanel> printPanel;
-	//std::unique_ptr<FeedbackPanel> feedbackPanel;
-	std::unique_ptr<PropertiesPanel> propertiesPanel;
+	std::unique_ptr<ActivateProgram> activateProgram;
+	std::unique_ptr<CustomerInfo> customerInfo;
+	std::unique_ptr<CheckLicense> checkLicense;
+
+	std::unique_ptr<Properties> properties;
 
 };

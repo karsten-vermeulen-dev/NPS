@@ -21,7 +21,12 @@ public:
 
 	static bool Initialize();
 	static void Shutdown();
-	static bool Load(const std::string& filename, GLfloat fontHeight, const std::string& tag);
+	
+	static bool Load(const std::string& filename,
+					 GLfloat fontHeight,
+					 const glm::vec2& maxDimension,
+					 const std::string& tag);
+
 	static void Unload(const std::string& tag);
 
 	Text(Plate* parent, const std::string& tag);

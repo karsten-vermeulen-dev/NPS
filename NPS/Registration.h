@@ -24,7 +24,10 @@ public:
 	const GLuint spacebarSpacing = 33;
 	const GLuint characterSpacing = 11;
 
-	static void Load(const std::string& filename, const std::string& tag);
+	static void Load(const std::string& filename, 
+		            const glm::vec2& maxDimension, 
+		            const std::string& tag);
+
 	static void Unload(const std::string& tag);
 
 	Registration(Plate* parent);

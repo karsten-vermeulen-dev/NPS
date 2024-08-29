@@ -1,27 +1,27 @@
-#include "MessageDialog.h"
+#include "MsgBox.h"
 
 //======================================================================================================
-const MessageDialog::ButtonState& MessageDialog::GetButtonState()
+const MsgBox::ButtonState& MsgBox::GetButtonState()
 {
 	return buttonState;
 }
 //======================================================================================================
-void MessageDialog::SetTitle(const std::string& title)
+void MsgBox::SetTitle(const std::string& title)
 {
 	this->title = title;
 }
 //======================================================================================================
-void MessageDialog::SetMessage(const std::string& message)
+void MsgBox::SetMessage(const std::string& message)
 {
 	this->message = message;
 }
 //======================================================================================================
-void MessageDialog::SetButtonType(ButtonType buttonType)
+void MsgBox::SetButtonType(ButtonType buttonType)
 {
 	this->buttonType = buttonType;
 }
 //======================================================================================================
-void MessageDialog::Show()
+void MsgBox::Show()
 {
 	ImGui::GetStyle().WindowRounding = 10.0f;
 
@@ -35,7 +35,6 @@ void MessageDialog::Show()
 
 	//===================================================================================
 
-	const auto buttonIndent = 90;
 	const auto spacingToButton = 5;
 	
 	//===================================================================================
@@ -53,7 +52,15 @@ void MessageDialog::Show()
 
 	buttonState = { false };
 
-	if (buttonType == ButtonType::YesNo)
+	if ((buttonType == ButtonType::Okay))
+	{
+		if (ImGui::Button("Okay", ImVec2(buttonDimension.x, buttonDimension.y)))
+		{
+			buttonState.ok = true;
+		}
+	}
+
+	else if (buttonType == ButtonType::YesNo)
 	{
 		if (ImGui::Button("Yes", ImVec2(buttonDimension.x, buttonDimension.y)))
 		{
@@ -68,7 +75,7 @@ void MessageDialog::Show()
 
 	else if (buttonType == ButtonType::OkCancel)
 	{
-		if (ImGui::Button("OK", ImVec2(buttonDimension.x, buttonDimension.y)))
+		if (ImGui::Button("Okay", ImVec2(buttonDimension.x, buttonDimension.y)))
 		{
 			buttonState.ok = true;
 		}

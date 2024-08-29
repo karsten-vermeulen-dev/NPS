@@ -8,12 +8,12 @@
 
 #include "Border.h"
 #include "Buffer.h"
-#include "PropertiesPanel.h"
+#include "Properties.h"
 #include "Registration.h"
 #include "Shader.h"
 #include "Text.h"
 #include "Transform.h"
-#include "FontDialog.h"
+#include "FontSettings.h"
 
 class Plate
 {
@@ -56,15 +56,15 @@ public:
 		DealerPostcodeBSAU
 	};
 
-	static void Initialize(const std::string& filename, GLfloat maxWidth);
-	
-	static void Print(const Plate& plate, 
-		PropertiesPanel::Properties& properties, 
-		const glm::vec2& maxDimension, 
-		Shader& shader, 
+	static void Initialize(GLfloat maxWidth);
+
+	static void Print(const Plate& plate,
+		Properties* properties,
+		const glm::vec2& maxDimension,
+		Shader& shader,
 		bool isPrinting);
 
-	Plate(const std::string& tag, PropertiesPanel::Properties& properties);
+	Plate(const std::string& tag, const std::string& filename = "");
 
 	bool IsLegal() const;
 	void IsLegal(bool flag);
@@ -81,7 +81,7 @@ public:
 	const Text* GetDealerText() const;
 	const Text* GetPostcodeText() const;
 
-	const PropertiesPanel::Properties& GetProperties() const;
+	const Properties* GetProperties() const;
 
 	//Temp. fix using 'isPrinting' parameter to set the 
 	//printing state on/off to load correct-sized reg. fonts
@@ -91,11 +91,13 @@ public:
 
 	void SetPlateData(const std::string& tag);
 
+	void SetUserInterfaces(Properties* properties, FontSettings* fontSettings);
+
 	void Render(Shader& shader);
 
 	bool LoadCustomFont(FontToChange fontToChange, const std::string& filename, GLfloat fontSize);
 
-	void LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle fontStyle);
+	void LoadDefaultFont(const FontSettings& fontSettings, FontSettings::FontStyle fontStyle);
 
 private:
 
@@ -106,14 +108,14 @@ private:
 	//Flag to set when in printing mode so that when we call the Render()
 	//function, we can disable the rendering of the yellow plate 
 	static bool isPrinting;
-	
+
 	//The globally accessible data map containing information about all the plates
 	static std::map<std::string, std::map<std::string, std::string>> plateDataMap;
 
 	//We need our own local map of data pertaining to this 
 	//particular plate ("Standard Oblong", "Micro Plate", etc)
 	std::map<std::string, std::string> plateData;
-	
+
 	void FillBuffers();
 
 	bool isLegal{ true };
@@ -128,25 +130,24 @@ private:
 	std::unique_ptr<Text> postcodeText;
 
 	std::unique_ptr<Registration> registration;
-	
+
 	//Not fully working/tested yet
 	std::unique_ptr<Text> customFontRegistration;
 
 	Transform transform; //Is this really needed since the plate is always at 0,0?
-	
+
 	//We need a means of identifying THIS plate
 	std::string tag;
 
 	//Official legal dimensions (mm and NDC) of the current plate (not actual dimension!)
 	//We require these in various places so let's make them members 
-	glm::uvec2 legalDimension;    
+	glm::uvec2 legalDimension;
 	glm::vec2 legalDimensionNDC;
 
 	//This is hooked up to the properties panel UI
-	PropertiesPanel::Properties& properties;
+	//PropertiesPanel::Properties& properties;
+	Properties* properties;
 
-	//Why don't we hook up the Font settings the same way?
-	
-	//Why don't we hook up the Feedback panel the same way?
+	FontSettings* fontSettings;
 
 };

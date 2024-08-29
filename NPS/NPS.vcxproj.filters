@@ -61,14 +61,8 @@
     <Filter Include="Header Files\Objects\UI\Dialogs">
       <UniqueIdentifier>{6da8408b-7e2b-4d20-ae9b-9ba224603976}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Objects\UI\Panels">
-      <UniqueIdentifier>{ca7566b1-eb37-47b1-b774-45818a8cad36}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Objects\UI\Dialogs">
       <UniqueIdentifier>{ee916963-5763-4428-8397-67973aaccdb4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Objects\UI\Panels">
-      <UniqueIdentifier>{2a1a2ff8-fa06-4cf1-9f85-fdf1a257d0ee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -147,29 +141,11 @@
     <ClCompile Include="UserInterface.cpp">
       <Filter>Source Files\Objects\UI</Filter>
     </ClCompile>
-    <ClCompile Include="AboutDialog.cpp">
-      <Filter>Source Files\Objects\UI\Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="ActivateDialog.cpp">
       <Filter>Source Files\Objects\UI\Dialogs</Filter>
     </ClCompile>
     <ClCompile Include="CustomerDialog.cpp">
       <Filter>Source Files\Objects\UI\Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="MessageDialog.cpp">
-      <Filter>Source Files\Objects\UI\Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertiesPanel.cpp">
-      <Filter>Source Files\Objects\UI\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="FeedbackPanel.cpp">
-      <Filter>Source Files\Objects\UI\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="ModePanel.cpp">
-      <Filter>Source Files\Objects\UI\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="PrintPanel.cpp">
-      <Filter>Source Files\Objects\UI\Panels</Filter>
     </ClCompile>
     <ClCompile Include="MainMenu.cpp">
       <Filter>Source Files\Objects\UI</Filter>
@@ -179,6 +155,12 @@
     </ClCompile>
     <ClCompile Include="FontDialog.cpp">
       <Filter>Source Files\Objects\UI\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="Properties.cpp">
+      <Filter>Source Files\Objects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="MsgBox.cpp">
+      <Filter>Source Files\Objects\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -263,29 +245,11 @@
     <ClInclude Include="UserInterface.h">
       <Filter>Header Files\Objects\UI</Filter>
     </ClInclude>
-    <ClInclude Include="AboutDialog.h">
-      <Filter>Header Files\Objects\UI\Dialogs</Filter>
-    </ClInclude>
     <ClInclude Include="ActivateDialog.h">
       <Filter>Header Files\Objects\UI\Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="CustomerDialog.h">
       <Filter>Header Files\Objects\UI\Dialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="MessageDialog.h">
-      <Filter>Header Files\Objects\UI\Dialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="PropertiesPanel.h">
-      <Filter>Header Files\Objects\UI\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="FeedbackPanel.h">
-      <Filter>Header Files\Objects\UI\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="ModePanel.h">
-      <Filter>Header Files\Objects\UI\Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="PrintPanel.h">
-      <Filter>Header Files\Objects\UI\Panels</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
       <Filter>Header Files\Objects\UI</Filter>
@@ -295,6 +259,12 @@
     </ClInclude>
     <ClInclude Include="FontDialog.h">
       <Filter>Header Files\Objects\UI\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="Properties.h">
+      <Filter>Header Files\Objects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="MsgBox.h">
+      <Filter>Header Files\Objects\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

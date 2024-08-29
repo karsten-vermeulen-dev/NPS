@@ -8,33 +8,15 @@ bool Plate::isPrinting{ false };
 glm::vec2 Plate::maxDimension{ 0.0f };
 std::map<std::string, std::map<std::string, std::string>> Plate::plateDataMap;
 //================================================================================================
-void Plate::Initialize(const std::string& filename, GLfloat maxWidth)
+void Plate::Initialize(GLfloat maxWidth)
 {
 	auto viewport = Screen::Instance()->GetViewport();
-	auto aspectRatio = viewport.w / static_cast<float>(viewport.h);
-
 	maxDimension.x = maxWidth;
-	maxDimension.y = maxDimension.x / aspectRatio;
-
-	if (!Utility::LoadDataFile(filename, plateDataMap))
-	{
-		//assert if failed to load?
-	}
-
-
-	//========================================================================================
-	//TODO - Add this info to the 'info dialog box'
-	//Two-line plates
-	//Line gap should be 13mm and can be increased as long as padding
-	//from border is 7mm and padding from plate edge is 11mm 
-	//For 4 or less characters user has option to use one line (centered) or two lines
-	//========================================================================================
-
-
+	maxDimension.y = maxDimension.x / (viewport.w / static_cast<float>(viewport.h));
 }
 //================================================================================================
 void Plate::Print(const Plate& plate,
-	PropertiesPanel::Properties& properties,
+	Properties* properties,
 	const glm::vec2& maxDimension,
 	Shader& shader,
 	bool isPrinting)
@@ -51,25 +33,25 @@ void Plate::Print(const Plate& plate,
 	//There is a bug when loading a preset .nps 
 	//file and then changing to Print/3D view mode after
 	//Because the folder system is reset we have to put '../Assets' to get out of the Data folder
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 10.0f * scale, "Arial_bold_10mm_print");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 8.0f * scale, "Arial_bold_8mm_print");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 7.0f * scale, "Arial_bold_7mm_print");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 6.0f * scale, "Arial_bold_6mm_print");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 5.0f * scale, "Arial_bold_5mm_print");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 4.0f * scale, "Arial_bold_4mm_print");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 3.0f * scale, "Arial_bold_3mm_print");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 10.0f * scale, maxDimension, "Arial_bold_10mm_print");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 8.0f * scale, maxDimension, "Arial_bold_8mm_print");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 7.0f * scale, maxDimension, "Arial_bold_7mm_print");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 6.0f * scale, maxDimension, "Arial_bold_6mm_print");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 5.0f * scale, maxDimension, "Arial_bold_5mm_print");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 4.0f * scale, maxDimension, "Arial_bold_4mm_print");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 3.0f * scale, maxDimension, "Arial_bold_3mm_print");
 
-	Registration::Load("Assets/Images/Fonts/2D_car", "Car_2D_print");
-	Registration::Load("Assets/Images/Fonts/3D_car_under", "Car_3D_print");
-	Registration::Load("Assets/Images/Fonts/4D_car_under", "Car_4D_print");
+	Registration::Load("Assets/Images/Fonts/2D_car", maxDimension, "Car_2D_print");
+	Registration::Load("Assets/Images/Fonts/3D_car_under", maxDimension, "Car_3D_print");
+	Registration::Load("Assets/Images/Fonts/4D_car_under", maxDimension, "Car_4D_print");
 
-	Registration::Load("Assets/Images/Fonts/2D_motorcycle", "Bike_2D_print");
-	Registration::Load("Assets/Images/Fonts/3D_motorcycle_under", "Bike_3D_print");
-	Registration::Load("Assets/Images/Fonts/4D_motorcycle_under", "Bike_4D_print");
+	Registration::Load("Assets/Images/Fonts/2D_motorcycle", maxDimension, "Bike_2D_print");
+	Registration::Load("Assets/Images/Fonts/3D_motorcycle_under", maxDimension, "Bike_3D_print");
+	Registration::Load("Assets/Images/Fonts/4D_motorcycle_under", maxDimension, "Bike_4D_print");
 
 	//plateData.fontNameBSAU = plate.GetPlateData().fontNameBSAU + "_print";
 
-	Plate printPlate(plate.tag, properties);
+	Plate printPlate(plate.tag);
 	printPlate.SetPlateData("Custom");
 
 	//Why do we have a 'isPrinting' flag and pass a flag to 'SetProperties'?
@@ -145,14 +127,25 @@ const Text* Plate::GetPostcodeText() const
 	return postcodeText.get();
 }
 //================================================================================================
-const PropertiesPanel::Properties& Plate::GetProperties() const
+const Properties* Plate::GetProperties() const
 {
 	return properties;
 }
 //================================================================================================
-Plate::Plate(const std::string& tag, 
-	         PropertiesPanel::Properties& properties) : properties(properties)
+Plate::Plate(const std::string& tag, const std::string& filename)
 {
+	static bool isDataFileLoaded = false;
+
+	if (!isDataFileLoaded && !filename.empty())
+	{
+		if (!Utility::LoadDataFile(filename, plateDataMap))
+		{
+			//assert if failed to load?
+		}
+
+		isDataFileLoaded = true;
+	}
+
 	//default plate name when creating the first plate
 	plateData = plateDataMap[tag];
 
@@ -167,8 +160,8 @@ Plate::Plate(const std::string& tag,
 	legalDimensionNDC.x = Utility::ConvertToNDC(legalDimension.x, maxDimension.x);
 	legalDimensionNDC.y = Utility::ConvertToNDC(legalDimension.y, maxDimension.y);
 
-	properties.plateWidth = legalDimension.x;
-	properties.plateHeight = legalDimension.y;
+	//properties->plateWidth = legalDimension.x;
+	//properties->plateHeight = legalDimension.y;
 
 	border = std::make_unique<Border>(this);
 
@@ -292,15 +285,15 @@ void Plate::SetProperties(bool isPrinting)
 	//=================================================================================
 
 	auto dimensionNDC = glm::vec2(0.0f);
-	dimensionNDC.x = Utility::ConvertToNDC(properties.plateWidth, maxDimension.x);
-	dimensionNDC.y = Utility::ConvertToNDC(properties.plateHeight, maxDimension.y);
+	dimensionNDC.x = Utility::ConvertToNDC(properties->plateWidth, maxDimension.x);
+	dimensionNDC.y = Utility::ConvertToNDC(properties->plateHeight, maxDimension.y);
 	
-	properties.plateName = tag;
+	properties->plateName = tag;
 
 	//If the dimension of the plate deviates from its 
 	//legal dimension then it becomes a 'Custom' plate
-	if (properties.plateWidth != legalDimension.x || 
-		properties.plateHeight != legalDimension.y)
+	if (properties->plateWidth != legalDimension.x || 
+		properties->plateHeight != legalDimension.y)
 	{
 		tag = "Custom"; 
 
@@ -312,12 +305,12 @@ void Plate::SetProperties(bool isPrinting)
 	//Registration
 	//=================================================================================
 
-	registration->SetString(properties.registrationText);
+	registration->SetString(properties->registrationText);
 
-	position.x += Utility::ConvertToNDC(properties.nudgedRegistration, maxDimension.x);
-	position.y += Utility::ConvertToNDC(properties.raisedRegistration, maxDimension.y);
+	position.x += Utility::ConvertToNDC(properties->nudgedRegistration, maxDimension.x);
+	position.y += Utility::ConvertToNDC(properties->raisedRegistration, maxDimension.y);
 
-	if (properties.isSideBadgeVisible)
+	if (properties->isSideBadgeVisible)
 	{
 		position.x += 0.5f * Utility::ConvertToNDC(this->sideBadgeMargin, maxDimension.x);
 	}
@@ -328,14 +321,14 @@ void Plate::SetProperties(bool isPrinting)
 	//Dealer and postcode 
 	//=================================================================================
 
-	dealerText->SetString(properties.dealerText);
-	postcodeText->SetString(properties.postcodeText);
+	dealerText->SetString(properties->dealerText);
+	postcodeText->SetString(properties->postcodeText);
 
 	position = transform.GetPosition();
 
-	if (properties.isDealerAbovePostcode)
+	if (properties->isDealerAbovePostcode)
 	{
-		if (properties.isSideBadgeVisible)
+		if (properties->isSideBadgeVisible)
 		{
 			position.x += 0.5f * Utility::ConvertToNDC(this->sideBadgeMargin, maxDimension.x);
 		}
@@ -348,23 +341,23 @@ void Plate::SetProperties(bool isPrinting)
 			+ postcodeBottomPadding);
 
 		//Dealer
-		position.x -= 0.5f * dealerText->GetMaxWidth() - Utility::ConvertToNDC(properties.nudgedDealer, maxDimension.x);
+		position.x -= 0.5f * dealerText->GetMaxWidth() - Utility::ConvertToNDC(properties->nudgedDealer, maxDimension.x);
 		position.y -= 0.5f * dimensionNDC.y - postcodeWithPaddingHeight;
-		position.y += Utility::ConvertToNDC(properties.raisedDealer, maxDimension.y);
+		position.y += Utility::ConvertToNDC(properties->raisedDealer, maxDimension.y);
 
 		dealerText->GetTransform().SetPosition(position);
 
 		//Postcode
-		position.x += Utility::ConvertToNDC(properties.nudgedPostcode, maxDimension.x);
+		position.x += Utility::ConvertToNDC(properties->nudgedPostcode, maxDimension.x);
 		position.y -= postcodeWithPaddingHeight - (postcodeBottomPadding);
-		position.y += Utility::ConvertToNDC(properties.raisedPostcode, maxDimension.y);
+		position.y += Utility::ConvertToNDC(properties->raisedPostcode, maxDimension.y);
 
 		postcodeText->GetTransform().SetPosition(position);
 	}
 
 	else
 	{
-		if (properties.isSideBadgeVisible)
+		if (properties->isSideBadgeVisible)
 		{
 			position.x += 0.5f * Utility::ConvertToNDC(this->sideBadgeMargin, maxDimension.x);
 		}
@@ -377,16 +370,16 @@ void Plate::SetProperties(bool isPrinting)
 			+ dealerPostcodePaddingX;
 
 		//Dealer
-		position.x -= 0.5f * width - Utility::ConvertToNDC(properties.nudgedDealer, maxDimension.x);
+		position.x -= 0.5f * width - Utility::ConvertToNDC(properties->nudgedDealer, maxDimension.x);
 		position.y -= 0.5f * dimensionNDC.y - dealerBottomPadding;
-		position.y += Utility::ConvertToNDC(properties.raisedDealer, maxDimension.y);
+		position.y += Utility::ConvertToNDC(properties->raisedDealer, maxDimension.y);
 
 		dealerText->GetTransform().SetPosition(position);
 
 		//Postcode
 		position.x += dealerText->GetMaxWidth() + dealerPostcodePaddingX
-			+ Utility::ConvertToNDC(properties.nudgedPostcode, maxDimension.x);
-		position.y += Utility::ConvertToNDC(properties.raisedPostcode, maxDimension.y);
+			+ Utility::ConvertToNDC(properties->nudgedPostcode, maxDimension.x);
+		position.y += Utility::ConvertToNDC(properties->raisedPostcode, maxDimension.y);
 
 		postcodeText->GetTransform().SetPosition(position);
 	}
@@ -395,42 +388,42 @@ void Plate::SetProperties(bool isPrinting)
 	//BSAU 
 	//=================================================================================
 
-	BSAUText->SetString(properties.BSAUText);
+	BSAUText->SetString(properties->BSAUText);
 
 	position = transform.GetPosition();
 
 	//Text padding for BSAU text
 	const auto BSAUPadding = Utility::ConvertToNDC(this->textPadding, maxDimension.x);
 
-	if (properties.isBSAUOnBorder)
+	if (properties->isBSAUOnBorder)
 	{
-		const auto marginX = Utility::ConvertToNDC(properties.marginSize, maxDimension.x);
-		const auto marginY = Utility::ConvertToNDC(properties.marginSize, maxDimension.y);
+		const auto marginX = Utility::ConvertToNDC(properties->marginSize, maxDimension.x);
+		const auto marginY = Utility::ConvertToNDC(properties->marginSize, maxDimension.y);
 
 		const auto sideDimension = Utility::ConvertToNDC((int)this->sideDimension.x, maxDimension.x);
 		const auto width = sideDimension + marginX + BSAUText->GetMaxWidth() + BSAUPadding;
 
-		position.x += 0.5f * dimensionNDC.x - width + Utility::ConvertToNDC(properties.nudgedBSAU, maxDimension.x);
+		position.x += 0.5f * dimensionNDC.x - width + Utility::ConvertToNDC(properties->nudgedBSAU, maxDimension.x);
 		position.y -= 0.5f * dimensionNDC.y - marginY;
-		position.y += Utility::ConvertToNDC(properties.raisedBSAU, maxDimension.y);
+		position.y += Utility::ConvertToNDC(properties->raisedBSAU, maxDimension.y);
 
 		BSAUText->GetTransform().SetPosition(position);
 	}
 
 	else
 	{
-		const auto size = Utility::ConvertToNDC(properties.borderSize, maxDimension.y);
-		const auto marginX = Utility::ConvertToNDC(properties.marginSize, maxDimension.x);
-		const auto marginY = Utility::ConvertToNDC(properties.marginSize, maxDimension.y);
+		const auto size = Utility::ConvertToNDC(properties->borderSize, maxDimension.y);
+		const auto marginX = Utility::ConvertToNDC(properties->marginSize, maxDimension.x);
+		const auto marginY = Utility::ConvertToNDC(properties->marginSize, maxDimension.y);
 
 		const auto sideDimension = Utility::ConvertToNDC((int)this->sideDimension.x, maxDimension.x);
 		const auto width = sideDimension * legalDimensionNDC.x + marginX + BSAUText->GetMaxWidth();
 
 		const auto height = marginY + size;
 
-		position.x += 0.5f * dimensionNDC.x - width + Utility::ConvertToNDC(properties.nudgedBSAU, maxDimension.x);
+		position.x += 0.5f * dimensionNDC.x - width + Utility::ConvertToNDC(properties->nudgedBSAU, maxDimension.x);
 		position.y -= 0.5f * dimensionNDC.y - height;
-		position.y += Utility::ConvertToNDC(properties.raisedBSAU, maxDimension.y);
+		position.y += Utility::ConvertToNDC(properties->raisedBSAU, maxDimension.y);
 
 		BSAUText->GetTransform().SetPosition(position);
 	}
@@ -439,12 +432,12 @@ void Plate::SetProperties(bool isPrinting)
 	//Legality checks
 	//=================================================================================
 
-	isLegal = properties.isBSAUVisible && properties.isDealerVisible;
+	isLegal = properties->isBSAUVisible && properties->isDealerVisible;
 
 	//If user has requested a side badge but this is not allowed
 	//for this particular plate then the plate becomes illegal
-	//if (properties.isSideBadgeVisible && !plateData.isSideBadgeAllowed)
-	if (properties.isSideBadgeVisible && !stoi(plateData["IsSideBadgeAllowed"]))
+	//if (properties->isSideBadgeVisible && !plateData.isSideBadgeAllowed)
+	if (properties->isSideBadgeVisible && !stoi(plateData["IsSideBadgeAllowed"]))
 	{
 		isLegal = false;
 	}
@@ -468,13 +461,19 @@ void Plate::SetPlateData(const std::string& tag)
 	dealerText->SetFont(plateData["FontNameDealerPostcode"]);
 	postcodeText->SetFont(plateData["FontNameDealerPostcode"]);
 
-	properties.plateWidth = legalDimension.x;
-	properties.plateHeight = legalDimension.y;
+	properties->plateWidth = legalDimension.x;
+	properties->plateHeight = legalDimension.y;
 
-	properties.isTwoLineRegistration = stoi(plateData["IsTwoLineRegistration"]);
+	properties->isTwoLineRegistration = stoi(plateData["IsTwoLineRegistration"]);
 
 	//Rebuild the plate
 	FillBuffers();
+}
+//================================================================================================
+void Plate::SetUserInterfaces(Properties* properties, FontSettings* fontSettings)
+{
+	this->properties = properties;
+	this->fontSettings = fontSettings;
 }
 //================================================================================================
 void Plate::Render(Shader& shader)
@@ -504,7 +503,7 @@ void Plate::Render(Shader& shader)
 
 	//================================================================
 
-	if (properties.isBorderVisible)
+	if (properties->isBorderVisible)
 	{
 		border->Render(shader);
 	}
@@ -531,12 +530,12 @@ void Plate::Render(Shader& shader)
 		registration->Render(shader);
 	}
 
-	if (properties.isBSAUVisible)
+	if (properties->isBSAUVisible)
 	{
 		BSAUText->Render(shader);
 	}
 
-	if (properties.isDealerVisible)
+	if (properties->isDealerVisible)
 	{
 		dealerText->Render(shader);
 		postcodeText->Render(shader);
@@ -551,7 +550,7 @@ bool Plate::LoadCustomFont(FontToChange fontToChange, const std::string& filenam
 		Text::Unload("CustomFontRegistration");
 
 		//Load the new font and use the same tag since we only ever need one at a time
-		Text::Load(filename, fontSize, "CustomFontRegistration");
+		Text::Load(filename, fontSize, maxDimension, "CustomFontRegistration");
 
 		customFontRegistration.reset();
 		customFontRegistration = std::make_unique<Text>(this, "CustomFontRegistration");
@@ -561,7 +560,7 @@ bool Plate::LoadCustomFont(FontToChange fontToChange, const std::string& filenam
 	else if (fontToChange == FontToChange::Dealer)
 	{
 		Text::Unload("CustomFontDealer");
-		Text::Load(filename, fontSize, "CustomFontDealer");
+		Text::Load(filename, fontSize, maxDimension, "CustomFontDealer");
 
 		auto text = dealerText->GetString();
 		
@@ -573,7 +572,7 @@ bool Plate::LoadCustomFont(FontToChange fontToChange, const std::string& filenam
 	else if (fontToChange == FontToChange::Postcode)
 	{
 		Text::Unload("CustomFontPostcode");
-		Text::Load(filename, fontSize, "CustomFontPostcode");
+		Text::Load(filename, fontSize, maxDimension, "CustomFontPostcode");
 
 		auto text = postcodeText->GetString();
 
@@ -585,7 +584,7 @@ bool Plate::LoadCustomFont(FontToChange fontToChange, const std::string& filenam
 	else if (fontToChange == FontToChange::BSAU)
 	{
 		Text::Unload("CustomFontBSAU");
-		Text::Load(filename, fontSize, "CustomFontBSAU");
+		Text::Load(filename, fontSize, maxDimension, "CustomFontBSAU");
 
 		auto text = BSAUText->GetString();
 
@@ -597,11 +596,11 @@ bool Plate::LoadCustomFont(FontToChange fontToChange, const std::string& filenam
 	return true;
 }
 //================================================================================================
-void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle fontStyle)
+void Plate::LoadDefaultFont(const FontSettings& fontSettings, FontSettings::FontStyle fontStyle)
 {
-	if (fontType.isCar)
+	if (fontSettings.isCar)
 	{
-		if (fontStyle == FontDialog::FontStyle::Regular2D)
+		if (fontStyle == FontSettings::FontStyle::Regular2D)
 		{
 			if (isPrinting)
 			{
@@ -614,7 +613,7 @@ void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle
 			}
 		}
 
-		else if (fontStyle == FontDialog::FontStyle::GelResin3D)
+		else if (fontStyle == FontSettings::FontStyle::GelResin3D)
 		{
 			if (isPrinting)
 			{
@@ -627,7 +626,7 @@ void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle
 			}
 		}
 
-		else if (fontStyle == FontDialog::FontStyle::Lasercut4D)
+		else if (fontStyle == FontSettings::FontStyle::Lasercut4D)
 		{
 			if (isPrinting)
 			{
@@ -643,7 +642,7 @@ void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle
 
 	else
 	{
-		if (fontStyle == FontDialog::FontStyle::Regular2D)
+		if (fontStyle == FontSettings::FontStyle::Regular2D)
 		{
 			if (isPrinting)
 			{
@@ -656,7 +655,7 @@ void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle
 			}
 		}
 
-		else if (fontStyle == FontDialog::FontStyle::GelResin3D)
+		else if (fontStyle == FontSettings::FontStyle::GelResin3D)
 		{
 			if (isPrinting)
 			{
@@ -669,7 +668,7 @@ void Plate::LoadDefaultFont(FontDialog::FontType fontType, FontDialog::FontStyle
 			}
 		}
 
-		else if (fontStyle == FontDialog::FontStyle::Lasercut4D)
+		else if (fontStyle == FontSettings::FontStyle::Lasercut4D)
 		{
 			if (isPrinting)
 			{
@@ -693,8 +692,21 @@ void Plate::FillBuffers()
 	const auto sideDimension = 2.0f * (this->sideDimension / maxDimension);
 
 	auto dimensionNDC = glm::vec2(0.0f);
-	dimensionNDC.x = Utility::ConvertToNDC(properties.plateWidth, maxDimension.x);
-	dimensionNDC.y = Utility::ConvertToNDC(properties.plateHeight, maxDimension.y);
+
+	//If the properties pointer is valid it means the UI 
+	//has been hooked up, then use the regular dimensions
+	if (properties)
+	{
+		dimensionNDC.x = Utility::ConvertToNDC(properties->plateWidth, maxDimension.x);
+		dimensionNDC.y = Utility::ConvertToNDC(properties->plateHeight, maxDimension.y);
+	}
+
+	//Otherwise it means the UI has not been hooked up and this is 
+	//the first run of FillBuffers, so use the legalDimension instead
+	else
+	{
+		dimensionNDC = legalDimensionNDC;
+	}
 
 	auto halfDimension = 0.5f * dimensionNDC;
 	auto middleDimension = halfDimension - sideDimension;

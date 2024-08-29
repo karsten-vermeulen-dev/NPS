@@ -7,7 +7,9 @@ std::map<std::string, Registration::FontType> Registration::fonts;
 //================================================================================================
 Registration::Registration(Plate* parent) : buffer(6, true), parent(parent) {}
 //================================================================================================
-void Registration::Load(const std::string& filename, const std::string& tag)
+void Registration::Load(const std::string& filename, 
+						const glm::vec2& maxDimension, 
+						const std::string& tag)
 {
 	auto hasCarFont = (filename.find("car") != std::string::npos);
 
@@ -20,8 +22,6 @@ void Registration::Load(const std::string& filename, const std::string& tag)
 	const auto motorcycleFontHeight = 64;
 	const auto motorcycleFontWidthWide = 44;
 	const auto motorcycleFontWidthNarrow = 10;
-
-	auto maxDimension = Plate::GetMaxDimension();
 
 	auto characterHeight = (hasCarFont) ? 2.0f * (carFontHeight / maxDimension.y)
 		: 2.0f * (motorcycleFontHeight / maxDimension.y);
@@ -136,7 +136,7 @@ void Registration::Render(Shader& shader)
 		auto index = string.find(' ');
 
 		//Needs to be in NDC
-		const auto twoLineSpacing = 2.0f * ((this->twoLineSpacing + parent->GetProperties().raisedTwoLineSpace) / parent->GetMaxDimension().x);
+		const auto twoLineSpacing = 2.0f * ((this->twoLineSpacing + parent->GetProperties()->raisedTwoLineSpace) / parent->GetMaxDimension().x);
 
 		//Split the text into two parts exactly where a ' ' is found
 		//The top text portion will move up and the bottom segment downwards

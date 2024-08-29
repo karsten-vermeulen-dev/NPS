@@ -26,7 +26,10 @@ void Text::Shutdown()
 	FT_Done_FreeType(freetypeObject);
 }
 //================================================================================================
-bool Text::Load(const std::string& filename, GLfloat fontHeight, const std::string& tag)
+bool Text::Load(const std::string& filename, 
+	            GLfloat fontHeight, 
+	            const glm::vec2& maxDimension, 
+	            const std::string& tag)
 {
 	assert(fonts.find(tag) == fonts.end());
 	FT_Face freetypeFace = nullptr;
@@ -41,12 +44,12 @@ bool Text::Load(const std::string& filename, GLfloat fontHeight, const std::stri
 		return false;
 	}
 
-	auto maxPlateDimension = Plate::GetMaxDimension();
 	auto viewport = Screen::Instance()->GetViewport();
 	auto aspectRatio = viewport.w / static_cast<float>(viewport.h);
 
-	//This is the pixel dimension (mm -> px)
-	auto fontSize = std::ceil(viewport.h * (fontHeight / maxPlateDimension.y));
+	//This is the pixel dimension (mm -> px) and is dependent on the 
+	//maximum dimension of the scene it will be displayed within
+	auto fontSize = std::ceil(viewport.h * (fontHeight / maxDimension.y));
 
 	FT_Set_Pixel_Sizes(freetypeFace, (FT_UInt)fontSize, (FT_UInt)fontSize);
 

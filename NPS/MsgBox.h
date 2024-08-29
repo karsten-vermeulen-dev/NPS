@@ -1,7 +1,10 @@
 #pragma once
 #include "UserInterface.h"
 
-class MessageDialog : public UserInterface
+//Would love to call it 'MessageBox', but Windows 
+//has one already which causes compiler conflicts
+
+class MsgBox : public UserInterface
 {
 
 public:

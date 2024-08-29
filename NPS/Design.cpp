@@ -90,10 +90,13 @@ bool Design::OnEnter()
 	backdrop = std::make_unique<Image>("Assets/Images/Backdrop.png");
 
 	//===================================================================
-
+	
 	//The maximum width of the viewport is 650mm, 
 	//The height will adjust based on aspect ratio
-	Plate::Initialize("Data/Plates.inf", 650.0f);
+	//We must initialize the plate BEFORE loading 
+	//all the text and registration fonts below
+	Plate::Initialize(650.0f);
+	auto maxPlateDimension = Plate::GetMaxDimension();
 
 	//===================================================================
 
@@ -102,23 +105,23 @@ bool Design::OnEnter()
 	const auto scale = 1.37f;
 
 	//Text sizes are between 3mm and 10mm
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 10.0f * scale, "Arial_bold_10mm");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 8.0f * scale, "Arial_bold_8mm");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 7.0f * scale, "Arial_bold_7mm");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 6.0f * scale, "Arial_bold_6mm");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 5.0f * scale, "Arial_bold_5mm");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 4.0f * scale, "Arial_bold_4mm");
-	Text::Load("Assets/Fonts/Arial_bold.ttf", 3.0f * scale, "Arial_bold_3mm");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 10.0f * scale, maxPlateDimension, "Arial_bold_10mm");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 8.0f * scale, maxPlateDimension, "Arial_bold_8mm");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 7.0f * scale, maxPlateDimension,"Arial_bold_7mm");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 6.0f * scale, maxPlateDimension, "Arial_bold_6mm");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 5.0f * scale, maxPlateDimension, "Arial_bold_5mm");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 4.0f * scale, maxPlateDimension, "Arial_bold_4mm");
+	Text::Load("Assets/Fonts/Arial_bold.ttf", 3.0f * scale, maxPlateDimension, "Arial_bold_3mm");
 
 	//===================================================================
 
-	Registration::Load("Assets/Images/Fonts/2D_car", "Car_2D");
-	Registration::Load("Assets/Images/Fonts/3D_car_under", "Car_3D");
-	Registration::Load("Assets/Images/Fonts/4D_car_under", "Car_4D");
+	Registration::Load("Assets/Images/Fonts/2D_car", maxPlateDimension, "Car_2D");
+	Registration::Load("Assets/Images/Fonts/3D_car_under", maxPlateDimension, "Car_3D");
+	Registration::Load("Assets/Images/Fonts/4D_car_under", maxPlateDimension, "Car_4D");
 
-	Registration::Load("Assets/Images/Fonts/2D_motorcycle", "Bike_2D");
-	Registration::Load("Assets/Images/Fonts/3D_motorcycle_under", "Bike_3D");
-	Registration::Load("Assets/Images/Fonts/4D_motorcycle_under", "Bike_4D");
+	Registration::Load("Assets/Images/Fonts/2D_motorcycle", maxPlateDimension, "Bike_2D");
+	Registration::Load("Assets/Images/Fonts/3D_motorcycle_under", maxPlateDimension, "Bike_3D");
+	Registration::Load("Assets/Images/Fonts/4D_motorcycle_under", maxPlateDimension, "Bike_4D");
 
 	//===================================================================
 
@@ -176,6 +179,11 @@ bool Design::OnEnter()
 
 	//===================================================================
 
+	//Hook up the properties and other UI later on, after plate and UI has been created
+	plate = std::make_unique<Plate>("Standard Oblong", "Data/Plates.inf");
+
+	//===================================================================
+
 	//Dimensions of UI must adjust based on app's resolution
 
 	const auto buttonDimension = glm::uvec2(100, 22);
@@ -183,65 +191,44 @@ bool Design::OnEnter()
 	mainMenu = std::make_unique<MainMenu>();
 	mainMenu->IsVisible(true);
 
-	fontDialog = std::make_unique<FontDialog>("Data/Fonts.ini");
-	fontDialog->IsVisible(false);
-	fontDialog->SetDimension(glm::uvec2(325, 580));
-	fontDialog->SetButtonDimension(buttonDimension);
+	fontSettings = std::make_unique<FontSettings>("Data/Fonts.ini");
+	fontSettings->IsVisible(false);
+	fontSettings->SetDimension(glm::uvec2(325, 580));
+	fontSettings->SetButtonDimension(buttonDimension);
 
-	aboutDialog = std::make_unique<AboutDialog>();
-	aboutDialog->IsVisible(false);
-	aboutDialog->SetDimension(glm::uvec2(300, 125));
-	aboutDialog->SetButtonDimension(buttonDimension);
+	msgBox = std::make_unique<MsgBox>();
+	msgBox->IsVisible(false);
+	msgBox->SetDimension(glm::uvec2(300, 150));
+	msgBox->SetButtonDimension(buttonDimension);
 
-	messageDialog = std::make_unique<MessageDialog>();
-	messageDialog->IsVisible(false);
-	messageDialog->SetDimension(glm::uvec2(300, 150));
-	messageDialog->SetButtonDimension(buttonDimension);
+	activateProgram = std::make_unique<ActivateProgram>();
+	activateProgram->IsVisible(false);
+	activateProgram->SetDimension(glm::uvec2(325, 410));
+	activateProgram->SetButtonDimension(buttonDimension);
 
-	activateDialog = std::make_unique<ActivateDialog>();
-	activateDialog->IsVisible(false);
-	activateDialog->SetDimension(glm::uvec2(325, 410));
-	activateDialog->SetButtonDimension(buttonDimension);
+	customerInfo = std::make_unique<CustomerInfo>();
+	customerInfo->IsVisible(false);
+	customerInfo->SetDimension(glm::uvec2(400, 660));
+	customerInfo->SetButtonDimension(buttonDimension);
 
-	customerDialog = std::make_unique<CustomerDialog>();
-	customerDialog->IsVisible(false);
-	customerDialog->SetDimension(glm::uvec2(400, 660));
-	customerDialog->SetButtonDimension(buttonDimension);
-
-	licenseDialog = std::make_unique<LicenseDialog>();
-	licenseDialog->IsVisible(false);
-	licenseDialog->SetDimension(glm::uvec2(325, 410));
-	licenseDialog->SetButtonDimension(buttonDimension);
+	checkLicense = std::make_unique<CheckLicense>();
+	checkLicense->IsVisible(false);
+	checkLicense->SetDimension(glm::uvec2(325, 410));
+	checkLicense->SetButtonDimension(buttonDimension);
 
 	//===================================================================
 
 	const auto UIPadding = 1;
 
-	modePanel = std::make_unique<ModePanel>();
-	modePanel->IsVisible(true);
-	modePanel->SetPosition(glm::uvec2(mainResolution.x - (0.3f * minorWidth * mainResolution.x) + UIPadding, menuBarHeight));
-	modePanel->SetDimension(glm::uvec2(0.3f * minorWidth * mainResolution.x, (0.65f * minorHeight * mainResolution.y) + UIPadding));
-
-	propertiesPanel = std::make_unique<PropertiesPanel>();
-	propertiesPanel->IsVisible(true);
-	propertiesPanel->SetButtonDimension(buttonDimension);
-	propertiesPanel->SetPosition(glm::uvec2(0, menuBarHeight));
-	propertiesPanel->SetDimension(glm::uvec2(minorWidth * mainResolution.x, mainResolution.y - menuBarHeight));
-
-	/*feedbackPanel = std::make_unique<FeedbackPanel>();
-	feedbackPanel->IsVisible(true);
-	feedbackPanel->SetPosition(glm::uvec2(minorWidth * mainResolution.x - UIPadding, majorHeight * mainResolution.y));
-	feedbackPanel->SetDimension(glm::uvec2(majorWidth * mainResolution.x - (minorWidth * mainResolution.x) + (UIPadding * 2), minorHeight * mainResolution.y + UIPadding));*/
-
-	printPanel = std::make_unique<PrintPanel>();
-	printPanel->IsVisible(true);
-	printPanel->SetButtonDimension(buttonDimension);
-	printPanel->SetPosition(glm::uvec2(mainResolution.x - (minorWidth * mainResolution.x), majorHeight * mainResolution.y));
-	printPanel->SetDimension(glm::uvec2(minorWidth * mainResolution.x, minorHeight * mainResolution.y + UIPadding));
+	properties = std::make_unique<Properties>();
+	properties->IsVisible(true);
+	properties->SetButtonDimension(buttonDimension);
+	properties->SetPosition(glm::uvec2(0, menuBarHeight));
+	properties->SetDimension(glm::uvec2(minorWidth * mainResolution.x, mainResolution.y - menuBarHeight));
 
 	//===================================================================
-
-	plate = std::make_unique<Plate>("Standard Oblong", propertiesPanel->GetProperties());
+	
+	plate->SetUserInterfaces(properties.get(), fontSettings.get());
 
 	//===================================================================
 
@@ -306,13 +293,12 @@ bool Design::Render()
 
 	Screen::Instance()->Refresh();
 
-	if (modePanel->GetMode().isDesign)
+	if (mode == Mode::Design)
 	{
 		isPrintModeLoaded = false;
 		is3DViewModeLoaded = false;
 
-		printPanel->IsActive(false);
-		propertiesPanel->IsActive(true);
+		//propertiesPanel->IsActive(true);
 
 		mainShader->Use();
 		Screen::Instance()->CreateNDCView();
@@ -338,14 +324,14 @@ bool Design::Render()
 		//Check licence
 		/*if (licence < currentTime)
 		{
-			messageDialog->SetButtonType(MessageDialog::ButtonType::OkCancel);
-			messageDialog->SetTitle("Licence error");
-			messageDialog->SetMessage("Licence expired. Please renew now.");
-			messageDialog->IsVisible(true);
+			msgBox->SetButtonType(MsgBox::ButtonType::OkCancel);
+			msgBox->SetTitle("Licence error");
+			msgBox->SetMessage("Licence expired. Please renew now.");
+			msgBox->IsVisible(true);
 		}*/
 	}
 
-	else if (modePanel->GetMode().isPrint)
+	else if (mode == Mode::PrintPreview)
 	{
 		is3DViewModeLoaded = false;
 
@@ -375,8 +361,12 @@ bool Design::Render()
 			auto extraSpace = glm::vec2(2.0f * (5.0f / maxDimension.x), 2.0f * (5.0f / maxDimension.y));
 			
 			auto dimensionNDC = glm::vec2(0.0f);
-			dimensionNDC.x = Utility::ConvertToNDC(plate->GetProperties().plateWidth, maxDimension.x);
-			dimensionNDC.y = Utility::ConvertToNDC(plate->GetProperties().plateHeight, maxDimension.y);
+			dimensionNDC.x = Utility::ConvertToNDC(properties->plateWidth, maxDimension.x);
+			dimensionNDC.y = Utility::ConvertToNDC(properties->plateHeight, maxDimension.y);
+
+			//dimensionNDC.x = Utility::ConvertToNDC(plate->GetProperties()->plateWidth, maxDimension.x);
+			//dimensionNDC.y = Utility::ConvertToNDC(plate->GetProperties()->plateHeight, maxDimension.y);
+
 
 			plateToPrint->SetDimension(dimensionNDC.x, dimensionNDC.y);
 			paper->SetDimension(dimensionNDC.x + extraSpace.x, dimensionNDC.y + extraSpace.y);
@@ -384,8 +374,7 @@ bool Design::Render()
 			isPrintModeLoaded = true;
 		}
 
-		printPanel->IsActive(true);
-		propertiesPanel->IsActive(false);
+		//propertiesPanel->IsActive(false);
 
 		mainShader->Use();
 		Screen::Instance()->CreateNDCView();
@@ -395,14 +384,15 @@ bool Design::Render()
 
 		auto position = glm::vec3(0.0f);
 
-		position.x += 2.0f * (printPanel->GetMetrics().leftMargin / maxDimension.x);
-		position.y -= 2.0f * (printPanel->GetMetrics().topMargin / maxDimension.y);
+		//Reactivate once 'properties' has the relevant features built-in
+		//position.x += 2.0f * (properties->GetMetrics().leftMargin / maxDimension.x);
+		//position.y -= 2.0f * (properties->GetMetrics().topMargin / maxDimension.y);
 
 		plateToPrint->GetTransform().SetPosition(position);
 		plateToPrint->Render(*mainShader);
 	}
 
-	else if (modePanel->GetMode().is3DView)
+	else if (mode == Mode::View3D)
 	{
 		isPrintModeLoaded = false;
 
@@ -428,8 +418,7 @@ bool Design::Render()
 			is3DViewModeLoaded = true;
 		}
 
-		printPanel->IsActive(false);
-		propertiesPanel->IsActive(false);
+		//propertiesPanel->IsActive(false);
 
 		lightShader->Use();
 		Screen::Instance()->CreatePerspView(*lightShader);
@@ -457,11 +446,11 @@ bool Design::Render()
 
 	if (menuItems.isNewSelected)
 	{
-		messageDialog->SetTag("New");
-		messageDialog->SetButtonType(MessageDialog::ButtonType::YesNo);
-		messageDialog->SetTitle("New plate");
-		messageDialog->SetMessage("Are you sure you want to create a new design?");
-		messageDialog->IsVisible(true);
+		msgBox->SetTag("New");
+		msgBox->SetButtonType(MsgBox::ButtonType::YesNo);
+		msgBox->SetTitle("New plate");
+		msgBox->SetMessage("Are you sure you want to create a new design?");
+		msgBox->IsVisible(true);
 	}
 
 	else if (menuItems.isLoadSelected)
@@ -474,78 +463,76 @@ bool Design::Render()
 			std::map<std::string, std::string> dataMap;
 
 			Utility::LoadConfigFile(filename, dataMap);
-
-			auto& plateProperties = propertiesPanel->GetProperties();
 			
 			plate->SetPlateData(dataMap["Plate"]);
 
-			plateProperties.plateWidth = std::stoi(dataMap["PlateWidth"]);
-			plateProperties.plateHeight = std::stoi(dataMap["PlateHeight"]);
+			properties->plateWidth = std::stoi(dataMap["PlateWidth"]);
+			properties->plateHeight = std::stoi(dataMap["PlateHeight"]);
 
 			if (dataMap["FontType"] == "Car")
 			{
-				fontDialog->fontType.isCar = true;
-				fontDialog->fontType.isMotorCycle = false;
-				fontDialog->fontType.isCustom = false;
+				fontSettings->isCar = true;
+				fontSettings->isMotorCycle = false;
+				fontSettings->isCustom = false;
 			}
 
 			else if (dataMap["FontType"] == "Motorcycle")
 			{
-				fontDialog->fontType.isMotorCycle = true;
-				fontDialog->fontType.isCar = false;
-				fontDialog->fontType.isCustom = false;
+				fontSettings->isMotorCycle = true;
+				fontSettings->isCar = false;
+				fontSettings->isCustom = false;
 			}
 
 			else if (dataMap["FontType"] == "Custom")
 			{
-				fontDialog->fontType.isCustom = true;
-				fontDialog->fontType.isCar = false;
-				fontDialog->fontType.isMotorCycle = false;
+				fontSettings->isCustom = true;
+				fontSettings->isCar = false;
+				fontSettings->isMotorCycle = false;
 			}
 
 			if (dataMap["FontStyle"] == "2DRegular")
 			{
-				fontDialog->fontStyle = FontDialog::FontStyle::Regular2D;
+				fontSettings->fontStyle = FontSettings::FontStyle::Regular2D;
 			}
 			
 			else if (dataMap["FontStyle"] == "3DGelResin")
 			{
-				fontDialog->fontStyle = FontDialog::FontStyle::GelResin3D;
+				fontSettings->fontStyle = FontSettings::FontStyle::GelResin3D;
 			}
 			
 			else if (dataMap["FontStyle"] == "4DLaserCut")
 			{
-				fontDialog->fontStyle = FontDialog::FontStyle::Lasercut4D;
+				fontSettings->fontStyle = FontSettings::FontStyle::Lasercut4D;
 			}
 
-			plateProperties.raisedRegistration = std::stoi(dataMap["RegTextRaise"]);
-			plateProperties.nudgedRegistration = std::stoi(dataMap["RegTextNudge"]);
-
-			plateProperties.raisedTwoLineSpace = std::stoi(dataMap["RegTwoLineSpaceRaise"]);
-			plateProperties.registrationText = dataMap["RegText"];
-
-			plateProperties.isBorderVisible = std::stoi(dataMap["BorderVisible"]);
-			plateProperties.isSideBadgeVisible = std::stoi(dataMap["BorderSideBadge"]);
-
-			plateProperties.borderSize = std::stoi(dataMap["BorderSize"]);
-			plateProperties.marginSize = std::stoi(dataMap["MarginSize"]);
-
-			plateProperties.dealerText = dataMap["DealerText"];
-			plateProperties.isDealerVisible = std::stoi(dataMap["DealerTextVisible"]);
-			plateProperties.isDealerAbovePostcode = std::stoi(dataMap["DealerTextAbovePostcode"]);
-
-			plateProperties.raisedDealer = std::stoi(dataMap["DealerTextRaise"]);
-			plateProperties.nudgedDealer = std::stoi(dataMap["DealerTextNudge"]);
-
-			plateProperties.postcodeText = dataMap["PostcodeText"];
-			plateProperties.raisedPostcode = std::stoi(dataMap["PostcodeTextRaise"]);
-			plateProperties.nudgedPostcode = std::stoi(dataMap["PostcodeTextNudge"]);
-
-			plateProperties.BSAUText = dataMap["BSAUText"];
-			plateProperties.isBSAUVisible  = std::stoi(dataMap["BSAUVisible"]); 
-			plateProperties.isBSAUOnBorder = std::stoi(dataMap["BSAUOnBorder"]);
-			plateProperties.raisedBSAU = std::stoi(dataMap["BSAUTextRaise"]);
-			plateProperties.nudgedBSAU = std::stoi(dataMap["BSAUTextNudge"]);
+			properties->raisedRegistration = std::stoi(dataMap["RegTextRaise"]);
+			properties->nudgedRegistration = std::stoi(dataMap["RegTextNudge"]);
+					  
+			properties->raisedTwoLineSpace = std::stoi(dataMap["RegTwoLineSpaceRaise"]);
+			properties->registrationText = dataMap["RegText"];
+					  
+			properties->isBorderVisible = std::stoi(dataMap["BorderVisible"]);
+			properties->isSideBadgeVisible = std::stoi(dataMap["BorderSideBadge"]);
+					  
+			properties->borderSize = std::stoi(dataMap["BorderSize"]);
+			properties->marginSize = std::stoi(dataMap["MarginSize"]);
+					 
+			properties->dealerText = dataMap["DealerText"];
+			properties->isDealerVisible = std::stoi(dataMap["DealerTextVisible"]);
+			properties->isDealerAbovePostcode = std::stoi(dataMap["DealerTextAbovePostcode"]);
+					  
+			properties->raisedDealer = std::stoi(dataMap["DealerTextRaise"]);
+			properties->nudgedDealer = std::stoi(dataMap["DealerTextNudge"]);
+					  
+			properties->postcodeText = dataMap["PostcodeText"];
+			properties->raisedPostcode = std::stoi(dataMap["PostcodeTextRaise"]);
+			properties->nudgedPostcode = std::stoi(dataMap["PostcodeTextNudge"]);
+					  
+			properties->BSAUText = dataMap["BSAUText"];
+			properties->isBSAUVisible  = std::stoi(dataMap["BSAUVisible"]); 
+			properties->isBSAUOnBorder = std::stoi(dataMap["BSAUOnBorder"]);
+			properties->raisedBSAU = std::stoi(dataMap["BSAUTextRaise"]);
+			properties->nudgedBSAU = std::stoi(dataMap["BSAUTextNudge"]);
 		}
 	}
 
@@ -558,72 +545,70 @@ bool Design::Render()
 		{
 			std::map<std::string, std::string> dataMap;
 
-			auto plateProperties = propertiesPanel->GetProperties();
+			dataMap["Plate"] = properties->plateName;
+			dataMap["PlateWidth"] = std::to_string(properties->plateWidth);
+			dataMap["PlateHeight"] = std::to_string(properties->plateHeight);
 
-			dataMap["Plate"] = plateProperties.plateName;
-			dataMap["PlateWidth"] = std::to_string(plateProperties.plateWidth);
-			dataMap["PlateHeight"] = std::to_string(plateProperties.plateHeight);
-
-			if (fontDialog->fontType.isCar)
+			if (fontSettings->isCar)
 			{
 				dataMap["FontType"] = "Car";
 			}
 
-			else if(fontDialog->fontType.isMotorCycle)
+			else if(fontSettings->isMotorCycle)
 			{
 				dataMap["FontType"] = "Motorcycle";
 			}
 
-			else if (fontDialog->fontType.isCustom)
+			else if (fontSettings->isCustom)
 			{
 				dataMap["FontType"] = "Custom";
 			}
 
 			//-------------------------------------------------------
 
-			if (fontDialog->fontStyle == FontDialog::FontStyle::Regular2D)
+			if (fontSettings->fontStyle == FontSettings::FontStyle::Regular2D)
 			{
 				dataMap["FontStyle"] = "2DRegular";
 			}
 
-			else if (fontDialog->fontStyle == FontDialog::FontStyle::GelResin3D)
+			else if (fontSettings->fontStyle == FontSettings::FontStyle::GelResin3D)
 			{
 				dataMap["FontStyle"] = "3DGelResin";
 			}
 
-			else if (fontDialog->fontStyle == FontDialog::FontStyle::Lasercut4D)
+			else if (fontSettings->fontStyle == FontSettings::FontStyle::Lasercut4D)
 			{
 				dataMap["FontStyle"] = "4DLaserCut";
 			}
 
 			//-------------------------------------------------------
 			
-			dataMap["RegTextRaise"] = std::to_string(plateProperties.raisedRegistration);
-			dataMap["RegTextNudge"] = std::to_string(plateProperties.nudgedRegistration);
-			dataMap["RegTwoLineSpaceRaise"] = std::to_string(plateProperties.raisedTwoLineSpace);
-			dataMap["RegText"] = plateProperties.registrationText;
+			dataMap["RegTextRaise"] = std::to_string(properties->raisedRegistration);
+			dataMap["RegTextNudge"] = std::to_string(properties->nudgedRegistration);
+			dataMap["RegTwoLineSpaceRaise"] = std::to_string(properties->raisedTwoLineSpace);
+			dataMap["RegText"] = properties->registrationText;
 
-			dataMap["BorderVisible"] = (plateProperties.isBorderVisible) ? "1" : "0";
-			dataMap["BorderSideBadge"] = (plateProperties.isSideBadgeVisible) ? "1" : "0";
+			dataMap["BorderVisible"] = (properties->isBorderVisible) ? "1" : "0";
+			dataMap["BorderSideBadge"] = (properties->isSideBadgeVisible) ? "1" : "0";
 			
-			dataMap["BorderSize"] = std::to_string(plateProperties.borderSize);
-			dataMap["MarginSize"] = std::to_string(plateProperties.marginSize);
+			dataMap["BorderSize"] = std::to_string(properties->borderSize);
+			dataMap["MarginSize"] = std::to_string(properties->marginSize);
 			
-			dataMap["DealerText"] = plateProperties.dealerText;
-			dataMap["DealerTextVisible"] = (plateProperties.isDealerVisible) ? "1" : "0";
-			dataMap["DealerTextAbovePostcode"] = (plateProperties.isDealerAbovePostcode) ? "1" : "0";
-			dataMap["DealerTextRaise"] = std::to_string(plateProperties.raisedDealer);
-			dataMap["DealerTextNudge"] = std::to_string(plateProperties.nudgedDealer);
+			dataMap["DealerText"] = properties->dealerText;
+			dataMap["DealerTextVisible"] = (properties->isDealerVisible) ? "1" : "0";
+			dataMap["DealerTextAbovePostcode"] = (properties->isDealerAbovePostcode) ? "1" : "0";
+			dataMap["DealerTextRaise"] = std::to_string(properties->raisedDealer);
+			dataMap["DealerTextNudge"] = std::to_string(properties->nudgedDealer);
 
-			dataMap["PostcodeText"] = plateProperties.postcodeText;
-			dataMap["PostcodeTextRaise"] = std::to_string(plateProperties.raisedPostcode);
-			dataMap["PostcodeTextNudge"] = std::to_string(plateProperties.nudgedPostcode);
+			dataMap["PostcodeText"] = properties->postcodeText;
+			dataMap["PostcodeTextRaise"] = std::to_string(properties->raisedPostcode);
+			dataMap["PostcodeTextNudge"] = std::to_string(properties->nudgedPostcode);
 
-			dataMap["BSAUText"] = plateProperties.BSAUText;
-			dataMap["BSAUVisible"] = (plateProperties.isBSAUVisible) ? "1" : "0";
-			dataMap["BSAUOnBorder"] = (plateProperties.isBSAUOnBorder) ? "1" : "0";
-			dataMap["BSAUTextRaise"] = std::to_string(plateProperties.raisedBSAU);
-			dataMap["BSAUTextNudge"] = std::to_string(plateProperties.nudgedBSAU);
+			dataMap["BSAUText"] = properties->BSAUText;
+			dataMap["BSAUVisible"] = (properties->isBSAUVisible) ? "1" : "0";
+			dataMap["BSAUOnBorder"] = (properties->isBSAUOnBorder) ? "1" : "0";
+			dataMap["BSAUTextRaise"] = std::to_string(properties->raisedBSAU);
+			dataMap["BSAUTextNudge"] = std::to_string(properties->nudgedBSAU);
 
 			Utility::SaveConfigFile(filename, dataMap);
 		}
@@ -631,11 +616,11 @@ bool Design::Render()
 
 	else if (menuItems.isExitSelected)
 	{
-		messageDialog->SetTag("Exit");
-		messageDialog->SetButtonType(MessageDialog::ButtonType::YesNo);
-		messageDialog->SetTitle("Exit application");
-		messageDialog->SetMessage("Are you sure you want to exit?");
-		messageDialog->IsVisible(true);
+		msgBox->SetTag("Exit");
+		msgBox->SetButtonType(MsgBox::ButtonType::YesNo);
+		msgBox->SetTitle("Exit application");
+		msgBox->SetMessage("Are you sure you want to exit?");
+		msgBox->IsVisible(true);
 	}
 
 	else if (menuItems.isStandardOblongSelected)
@@ -725,7 +710,7 @@ bool Design::Render()
 
 	else if (menuItems.isFontSettingsSelected)
 	{
-		fontDialog->IsVisible(true);
+		fontSettings->IsVisible(true);
 	}
 
 	else if (menuItems.isTutorialSelected)
@@ -735,77 +720,82 @@ bool Design::Render()
 
 	else if (menuItems.isAboutSelected)
 	{
-		aboutDialog->IsVisible(true);
+		msgBox->SetTag("About");
+		msgBox->SetButtonType(MsgBox::ButtonType::Okay);
+		msgBox->SetTitle("About application");
+		msgBox->SetMessage("Number plate software. Copyright 2024.");
+		msgBox->IsVisible(true);
 	}
 
 	else if (menuItems.isActivateProgramSelected)
 	{
-		activateDialog->IsVisible(true);
+		activateProgram->IsVisible(true);
 	}
 
 	else if (menuItems.isCustomerInformationSelected)
 	{
-		customerDialog->IsVisible(true);
+		customerInfo->IsVisible(true);
 	}
 
 	else if (menuItems.isCheckLicenseSelected)
 	{
-		licenseDialog->IsVisible(true);
+		checkLicense->IsVisible(true);
 	}
 
 	//========================================================================================
 
-	propertiesPanel->Show();
-	auto& plateProperties = propertiesPanel->GetProperties();
+	properties->Show();
 
-	//feedbackPanel->SetLegality(plate->IsLegal());
-	//feedbackPanel->SetPlateData(plate->GetPlateData());
-	//feedbackPanel->Show();
-
-	modePanel->Show();
-
-	printPanel->Show();
-
-	if (printPanel->GetButtonState().print)
+	if (properties->buttonState.design)
 	{
-		PrintPlate();
+		mode = Mode::Design;
 	}
 
-	if (fontDialog->IsVisible())
+	else if (properties->buttonState.printPreview)
 	{
-		fontDialog->Show();
+		mode = Mode::PrintPreview;
+	}
+
+	else if (properties->buttonState.view3D)
+	{
+		mode = Mode::View3D;
+	}
+
+	if (fontSettings->IsVisible())
+	{
+		fontSettings->Show();
 
 		//Load default fonts for car and motorcycle registration (2D/3D/4D)
-		if (fontDialog->fontToChange.isRegistration && 
-			(fontDialog->fontType.isCar || fontDialog->fontType.isMotorCycle))
+		if (fontSettings->isRegistration && 
+			(fontSettings->isCar || fontSettings->isMotorCycle))
 		{
-			plate->LoadDefaultFont(fontDialog->fontType, fontDialog->fontStyle);
+			plate->LoadDefaultFont(*fontSettings, fontSettings->fontStyle);
 		}
 
 		//Load custom font for registration, dealer, postcode or BSAU
 		else
 		{
 			//Path and filename of requested font
-			auto customFont = fontDialog->GetFont();
+			auto customFont = fontSettings->font;
 
 			if (!customFont.empty())
 			{
-				if (fontDialog->fontToChange.isRegistration)
+				if (fontSettings->isRegistration)
 				{
 					plate->LoadCustomFont(Plate::FontToChange::Registration, customFont, 100);
 				}
 
-				else if (fontDialog->fontToChange.isDealer)
+				else if (fontSettings->isDealer)
 				{
 					plate->LoadCustomFont(Plate::FontToChange::Dealer, customFont, 10);
 				}
 
-				else if (fontDialog->fontToChange.isPostcode)
+				else if (fontSettings->isPostcode)
 				{
 					plate->LoadCustomFont(Plate::FontToChange::Postcode, customFont, 10);
 				}
 
-				else if (fontDialog->fontToChange.isBSAU)
+				else if (fontSettings->isBSAU)
 				{
 					plate->LoadCustomFont(Plate::FontToChange::BSAU, customFont, 8);
 				}
@@ -813,52 +803,47 @@ bool Design::Render()
 		}
 	}
 
-	if (aboutDialog->IsVisible())
-	{
-		aboutDialog->Show();
-	}
-
-	else if (messageDialog->IsVisible())
+	else if (msgBox->IsVisible())
 	{
 		//At this stage we want to grey out the background 
 		//and only display/activate the message box
-		messageDialog->Show();
+		msgBox->Show();
 
 		//Internal class code?
 		//--------------------------------------------------
-		if (messageDialog->GetTag() == "New" && messageDialog->GetButtonState().yes)
+		if (msgBox->GetTag() == "New" && msgBox->GetButtonState().yes)
 		{
 			ResetView();
-			messageDialog->IsVisible(false);
+			msgBox->IsVisible(false);
 		}
 
-		else if (messageDialog->GetTag() == "Exit" && messageDialog->GetButtonState().yes)
+		else if (msgBox->GetTag() == "Exit" && msgBox->GetButtonState().yes)
 		{
 			isStateComplete = true;
 		}
 
-		else if (messageDialog->GetButtonState().no
-			|| messageDialog->GetButtonState().ok
-			|| messageDialog->GetButtonState().cancel)
+		else if (msgBox->GetButtonState().no
+			|| msgBox->GetButtonState().ok
+			|| msgBox->GetButtonState().cancel)
 		{
-			messageDialog->IsVisible(false);
+			msgBox->IsVisible(false);
 		}
 		//--------------------------------------------------
 	}
 
-	else if (activateDialog->IsVisible())
+	else if (activateProgram->IsVisible())
 	{
-		activateDialog->Show();
+		activateProgram->Show();
 	}
 
-	else if (customerDialog->IsVisible())
+	else if (customerInfo->IsVisible())
 	{
-		customerDialog->Show();
+		customerInfo->Show();
 	}
 
-	else if (licenseDialog->IsVisible())
+	else if (checkLicense->IsVisible())
 	{
-		licenseDialog->Show();
+		checkLicense->Show();
 	}
 
 	plate->SetProperties();
@@ -907,8 +892,12 @@ void Design::SaveToFile(const std::string& filename, int DPI, bool hasAlphaChann
 	auto maxDimension = Plate::GetMaxDimension();
 
 	auto plateDimensionNDC = glm::vec2(0.0f);
-	plateDimensionNDC.x = Utility::ConvertToNDC(plate->GetProperties().plateWidth, maxDimension.x);
-	plateDimensionNDC.y = Utility::ConvertToNDC(plate->GetProperties().plateHeight, maxDimension.y);
+	plateDimensionNDC.x = Utility::ConvertToNDC(properties->plateWidth, maxDimension.x);
+	plateDimensionNDC.y = Utility::ConvertToNDC(properties->plateHeight, maxDimension.y);
+
+	//plateDimensionNDC.x = Utility::ConvertToNDC(plate->GetProperties().plateWidth, maxDimension.x);
+	//plateDimensionNDC.y = Utility::ConvertToNDC(plate->GetProperties().plateHeight, maxDimension.y);
+
 
 	//convert plate dimension back to mm
 	//auto mm = glm::vec2(0.5f * plateDimension.x * maxDimension.x, 0.5f * plateDimension.y * maxDimension.y);
@@ -942,7 +931,7 @@ void Design::SaveToFile(const std::string& filename, int DPI, bool hasAlphaChann
 	Screen::Instance()->SetColor(1.0f, 1.0f, 1.0f, (hasAlphaChannel) ? 0.0f : 1.0f);
 	Screen::Instance()->Refresh();
 
-	Plate::Print(*plate, propertiesPanel->GetProperties(), glm::vec2(mm.x, mm.y), *mainShader, isPrinting);
+	Plate::Print(*plate, properties.get(), glm::vec2(mm.x, mm.y), *mainShader, isPrinting);
 
 	//This will render to our currently bound custom frame buffer
 	Screen::Instance()->Present();
@@ -961,8 +950,8 @@ void Design::SaveToFile(const std::string& filename, int DPI, bool hasAlphaChann
 //======================================================================================================
 void Design::ResetView()
 {
-	propertiesPanel->Reset();
-	fontDialog->Reset(); //we reset but we dont apply to the plate yet
+	properties->Reset();
+	fontSettings->Reset(); //we reset but we dont apply to the plate yet
 }
 //======================================================================================================
 void Design::PrintPlate()
@@ -989,10 +978,10 @@ void Design::PrintPlate()
 	{
 		if (!printDialog.hDC)
 		{
-			messageDialog->SetButtonType(MessageDialog::ButtonType::OkCancel);
-			messageDialog->SetTitle("Printer error");
-			messageDialog->SetMessage("No printer found.");
-			messageDialog->IsVisible(true);
+			msgBox->SetButtonType(MsgBox::ButtonType::OkCancel);
+			msgBox->SetTitle("Printer error");
+			msgBox->SetMessage("No printer found.");
+			msgBox->IsVisible(true);
 		}
 
 		else
@@ -1001,10 +990,10 @@ void Design::PrintPlate()
 
 			if (!deviceContext.Attach(printDialog.hDC))
 			{
-				messageDialog->SetButtonType(MessageDialog::ButtonType::OkCancel);
-				messageDialog->SetTitle("Printer error");
-				messageDialog->SetMessage("No printer found.");
-				messageDialog->IsVisible(true);
+				msgBox->SetButtonType(MsgBox::ButtonType::OkCancel);
+				msgBox->SetTitle("Printer error");
+				msgBox->SetMessage("No printer found.");
+				msgBox->IsVisible(true);
 			}
 
 			//Get the DPI value of the current printer we are using
@@ -1041,18 +1030,18 @@ void Design::PrintPlate()
 
 				if (!image)
 				{
-					messageDialog->SetButtonType(MessageDialog::ButtonType::OkCancel);
-					messageDialog->SetTitle("Image error");
-					messageDialog->SetMessage("Error loading image.");
-					messageDialog->IsVisible(true);
+					msgBox->SetButtonType(MsgBox::ButtonType::OkCancel);
+					msgBox->SetTitle("Image error");
+					msgBox->SetMessage("Error loading image.");
+					msgBox->IsVisible(true);
 				}
 
 				else if (!bitmap.Attach(image))
 				{
-					messageDialog->SetButtonType(MessageDialog::ButtonType::OkCancel);
-					messageDialog->SetTitle("Image error");
-					messageDialog->SetMessage("Error processing image.");
-					messageDialog->IsVisible(true);
+					msgBox->SetButtonType(MsgBox::ButtonType::OkCancel);
+					msgBox->SetTitle("Image error");
+					msgBox->SetMessage("Error processing image.");
+					msgBox->IsVisible(true);
 				}
 
 				else
@@ -1078,8 +1067,9 @@ void Design::PrintPlate()
 					memoryDeviceContext.SetMapMode(deviceContext.GetMapMode());
 					deviceContext.SetStretchBltMode(HALFTONE);
 
+					//Temp. disable - DO NOT REMOVE - must replace 'printPanel' with 'properties'
 					//Render loaded image to the printer in memory
-					deviceContext.StretchBlt(
+					/*deviceContext.StretchBlt(
 						printPanel->GetMetrics().leftMargin,
 						printPanel->GetMetrics().topMargin,
 						pageWidth,
@@ -1089,7 +1079,7 @@ void Design::PrintPlate()
 						0,
 						width,
 						height,
-						SRCCOPY);
+						SRCCOPY);*/
 
 					//Clean up
 					memoryDeviceContext.SelectObject(bitmapHandle);
@@ -1102,10 +1092,10 @@ void Design::PrintPlate()
 
 					else
 					{
-						messageDialog->SetButtonType(MessageDialog::ButtonType::OkCancel);
-						messageDialog->SetTitle("Printing error");
-						messageDialog->SetMessage("Error printing the image.");
-						messageDialog->IsVisible(true);
+						msgBox->SetButtonType(MsgBox::ButtonType::OkCancel);
+						msgBox->SetTitle("Printing error");
+						msgBox->SetMessage("Error printing the image.");
+						msgBox->IsVisible(true);
 						deviceContext.AbortDoc();
 					}
 				}
@@ -1133,3 +1123,49 @@ void Design::PrintPlate()
 
 	}
 }
+
+//========================================================================================
+//TODO - Add this info to the 'info dialog box'
+//Two-line plates
+//Line gap should be 13mm and can be increased as long as padding
+//from border is 7mm and padding from plate edge is 11mm 
+//For 4 or less characters user has option to use one line (centered) or two lines
+//========================================================================================
+
+//TODO - This text should move to global text message on main screen
+//if (plateData.isLegal)
+//	{
+//		ImGui::Text("- This plate is legal, as long as the correct dimensions are adhered to.");
+//	}
+//
+//	else
+//	{
+//		ImGui::Text("- This is not a legal plate, but may be used as signage.");
+//	}
+
+//Max characters is mentioned but what about spaces?
+//	ImGui::Text(("- This is a " + vehicle + " plate and is allowed a maximum of " + std::to_string(plateData.maxAllowedCharacters) + " characters.").c_str());
+
+//std::string sidebadgeAllowed = plateData.isSideBadgeAllowed ? "is" : "is not";
+//	ImGui::Text(("- A side badge " + sidebadgeAllowed + " allowed on this plate.").c_str());
+//
+//	std::string maxLine = plateData.isTwoLineRegistration ? "two-line" : "one-line";
+//	ImGui::Text(("- This is a " + maxLine + " registration plate.").c_str());
+
+//Code to be used when clicking INFO button and displaying the MsgBox with the following info:
+//We have to make this panel higher so that all of the text below can be displayed
+//	ImGui::Text("- Character height: 79mm");
+//	ImGui::Text("- Wide character width: 50mm");
+//	ImGui::Text("- Narrow character width: 14mm");
+
+//	//We have to hook in the numerical values here
+//	ImGui::Text("- Padding between registration characters: 11mm");
+//	ImGui::Text("- Padding between registration and top of plate: ");
+//	ImGui::Text("- Padding between registration and bottom of plate: ");
+//	ImGui::Text("- Padding between dealer and border: ");
+//	ImGui::Text("- Padding between postcode and border: ");
+//	ImGui::Text("- Padding between dealer and postcode: ");
+//	ImGui::Text("- Padding between BSAU and border: ");
+
+//Warnings:
+//ImGui::Text("This plate is currently not legal. Please check specifications. Refer to [Help] for more information.");
